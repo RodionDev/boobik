@@ -1,3 +1,4 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+	SITE_NAME = "Etavonni"
+	protect_from_forgery with: :exception
 end
