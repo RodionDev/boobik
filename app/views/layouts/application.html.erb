@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= ApplicationController::SITE_NAME %> &mdash; <%= @page_title || "Welcome" %></title>
-    <%= csrf_meta_tags %>
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= yield :head %>
-  </head>
-  <body>
-    <%= yield %>
-  </body>
+	<head>
+		<title><%= ApplicationController::SITE_NAME %> &mdash; <%= @page_title || "Welcome" %></title>
+		<%= csrf_meta_tags %>
+		<%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Questrial" %>
+		<% #Include the controller specific CSS/JS %>
+		<%= stylesheet_link_tag "controllers/#{params[:controller]}", media: 'all', 'data-turbolinks-track': 'reload' %>
+		<%= javascript_include_tag 'https://apis.google.com/js/platform.js' %>
+		<%= javascript_include_tag "controllers/#{params[:controller]}", 'data-turbolinks-track': 'reload' %>
+		<%= yield :head %>
+	</head>
+	<body>
+		<% if content_for? :nav %>
+			<nav><%= yield :nav %></nav>
+		<% end %>
+		<%= yield %>
+		<% if content_for? :footer %>
+			<footer><%= yield :footer %></footer>
+		<% end %>
+	</body>
 </html>
