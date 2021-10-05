@@ -1,36 +1,32 @@
 /*  The core CSS file. Mainly handles setting common styles application wide
-	Also handles setting of variables and basic web application structuring
-	Copyright (c) Harry Felton 2017 */
+    Also handles setting of variables and basic web application structuring
+    Copyright (c) Harry Felton 2017 */
 @import 'partials/variables'
 @import 'partials/reset'
 @import 'partials/structure'
-.clearfix:after
-	content: ""
-	display: table
-	clear: both
 a
-	color: white
-	text-decoration: none
+    color: white
+    text-decoration: none
 .g-signin2
-	margin-top: 1rem
-	display: inline-block
+    margin-top: 1rem
+    display: inline-block
 .vertical-centre
-	position: absolute
-	top: 50%
-	-webkit-transform: translateY( -50% )
-	-ms-transform: translateY( -50% )
-	-o-transform: translateY( -50% )
-	transform: translateY( -50% )
+    position: absolute
+    top: 50%
+    -webkit-transform: translateY( -50% )
+    -ms-transform: translateY( -50% )
+    -o-transform: translateY( -50% )
+    transform: translateY( -50% )
 .horizontal-centre
-	margin: 0 auto
+    margin: 0 auto
 .abs-horizontal-centre
-	@extend .horizontal-centre
-	position: absolute
-	left: 50%
-	-webkit-transform: translateX( -50% )
+    @extend .horizontal-centre
+    position: absolute
+    left: 50%
+    -webkit-transform: translateX( -50% )
 .container
-	@extend .horizontal-centre
-	width: 80%
-	max-width: 1100px
-	.enforce-min
-		min-width: 500px
+    @extend .horizontal-centre
+    width: 80%
+    max-width: 1100px
+    .enforce-min
+        min-width: 500px
