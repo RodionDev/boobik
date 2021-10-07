@@ -1,0 +1,41 @@
+/* 
+ * Splash screen styling. Mainly for use on landing page
+ * Stored here to help de-clutter landing.sass
+ *
+ * Copyright (c) Harry Felton 2017
+ */
+#splash
+    height: 100vh
+    background-color: $bg-accent
+    color: #ffffff
+    text-align: center
+    .wrapper#main
+        position: absolute
+        top: 50%
+        left: 50%
+        -webkit-transform: translate( -50%, -50% )
+        -ms-transform: translate( -50%, -50% )
+        -o-transform: translate( -50%, -50% )
+        transform: translate( -50%, -50% )
+        #primary
+            #title
+                font-size: 4rem
+                margin: 0
+            #tagline
+                color: #004e90
+                font-style: italic
+        #secondary
+            margin-top: 3rem
+            #get-started
+                font-weight: 100
+                margin: 5px
+                font-size: initial
+                color: #b4e7ff
+    .wrapper#bottom
+        position: absolute
+        bottom: 10%
+        left: 50%
+        -webkit-transform: translateX( -50% )
+        -ms-transform: translateX( -50% )
+        -o-transform: translateX( -50% )
+        transform: translateX( -50% )

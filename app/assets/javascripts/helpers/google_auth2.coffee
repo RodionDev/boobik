@@ -4,10 +4,14 @@
     Copyright (c) Harry Felton 2017
 class @GAuth2
     constructor: (signInListener, userListener, autoInit) ->
-        @signInListener = signInListener if typeof signInListener is 'function'
-        @userListener = userListener if typeof userListener is 'function'
+        @signInListener = ( typeof signInListener is 'function' ) and signInListener or (state) ->
+            console.warn "Uncaught GAuth2 event (isSignedIn). New state: #{state}"
+        @userListener = ( typeof userListener is 'function' ) and userListener or (user) ->
+            console.warn "Uncaught GAuth2 event (currentUser). New user: #{user}"
+            console.debug user.getBasicProfile() if user
         gapi.load( 'auth2', @init if autoInit )
     init: =>
+        return console.warn "Already initialised" if @auth
         @auth = gapi.auth2.init {
             client_id: '1050814368819-l2v81ut67vi65016ced1mstv5j2uepou.apps.googleusercontent.com',
             scope: 'profile'
