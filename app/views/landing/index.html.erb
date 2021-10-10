@@ -7,17 +7,22 @@
 <div id="splash">
     <div class="min-container">
         <div class="wrapper" id="main">
+            <span id="login-status"></span>
             <div id="primary">
                 <h1 id="title"><%= ApplicationController::SITE_NAME %></h1>
                 <span id="tagline">Some cheesy tag line to get people interested in the service.</span>
             </div>
             <div id="secondary">
-                <h3 id="get-started">Ready to get started?</h3>
-                <div class="g-signin2" data-longtitle="true"></div>
+                <span id="swapper-loader">Spinning up...</span>
+                <div id="swapper" style="min-height: 100px;">
+                    <h3 id="get-started">Ready to get started?</h3>
+                    <div id="google" class="g-signin2" data-longtitle="true"></div>
+                    <a href="dashboard" class="button" id="dashboard">Open Dashboard</a>
+                </div>
             </div>
         </div>
         <div class="wrapper" id="bottom">
-            <a href="#more" data-scroll="main .container">or, learn more</a>
+            <a href="#more" id="learn-more" data-scroll="main .container">Learn more</a>
         </div>
     </div>
 </div>
