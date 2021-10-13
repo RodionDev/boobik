@@ -7,10 +7,8 @@ class @SplashHelper
     constructor: ->
         @authHelper = new GAuth2(
             (state) =>
-                console.log("State updated #{state}. isSignedIn: #{@isSignedIn}, signedInUser: #{@signedInUser}")
                 @refreshGoogleIntegration state, @signedInUser
             (user) =>
-                console.log("User updated #{user}. isSignedIn: #{@isSignedIn}, signedInUser: #{@signedInUser}")
                 @refreshGoogleIntegration @isSignedIn, user
             true )
     refreshGoogleIntegration: (state, user) ->
