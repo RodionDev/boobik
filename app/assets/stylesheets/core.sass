@@ -49,9 +49,19 @@ a
 .min-container
     @extend .container
     min-width: 500px
-=keyframes( $name, $prefixes: moz webkit o ms )
-    @each $prefix in $prefixes
-        @-#{$prefix}-keyframes #{$name}
-            @content
-    @keyframes #{name}
+=keyframes($name)
+    @-webkit-keyframes #{$name}
         @content
+    @-moz-keyframes #{$name}
+        @content
+    @-ms-keyframes #{$name}
+        @content
+    @keyframes #{$name}
+        @content
++keyframes(opacity-pulse)
+    0%
+        opacity: 1
+    50%
+        opacity: 0
+    100%
+        opacity: 1
