@@ -78,6 +78,8 @@ GEM
       mime-types (~> 3.0)
       representable (~> 3.0)
       retriable (>= 2.0, < 4.0)
+    google-id-token (1.4.2)
+      jwt (>= 1)
     googleauth (0.6.2)
       faraday (~> 0.12)
       jwt (>= 1.4, < 3.0)
@@ -237,6 +239,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   coffee-script-source (= 1.8.0)
   google-api-client
+  google-id-token (~> 1.4)
   jbuilder (~> 2.5)
   jquery-rails
   omniauth-google-oauth2 (~> 0.5.2)

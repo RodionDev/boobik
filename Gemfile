@@ -59,3 +59,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Added at 2017-12-07 14:27:37 +1300 by Harry:
 gem "omniauth-google-oauth2", "~> 0.5.2"
+
+# Added at 2017-12-12 22:08:56 +1300 by Harry:
+gem "google-id-token", "~> 1.4"
