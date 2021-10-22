@@ -11,6 +11,14 @@ class @SplashHelper
             (user) =>
                 @refreshGoogleIntegration @isSignedIn, user
             true )
+        $( document ).ready =>
+            do $ '#swapper-loader'
+                .show
+            $ '#learn-more'
+                .on 'click', (event) =>
+                    event.preventDefault()
+                    event.stopPropagation()
+                    do @revealMore
     refreshGoogleIntegration: (state, user) ->
         return console.error "Cannot refresh Google integration on splash screen -- no auth instance found" unless @authHelper
         if ( state and state is @isSignedIn ) and ( @signedInUser and user and user.getId() is @signedInUser.getId() and @signedInUser.getId()? )
@@ -32,3 +40,5 @@ class @SplashHelper
                     .promise().then ->
                         @hide()
         , 150
+    revealMore: ->
+    concealMore: ->

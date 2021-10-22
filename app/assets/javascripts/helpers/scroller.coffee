@@ -6,7 +6,7 @@
         .animate
             scrollTop: $( target ).offset().top or 0
             time or 750
-$( document ).ready ->
+$( document ).on "turbolinks:load", ->
     $( "body" ).on "click", "a[data-scroll]", ( event ) ->
         do event.preventDefault if event
         scrollToTarget $( this ).attr("data-scroll"), Number $( this ).attr( "data-scroll-time" )
