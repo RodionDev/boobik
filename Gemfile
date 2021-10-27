@@ -20,6 +20,8 @@ gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+gem 'omniauth-google-oauth2'
+
 gem "jquery-rails"
 
 # Use CoffeeScript for .coffee assets and views
@@ -35,8 +37,6 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
-gem 'google-api-client'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -56,9 +56,3 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-# Added at 2017-12-07 14:27:37 +1300 by Harry:
-gem "omniauth-google-oauth2", "~> 0.5.2"
-
-# Added at 2017-12-12 22:08:56 +1300 by Harry:
-gem "google-id-token", "~> 1.4"
