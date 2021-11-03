@@ -21,7 +21,7 @@ class @SplashHelper
                     do @revealMore
     refreshGoogleIntegration: (state, user) ->
         return console.error "Cannot refresh Google integration on splash screen -- no auth instance found" unless @authHelper
-        if ( state and state is @isSignedIn ) and ( @signedInUser and user and user.getId() is @signedInUser.getId() and @signedInUser.getId()? )
+        if ( state is @isSignedIn ) and ( @signedInUser and user and user.getId() is @signedInUser.getId() and @signedInUser.getId()? )
             return
         @isSignedIn = state unless typeof state is 'undefined'
         @signedInUser = user unless typeof user is 'undefined'
@@ -41,4 +41,5 @@ class @SplashHelper
                         @hide()
         , 150
     revealMore: ->
+        alert "This feature is not yet implemented (NYI). It will be implemented once full-development is given the green light."
     concealMore: ->

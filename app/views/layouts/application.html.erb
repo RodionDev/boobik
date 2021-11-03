@@ -2,12 +2,13 @@
 <html>
     <head>
         <title><%= ApplicationController::SITE_NAME %> &mdash; <%= @page_title || "Welcome" %></title>
+        <meta name="google-signin-client_id" content="1050814368819-l2v81ut67vi65016ced1mstv5j2uepou.apps.googleusercontent.com">
         <%= csrf_meta_tags %>
         <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Questrial|Roboto" %>
         <% #Include the controller specific CSS/JS %>
         <%= stylesheet_link_tag "controllers/#{params[:controller]}", media: 'all', 'data-turbolinks-track': 'reload' %>
-        <%= javascript_include_tag 'https://apis.google.com/js/platform.js' %>
         <%= javascript_include_tag "controllers/#{params[:controller]}", 'data-turbolinks-track': 'reload' %>
+        <%= javascript_include_tag 'https://apis.google.com/js/client:platform.js?onload=googleHook' %>
         <%= yield :head %>
     </head>
     <body>

@@ -16,6 +16,11 @@ class @GAuth2
             client_id: '1050814368819-l2v81ut67vi65016ced1mstv5j2uepou.apps.googleusercontent.com',
             scope: 'profile'
         }
+        $ '#google'
+            .on 'click', =>
+                console.log "Starting offline access exchange"
+                window.location.href = "/auth"
+                false
         return console.error 'No auth instance. Platform failed to load. gapi-auth2' unless @auth
         @auth.isSignedIn.listen @signInListener if @signInListener
         @auth.currentUser.listen @userListener if @userListener

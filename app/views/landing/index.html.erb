@@ -19,13 +19,15 @@
                 <span id="swapper-loader">Spinning up...</span>
                 <div id="swapper">
                     <h3 id="get-started">Ready to get started?</h3>
-                    <div id="google" class="g-signin2" data-longtitle="true"></div>
+                    <!-- <div id="google" class="g-signin2" data-longtitle="true"></div> -->
+                    <a id="google" class="google-auth-link" href="<%= signin_path %>">
+                        <%= image_tag "google/light_normal.png" %>
                     <a href="dashboard" class="button" id="dashboard">Open Dashboard</a>
                 </div>
             </div>
         </div>
         <div class="wrapper" id="bottom">
-            <a href="#more" id="learn-more" data-scroll="main .container">Learn more</a>
+            <a href="#more" id="learn-more" data-scroll="#more">Learn more</a>
         </div>
     </div>
 </div>
