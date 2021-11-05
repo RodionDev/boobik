@@ -1,0 +1,8 @@
+one:
+  provider: MyString
+  uid: MyString
+  user_id: 1
+two:
+  provider: MyString
+  uid: MyString
+  user_id: 1
