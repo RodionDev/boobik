@@ -5,9 +5,11 @@
     </div> -->
 <% end %>
 <div id="splash">
+    <% if current_user %>
+        <span id="login-status"><%= current_user.name %> | <%= link_to 'Sign out', signout_path %></span>
+    <% end %>
     <div class="min-container">
         <div class="wrapper" id="main">
-            <span id="login-status"></span>
             <div id="primary">
                 <h1 id="title"><%= ApplicationController::SITE_NAME %></h1>
                 <span id="tagline">You choose the content, we create the video</span>
@@ -18,11 +20,14 @@
                 </noscript>
                 <span id="swapper-loader">Spinning up...</span>
                 <div id="swapper">
-                    <h3 id="get-started">Ready to get started?</h3>
-                    <!-- <div id="google" class="g-signin2" data-longtitle="true"></div> -->
-                    <a id="google" class="google-auth-link" href="<%= signin_path %>">
-                        <%= image_tag "google/light_normal.png" %>
-                    <a href="dashboard" class="button" id="dashboard">Open Dashboard</a>
+                    <h3 id="get-started"><%= current_user and "Welcome back, #{current_user.first_name}!" or "Ready to get started?" %></h3>
+                    <% if current_user %>
+                        <a href="dashboard" class="button" id="dashboard">Open Dashboard</a>
+                    <% else %>
+                        <a id="google" class="google-auth-link" href="<%= signin_path %>" data-turbolinks="false">
+                            <%= image_tag "google/light_normal.png" %>
+                        </a>
+                    <% end %>
                 </div>
             </div>
         </div>
