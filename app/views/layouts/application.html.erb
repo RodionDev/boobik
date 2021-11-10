@@ -5,10 +5,8 @@
         <meta name="google-signin-client_id" content="1050814368819-l2v81ut67vi65016ced1mstv5j2uepou.apps.googleusercontent.com">
         <%= csrf_meta_tags %>
         <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Questrial|Roboto" %>
-        <% #Include the controller specific CSS/JS %>
         <%= stylesheet_link_tag "controllers/#{params[:controller]}", media: 'all', 'data-turbolinks-track': 'reload' %>
         <%= javascript_include_tag "controllers/#{params[:controller]}", 'data-turbolinks-track': 'reload' %>
-        <%= javascript_include_tag 'https://apis.google.com/js/client:platform.js?onload=googleHook' %>
         <%= yield :head %>
     </head>
     <body>
@@ -19,5 +17,11 @@
         <% if content_for? :footer %>
             <footer><%= yield :footer %></footer>
         <% end %>
+        <div id="flash-notices">
+            <div class="notice">
+                <a href="#" id="notice-close" data-turbolinks="false">x</a>
+                <p>If you can see this, something went wrong.</p>
+            </div>
+        </div>
     </body>
 </html>
