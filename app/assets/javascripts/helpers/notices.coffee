@@ -1,17 +1,20 @@
 class @Notices
-    constructor: (notices=[]) ->
-        @notices = notices
-        @$noticeContainer = $ "#flash-notices"
-        @$notice = @$noticeContainer.find ".notice" if @$noticeContainer
-        $ 'div#flash-notices .notice'
-            .hover =>
+    constructor: (@notices=[]) ->
+        $( document )
+            .on 'mouseenter', 'div#flash-notices .notice', =>
                 @showCurrent true
-            , =>
+            .on 'mouseleave', 'div#flash-notices .notice', =>
                 @showCurrent()
-        $ 'body'
             .on "click", "div#flash-notices .notice #notice-close", (event) =>
                 @hideCurrent()
         do @showCurrent if @notices.length
+        $( document ).on "turbolinks:load", =>
+            @$noticeContainer = $ "#flash-notices"
+            @$notice = @$noticeContainer.find ".notice" if @$noticeContainer
+            if @notices.length
+                console.log "Popping current notification from previous page to prevent misleading notifications"
+                @popCurrent()
+            $( document ).trigger 'notices:ready', this
     queue: (notice, isAlert) ->
         @notices.push [ notice, isAlert and 'alert' or 'notice' ]
         @showCurrent()
