@@ -24,7 +24,7 @@
                     <% if current_user %>
                         <a href="dashboard" class="button" id="dashboard">Open Dashboard</a>
                     <% else %>
-                        <a id="google" class="google-auth-link" href="<%= signin_path %>" data-turbolinks="false">
+                        <a id="google" class="google-auth-link" href="<%= signin_path %>?continue=/dashboard" data-turbolinks="false">
                             <%= image_tag "google/light_normal.png" %>
                         </a>
                     <% end %>

@@ -3,12 +3,14 @@ class SessionsController < ApplicationController
     def create
         omniauth = request.env['omniauth.auth']
         info = omniauth['info']['email']
+        continue_url = request.env['omniauth.params']['continue']
+        redirect_path = (url_absolute? continue_url) ? '/' : continue_url
         @auth = Authorization.where( provider: omniauth['provider'], uid: omniauth['uid'] ).first
         if @auth
             user = User.where( id: @auth.user_id ).first
             if user
                 session[:user_id] = @auth.user_id
-                redirect_to '/'
+                redirect_to redirect_path
                 flash.notice = "Signed in!"
             else
                 puts "[FATAL] Failure: While an authorization was found for this provider (#{omniauth['provider']}) and uid, we could not find the referenced Bikboo user account (user_id: #{@auth.user_id}). This indicates an underlying failure with the database, destroying authorization."
@@ -26,7 +28,7 @@ class SessionsController < ApplicationController
                     new_auth = Authorization.create( uid: omniauth['uid'], provider: omniauth['provider'], user_id: user.id )
                     if new_auth and not new_auth.new_record?
                         session[:user_id] = new_auth.user_id
-                        redirect_to '/'
+                        redirect_to redirect_path
                         flash.notice = "Signed up and logged in. Welcome!"
                     else
                         flash.alert = "Failed to signup, server error. Please try again later"
