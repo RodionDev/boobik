@@ -12,14 +12,13 @@ class SessionsController < ApplicationController
                 session[:user_id] = @auth.user_id
                 flash.notice = "Signed in!"
             else
-                puts "[FATAL] Failure: While an authorization was found for this provider (#{omniauth['provider']}) and uid, we could not find the referenced Bikboo user account (user_id: #{@auth.user_id}). This indicates an underlying failure with the database, destroying authorization."
                 @auth.destroy!
                 flash.alert = "Unable to sigin. Dwindling authentication methods. Please try again"
             end
         else
             if not verify_google_email
                 flash.alert = "Failed to signup. Email address (#{omniauth['info']['email']}) has not been verified. Please verify this email on Google and retry"
-            elsif User.where( email: omniauth['info']['email'] )
+            elsif User.where( email: omniauth['info']['email'] ).first
                 flash.alert = "Unable to sign up; email address is already in use."
             else
                 user = User.create( email: omniauth['info']['email'], name: omniauth['info']['name'] )
