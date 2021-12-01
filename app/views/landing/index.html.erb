@@ -18,21 +18,18 @@
                 <noscript>
                     <strong>Your browsers Javascript is disabled. It must be enabled in order for this site to function correctly.</strong>
                 </noscript>
-                <span id="swapper-loader">Spinning up...</span>
-                <div id="swapper">
-                    <h3 id="get-started"><%= current_user and "Welcome back, #{current_user.first_name}!" or "Ready to get started?" %></h3>
-                    <% if current_user %>
-                        <a href="dashboard" class="button" id="dashboard">Open Dashboard</a>
-                    <% else %>
-                        <a id="google" class="google-auth-link" href="<%= signin_path %>" data-turbolinks="false">
-                            <%= image_tag "google/light_normal.png" %>
-                        </a>
-                    <% end %>
-                </div>
+                <h3 id="get-started"><%= current_user and "Welcome back, #{current_user.first_name}!" or "Ready to get started?" %></h3>
+                <% if current_user %>
+                    <a href="dashboard" class="button" id="dashboard">Open Dashboard</a>
+                <% else %>
+                    <a id="google" class="google-auth-link" href="<%= signin_path %>" data-turbolinks="false">
+                        <%= image_tag "google/light_normal.png" %>
+                    </a>
+                <% end %>
             </div>
         </div>
         <div class="wrapper" id="bottom">
-            <a href="#more" id="learn-more" data-scroll="#more">Learn more</a>
+            <a href="#" id="learn-more">Learn more (WIP)</a>
         </div>
     </div>
 </div>
