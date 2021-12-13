@@ -44,3 +44,5 @@ class @Notices
     popCurrent: ->
         @notices.shift()
         @showCurrent()
+$( document ).ready =>
+    @notices = new Notices

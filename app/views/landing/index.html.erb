@@ -1,9 +1,3 @@
-<% content_for :nav do %>
-<!--    <div class="wrapper">
-        <span class="title">Etavonni</span>
-        <a href="#" class="right nav-link" id="google-login">Log In</a>
-    </div> -->
-<% end %>
 <div id="splash">
     <% if current_user %>
         <span id="login-status"><%= current_user.name %> | <%= link_to 'Sign out', signout_path %></span>
