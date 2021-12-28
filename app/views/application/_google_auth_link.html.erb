@@ -1,0 +1,3 @@
+<a id="google" class="google-auth-link" href="<%= signin_path %>?continue=<%= url_absolute?( continue ||= "/dashboard" ) { |url, absolute| absolute ? '/dashboard' : url } %>" data-turbolinks="false">
+    <%= image_tag "google/light_normal.png" %>
+</a>

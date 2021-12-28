@@ -10,26 +10,10 @@
         <%= yield :head %>
     </head>
     <body>
-        <% if content_for? :nav %>
-            <nav><%= yield :nav %></nav>
-        <% end %>
-        <%= yield %>
-        <% if content_for? :footer %>
-            <footer><%= yield :footer %></footer>
-        <% end %>
-        <div id="flash-notices">
-            <div class="notice">
-                <a href="#" id="notice-close" data-turbolinks="false">&#10006;</a>
-                <p>If you can see this, something went wrong.</p>
-            </div>
-        </div>
-        <% if flash %>
-            <script>
-                $( document ).off("notices:ready").on("notices:ready", function( event ){
-                    <% if flash[:notice] %> notices.queue( "<%= flash[:notice] %>" ) <% end %>
-                    <% if flash[:alert] %> notices.queue( "<%= flash[:alert] %>", true ) <% end %>
-                })
-            </script>
-        <% end %>
+        <%= if content_for? :pre then yield( :pre ) end %>
+        <% if content_for? :nav %> <nav><%= yield :nav %></nav> <% end %>
+        <%= yield(:content) or yield %>
+        <% if content_for? :footer %> <footer><%= yield :footer %></footer> <% end %>
+        <%= render 'flash_notices' %>
     </body>
 </html>

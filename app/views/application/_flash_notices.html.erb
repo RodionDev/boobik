@@ -1,0 +1,14 @@
+<div id="flash-notices">
+    <div class="notice">
+        <a href="#" id="notice-close" data-turbolinks="false">&#10006;</a>
+        <p>If you can see this, something went wrong.</p>
+    </div>
+</div>
+<% if flash %>
+    <script>
+        $( document ).off("notices:ready").on("notices:ready", function( event ){
+            <% if flash[:notice] %> notices.queue( "<%= flash[:notice] %>" ) <% end %>
+            <% if flash[:alert] %> notices.queue( "<%= flash[:alert] %>", true ) <% end %>
+        })
+    </script>
+<% end %>
