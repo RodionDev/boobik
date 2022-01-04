@@ -12,7 +12,7 @@
     <body>
         <%= if content_for? :pre then yield( :pre ) end %>
         <% if content_for? :nav %> <nav><%= yield :nav %></nav> <% end %>
-        <%= yield(:content) or yield %>
+        <%= content_for? :content and yield :content or yield %>
         <% if content_for? :footer %> <footer><%= yield :footer %></footer> <% end %>
         <%= render 'flash_notices' %>
     </body>
