@@ -1,5 +1,8 @@
 <% content_for :nav do %>
-    <ul><li>Bikboo</li></ul>
+    <div class="container">
+        <a class="title" href="/">Bikboo</a>
+        <a id="sign-out" href="<%= signout_path %>" class="right" data-turbolinks="false">Sign out</a>
+    </div>
 <% end %>
 <%= content_for :content do yield end %>
-<%= render :file => 'layouts/application' %>
+<%= render file: 'layouts/application' %>

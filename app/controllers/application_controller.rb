@@ -4,8 +4,7 @@ class ApplicationController < ActionController::Base
 private
     def require_login(to_access: false)
         unless current_user
-            flash.alert = "You must be logged in to access this page. Please sign in with Google."
-            redirect_to to_access ? "/?continue=#{to_access}" : "/"
+            redirect_to( to_access ? "/?continue=#{to_access}" : "/", alert: "You must be logged in to access this page. Please sign in with Google." )
         end
     end
     def url_absolute?(url)
