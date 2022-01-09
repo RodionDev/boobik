@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
     def new; end
     def create
         omniauth = request.env['omniauth.auth']
-        info = omniauth['info']['email']
+        info = omniauth['info']
         continue_url = request.env['omniauth.params']['continue']
         redirect_path = (url_absolute? continue_url) ? '/' : ( continue_url or "/" )
         @auth = Authorization.where( provider: omniauth['provider'], uid: omniauth['uid'] ).first
@@ -17,11 +17,11 @@ class SessionsController < ApplicationController
             end
         else
             if not verify_google_email
-                flash.alert = "Failed to signup. Email address (#{omniauth['info']['email']}) has not been verified. Please verify this email on Google and retry"
-            elsif User.where( email: omniauth['info']['email'] ).first
+                flash.alert = "Failed to signup. Email address (#{info['email']}) has not been verified. Please verify this email on Google and retry"
+            elsif User.where( email: info['email'] ).first
                 flash.alert = "Unable to sign up; email address is already in use."
             else
-                user = User.create( email: omniauth['info']['email'], name: omniauth['info']['name'] )
+                user = User.create( email: info['email'], name: info['name'], image_url: info['image'] )
                 if user and not user.new_record?
                     new_auth = Authorization.create( uid: omniauth['uid'], provider: omniauth['provider'], user_id: user.id )
                     if new_auth and not new_auth.new_record?
