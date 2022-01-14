@@ -1,7 +1,9 @@
-<div class="container">
-    <div class="sidebar">
+<div class="sidebar">
+    <div class="wrapper">
+        <img src="<%= current_user.image_url %>?size=200" alt="User's avatar">
+        <span id="user-title"><%= current_user.name %></span>
     </div>
-    <main>
-        <h3><%= current_user.name %></h3>
-    </main>
 </div>
+<main>
+    <%= render 'dashboard_selector' %>
+</main>
