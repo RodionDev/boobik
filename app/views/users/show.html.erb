@@ -1,9 +1,16 @@
 <div class="sidebar">
     <div class="wrapper">
         <img src="<%= current_user.image_url %>?size=200" alt="User's avatar">
-        <span id="user-title"><%= current_user.name %></span>
+        <div id="details">
+            <span id="user-title"><%= current_user.name %></span>
+            <span id="user-email"><%= current_user.email %></span>
+            <span id="user-subscription-type">Subscription: <strong>None</strong></span>
+        </div>
     </div>
 </div>
 <main>
-    <%= render 'dashboard_selector' %>
+    <section id="projects">
+        <h3>Projects</h3>
+        <p class="sub">No projects, <a href="#">create one now</a>, or view <a href="#">our tutorial</a></p>
+    </section>
 </main>

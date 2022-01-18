@@ -8,6 +8,10 @@ body
         background-color: white
         box-shadow: 0px 0px 20px -10px black
         border-radius: 0px 0px 3px 3px
+        a
+            color: $bg-accent
+            &:hover
+                color: #0178b1
         .sidebar
             float: left
             padding: 1rem
@@ -16,13 +20,15 @@ body
             .wrapper
                 display: inline-block
                 padding: 1rem 0
-                #user-title
-                    font-family: 'Roboto'
-                    display: block
-                    color: #6d6d6d
+                text-align: left
                 img
                     width: 100%
                     border-radius: 3px
+                #details
+                    padding: 3px
+                    font-family: 'Roboto'
+                    span
+                        display: block
         main
             padding: 1rem
             width: 75%
