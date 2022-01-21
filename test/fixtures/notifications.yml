@@ -1,0 +1,12 @@
+one:
+  user: one
+  title: MyString
+  body: MyString
+  project: one
+  unread: false
+two:
+  user: two
+  title: MyString
+  body: MyString
+  project: two
+  unread: false
