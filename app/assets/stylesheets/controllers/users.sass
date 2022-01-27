@@ -6,23 +6,25 @@ body
     min-height: 100vh
     background-color: rgba(0, 173, 255, 0.14901960784313725)
     .container#main
-        margin-top: 65px
+        margin-top: 55px
         background-color: white
         box-shadow: 0px 0px 20px -10px black
         border-radius: 0px 0px 3px 3px
+        padding: 1rem 0
+        display: flex
         a
             color: $bg-accent
             &:hover
                 color: #0178b1
+                text-decoration: underline
         .sidebar
-            float: left
             padding: 1rem
-            width: 25%
-            text-align: center
+            width: 23%
+            display: inline-block
+            border-right: solid 1px #e4e4e4
             .wrapper
-                display: inline-block
-                padding: 1rem 0
-                text-align: left
+                padding: 1rem
+                width: 100%
                 img
                     width: 100%
                     border-radius: 3px
@@ -31,7 +33,21 @@ body
                     font-family: 'Roboto'
                     span
                         display: block
+                        overflow: hidden
+                        text-overflow: ellipsis
         main
-            padding: 1rem
+            padding: 1rem 2rem
             width: 75%
             float: right
+            flex: auto
+            section
+                margin: 2rem 0
+                .title
+                    margin: 0
+                .listing
+                    padding: 3px 10px
+                    border-radius: 3px
+                    margin: 1rem
+                    &.error
+                        border: solid #9c0000 2px
+                        box-shadow: inset 0px 0px 4px -1px red

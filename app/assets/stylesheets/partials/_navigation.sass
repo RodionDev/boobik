@@ -1,7 +1,8 @@
+$nav-height: 55px
 nav
     background-color: $bg-accent
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.38)
-    height: 65px
+    height: $nav-height
     overflow: hidden
     &.fixed
         position: fixed
@@ -9,13 +10,13 @@ nav
         right: 0
         top: 0
     .container
-        padding: 0rem 1rem
         a
             display: inline-block
-            line-height: 65px
+            line-height: $nav-height
             padding: 0 1rem
+            float: left
             &.title
-                font-size: 1.5rem
+                font-size: 1.8rem
                 font-weight: bold
                 font-family: 'Roboto'
                 color: #0b71a0
