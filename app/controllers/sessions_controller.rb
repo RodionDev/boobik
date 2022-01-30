@@ -5,11 +5,13 @@ class SessionsController < ApplicationController
         info = omniauth['info']
         continue_url = request.env['omniauth.params']['continue']
         redirect_path = (url_absolute? continue_url) ? '/' : ( continue_url or "/" )
-        @auth = Authorization.where( provider: omniauth['provider'], uid: omniauth['uid'] ).first
+        provider = omniauth['provider']
+        uid = omniauth['uid']
+        @auth = Authorization.where( provider: provider, uid: uid ).first
         if @auth
             user = User.where( id: @auth.user_id ).first
             if user
-                session[:user_id] = @auth.user_id
+                signin_user user: user, provider: provider, uid: uid
                 flash.notice = "Signed in!"
             else
                 @auth.destroy!
@@ -23,9 +25,9 @@ class SessionsController < ApplicationController
             else
                 user = User.create( email: info['email'], name: info['name'], image_url: info['image'] )
                 if user and not user.new_record?
-                    new_auth = Authorization.create( uid: omniauth['uid'], provider: omniauth['provider'], user_id: user.id )
+                    new_auth = Authorization.create( uid: uid, provider: provider, user_id: user.id )
                     if new_auth and not new_auth.new_record?
-                        session[:user_id] = new_auth.user_id
+                        signin_user user: user, provider: provider, uid: uid
                         flash.notice = "Signed up and logged in. Welcome!"
                     else
                         flash.alert = "Failed to signup, server error. Please try again later"
@@ -38,12 +40,23 @@ class SessionsController < ApplicationController
         redirect_to redirect_path
     end
     def destroy
-        session[:user_id] = nil
+        reset_session
         redirect_to '/', notice: 'Signed out'
     end
 private
     def verify_google_email
         omniauth = request.env['omniauth.auth']
         omniauth['provider'] != 'google' or omniauth['extra']['id_info']['email_verified']
+    end
+    def signin_user( user: false, provider: false, uid: false )
+        raise "Invalid arguments passed. Expected 'user' model instance, 'provider' string and 'uid' string. Refusing to sign in user." unless( user and provider and uid )
+        if not user.auth_token
+            user.generate_auth_token
+        end
+        reset_session
+        session[:auth_token] = user.auth_token
+        session[:user_id] = user.id
+        session[:provider] = provider
+        session[:uid] = uid
     end
 end

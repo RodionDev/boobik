@@ -5,4 +5,9 @@ class User < ApplicationRecord
     def first_name
         name.match /(\w+)/
     end
+    def generate_auth_token
+        until update( auth_token: SecureRandom.uuid )
+            puts "WARNING: Regenerating auth_token for user #{name}. Failed to update. Likely due to auth_token not being unique."
+        end
+    end
 end

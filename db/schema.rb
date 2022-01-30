@@ -1,4 +1,4 @@
-ActiveRecord::Schema.define(version: 20171220031325) do
+ActiveRecord::Schema.define(version: 20171221042230) do
   enable_extension "plpgsql"
   create_table "authorizations", force: :cascade do |t|
     t.string "provider"
@@ -41,6 +41,8 @@ ActiveRecord::Schema.define(version: 20171220031325) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
+    t.string "auth_token"
+    t.index ["auth_token"], name: "index_users_on_auth_token", unique: true
   end
   add_foreign_key "authorizations", "users"
   add_foreign_key "notifications", "projects"
