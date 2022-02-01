@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
         if @auth
             user = User.where( id: @auth.user_id ).first
             if user
-                signin_user user: user, provider: provider, uid: uid
+                signin_user user
                 flash.notice = "Signed in!"
             else
                 @auth.destroy!
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
                 if user and not user.new_record?
                     new_auth = Authorization.create( uid: uid, provider: provider, user_id: user.id )
                     if new_auth and not new_auth.new_record?
-                        signin_user user: user, provider: provider, uid: uid
+                        signin_user user
                         flash.notice = "Signed up and logged in. Welcome!"
                     else
                         flash.alert = "Failed to signup, server error. Please try again later"
@@ -48,15 +48,11 @@ private
         omniauth = request.env['omniauth.auth']
         omniauth['provider'] != 'google' or omniauth['extra']['id_info']['email_verified']
     end
-    def signin_user( user: false, provider: false, uid: false )
-        raise "Invalid arguments passed. Expected 'user' model instance, 'provider' string and 'uid' string. Refusing to sign in user." unless( user and provider and uid )
-        if not user.auth_token
-            user.generate_auth_token
-        end
+    def signin_user( user )
+        raise "Invalid arguments passed. Expected 'user' model instance. Refusing to sign in user." unless user
+        user.generate_auth_token unless user.auth_token
         reset_session
         session[:auth_token] = user.auth_token
         session[:user_id] = user.id
-        session[:provider] = provider
-        session[:uid] = uid
     end
 end
