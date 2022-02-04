@@ -7,20 +7,20 @@ class SessionsController < ApplicationController
         redirect_path = (url_absolute? continue_url) ? '/' : ( continue_url or "/" )
         provider = omniauth['provider']
         uid = omniauth['uid']
-        @auth = Authorization.where( provider: provider, uid: uid ).first
+        @auth = Authorization.find_by_provider_and_uid provider, uid
         if @auth
-            user = User.where( id: @auth.user_id ).first
-            if user
+            begin
+                user = User.find @auth.user_id
                 signin_user user
                 flash.notice = "Signed in!"
-            else
+            rescue ActiveRecord::RecordNotFound
                 @auth.destroy!
-                flash.alert = "Unable to sigin. Dwindling authentication methods. Please try again"
+                flash.alert = "Unable to sigin. Authorization points to missing user account. Please try again now that dwindling authentications have been destroyed."
             end
         else
             if not verify_google_email
                 flash.alert = "Failed to signup. Email address (#{info['email']}) has not been verified. Please verify this email on Google and retry"
-            elsif User.where( email: info['email'] ).first
+            elsif User.find_by_email info['email']
                 flash.alert = "Unable to sign up; email address is already in use."
             else
                 user = User.create( email: info['email'], name: info['name'], image_url: info['image'] )
@@ -37,7 +37,7 @@ class SessionsController < ApplicationController
                 end
             end
         end
-        redirect_to redirect_path
+        redirect_to flash.alert ? root_url : redirect_path
     end
     def destroy
         reset_session

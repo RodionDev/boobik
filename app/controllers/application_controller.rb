@@ -16,13 +16,13 @@ private
         end
     end
     def current_user
-        @user ||= User.where( id: session[:user_id] ).first if session[:user_id]
+        @user ||= User.find session[:user_id] if session[:user_id]
     end
     def validate_session
         user_id = session[:user_id]
         auth_token = session[:auth_token]
         if user_id and auth_token
-            user = User.where( id: user_id ).first
+            user = User.find_by_id user_id
             unless user and user.auth_token == auth_token
                 reset_session
                 redirect_to '/', alert: "Session invalidated; your user has been logged out of all devices. Please log in again."
