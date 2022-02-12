@@ -4,5 +4,6 @@ Rails.application.routes.draw do
     get '/signin', to: redirect( path: '/auth/google' )
     get '/signout', to: 'sessions#destroy'
     get '/dashboard', to: 'users#show'
+    resource :projects
     root 'landing#index'
 end
