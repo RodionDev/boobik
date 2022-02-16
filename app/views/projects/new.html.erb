@@ -1,0 +1,24 @@
+<div class="sidebar">
+    <div class="wrapper" id="profile">
+        <h2 class="title">New Project</h2>
+        <p>A project provides you a space to design your induction video.</p>
+        <p>Creating and designing a project is <i>completely free</i>. So, what are you waiting for?</p>
+    </div>
+</div>
+<main>
+    <div class="wrapper" id="form">
+        <%= form_with model: @project, local: true do |form| %>
+            <section id="title">
+                <%= form.label :title %>
+                <%= form.text_field :title %>
+            </section>
+            <section id="desc">
+                <%= form.label :desc %>
+                <%= form.text_area :desc %>
+            </section>
+            <section id="submit">
+                <%= form.submit %>
+            </section>
+        <% end %>
+    </div>
+</main>
