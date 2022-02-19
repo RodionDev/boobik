@@ -1,43 +1,41 @@
 .min-container
     min-width: 850px !important
-body
-    min-height: 100vh
-    .container#main
-        margin-top: 55px
-        padding: 1rem 0
-        display: flex
-        a
-            color: $bg-accent
-            &:hover
-                color: #0178b1
-                text-decoration: underline
-        .sidebar
+body .container#main
+    margin-top: 55px
+    padding: 1rem 0
+    display: flex
+    a
+        color: $bg-accent
+        &:hover
+            color: #0178b1
+            text-decoration: underline
+    .sidebar
+        padding: 1rem
+        width: 26%
+        display: inline-block
+        .wrapper
             padding: 1rem
-            width: 26%
-            display: inline-block
-            .wrapper
-                padding: 1rem
-        main
-            padding: 1rem 2rem
-            width: 73%
-            float: right
-            flex: auto
+    main
+        padding: 1rem 2rem
+        width: 73%
+        float: right
+        flex: auto
+        .title
+            color: #5f5f5f
+            font-weight: 100
+            font-family: 'Roboto'
+            margin: 0
+        h1.title
+            padding-bottom: 4px
+            border-bottom: 1px solid #eee
+        section
+            margin: 2rem 0
             .title
-                color: #5f5f5f
-                font-weight: 100
-                font-family: 'Roboto'
                 margin: 0
-            h1.title
-                padding-bottom: 4px
-                border-bottom: 1px solid #eee
-            section
-                margin: 2rem 0
-                .title
-                    margin: 0
-                .listing
-                    padding: 3px 10px
-                    border-radius: 3px
-                    margin: 1rem
-                    &.error
-                        border: solid #9c0000 2px
-                        box-shadow: inset 0px 0px 4px -1px red
+            .listing
+                padding: 3px 10px
+                border-radius: 3px
+                margin: 1rem
+                &.error
+                    border: solid #9c0000 2px
+                    box-shadow: inset 0px 0px 4px -1px red
