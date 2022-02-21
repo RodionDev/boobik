@@ -1,4 +1,4 @@
 class UsersController < ApplicationController
-    before_action do require_login to_access: "/dashboard" end
+    before_action :require_login
     def show; end
 end
