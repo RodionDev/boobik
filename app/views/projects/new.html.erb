@@ -13,11 +13,11 @@
                 <%= form.text_field :title %>
             </section>
             <section id="desc">
-                <%= form.label :desc %>
-                <%= form.text_area :desc %>
+                <%= form.label :description, for: :project_desc %>
+                <%= form.text_area :desc, placeholder: 'This field is optional' %>
             </section>
             <section id="submit">
-                <%= form.submit %>
+                <%= form.submit class: 'button' %>
             </section>
         <% end %>
     </div>
