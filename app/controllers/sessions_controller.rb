@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-    def new; end
     def create
         omniauth = request.env['omniauth.auth']
         info = omniauth['info']
