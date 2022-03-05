@@ -3,7 +3,13 @@
         <a class="title" href="/">Bikboo</a>
         <a href="#">About</a>
         <a href="#">Pricing</a>
-        <a id="sign-out" href="<%= signout_path %>" class="right" data-turbolinks="false">Sign out</a>
+        <% if current_user %>
+            <a id="profile" href="#" class="right" data-turbolinks="false">
+                <img src="<%= current_user.image_url %>?size=40" alt="User avatar">
+                <span>&#x25BC;</span>
+            </a>
+            <%= render 'profile_modal' %>
+        <% end %>
     </div>
 <% end %>
 <% content_for :content do %>

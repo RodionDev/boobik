@@ -10,10 +10,11 @@
         <%= yield :head %>
     </head>
     <body>
-        <%= if content_for? :pre then yield( :pre ) end %>
+        <%= if content_for? :pre then yield :pre end %>
         <% if content_for? :nav %> <nav class="fixed"><%= yield :nav %></nav> <% end %>
         <%= content_for? :content and yield :content or yield %>
         <% if content_for? :footer %> <footer><%= yield :footer %></footer> <% end %>
+        <%= if content_for? :post then yield :post end %>
         <%= render 'flash_notices' %>
     </body>
 </html>
