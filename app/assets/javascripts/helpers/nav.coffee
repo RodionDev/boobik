@@ -7,14 +7,33 @@ _missHandler = (event) ->
 @openProfileModal = ->
     $ 'nav #profile-modal'
         .stop true
-        .fadeIn 100
+        .show()
         .attr 'data-open', 'true'
+        .animate
+            top: '55px'
+            opacity: 1
+        , 100
+    $ 'nav a#profile span'
+        .stop true
+        .animate
+            marginTop: '3px'
+        , 100
     $( document ).mouseup _missHandler
 @closeProfileModal = ->
     $ 'nav #profile-modal'
         .stop true
-        .fadeOut 100
         .attr "data-open", 'false'
+        .animate
+            top: '45px'
+            opacity: 0
+        , 100
+        .promise().then ->
+            this.hide()
+    $ 'nav a#profile span'
+        .stop true
+        .animate
+            marginTop: 0
+        , 100
     $( document ).unbind 'mouseup', _missHandler
 @toggleProfileModal = ->
     $modal = $ 'nav #profile-modal'
