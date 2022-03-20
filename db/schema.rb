@@ -1,4 +1,4 @@
-ActiveRecord::Schema.define(version: 20171221042230) do
+ActiveRecord::Schema.define(version: 20180112023937) do
   enable_extension "plpgsql"
   create_table "authorizations", force: :cascade do |t|
     t.string "provider"
@@ -12,7 +12,7 @@ ActiveRecord::Schema.define(version: 20171221042230) do
     t.string "title"
     t.string "body"
     t.bigint "project_id"
-    t.boolean "unread", default: true
+    t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_notifications_on_project_id"
