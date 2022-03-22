@@ -1,0 +1,12 @@
+<div class="min-container" id="navigation">
+    <a class="title" href="/">Bikboo</a>
+    <a href="#">About</a>
+    <a href="#">Pricing</a>
+    <% if current_user %>
+        <a id="profile" href="#" class="right" data-turbolinks="false">
+            <img src="<%= current_user.image_url %>?size=40" alt="User avatar">
+            <span>&#x25BC;</span>
+        </a>
+        <!-- <%= render 'profile_modal' %> -->
+    <% end %>
+</div>
