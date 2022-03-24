@@ -5,5 +5,6 @@ Rails.application.routes.draw do
     get '/signout', to: 'sessions#destroy'
     get '/dashboard', to: 'users#show'
     resources :projects
+    resources :notifications, only: [:index, :update, :destroy]
     root 'landing#index'
 end

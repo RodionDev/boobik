@@ -10,6 +10,7 @@
 <main>
     <div id="projects" class="column">
         <h1>Your Projects</h1>
+        <%= link_to '+ create', new_project_path, class: 'button', id: 'new' %>
         <div class="wrapper">
             <div class="notice">
                 <%= image_tag "question-mark.png" %>
@@ -21,10 +22,14 @@
     <div id="notifications" class="column">
         <h2>Recent Activity</h2>
         <div class="wrapper">
-            <div class="notice">
-                <h3>Nothing here!</h2>
-                <span>Your account has no recent recorded activity</span>
-            </div>
+            <% if current_user.recent_activity then %>
+                <%= render current_user.recent_activity %>
+            <% else %>
+                <div class="notice">
+                    <h3>Nothing here!</h2>
+                    <span>Your account has no recent recorded activity</span>
+                </div>
+            <% end %>
         </div>
     </div>
 </main>
