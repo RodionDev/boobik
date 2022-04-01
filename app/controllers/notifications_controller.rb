@@ -1,7 +1,10 @@
 class NotificationsController < ApplicationController
     before_action :require_login
     def index
-        render :json => current_user.notifications, status: :ok
+        render :json => construct_payload( get_activity ), status: :ok
+    end
+    def recent
+        render :json => construct_payload( get_activity( recent: true ), extra: { recent_only: true } ), status: :ok
     end
     def update
     end
@@ -26,5 +29,12 @@ private
         unless current_user
             render :json => { error: "Unauthorized request" }, status: :unauthorized
         end
+    end
+    def get_activity( recent: false )
+        current_user.send( recent ? 'recent_activity' : 'activity', limit: params[:limit], offset: params[:offset] )
+    end
+    def construct_payload( payload, extra: false )
+        export = { payload: payload }.merge( extra || {} )
+        export.merge( { total_notifications: current_user.notifications.count, amount_provided: payload.count } )
     end
 end

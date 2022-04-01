@@ -6,5 +6,6 @@ Rails.application.routes.draw do
     get '/dashboard', to: 'users#show'
     resources :projects
     resources :notifications, only: [:index, :update, :destroy]
+    get 'notifications/recent', to: 'notifications#recent'
     root 'landing#index'
 end
