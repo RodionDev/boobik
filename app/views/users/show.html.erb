@@ -24,12 +24,11 @@
         <div class="wrapper">
             <% if current_user.recent_activity then %>
                 <%= render current_user.recent_activity %>
-            <% else %>
-                <div class="notice">
-                    <h3>Nothing here!</h2>
-                    <span>Your account has no recent recorded activity</span>
-                </div>
             <% end %>
+            <div class="notice">
+                <h3>Nothing here!</h2>
+                <span>Your account has no recent recorded activity</span>
+            </div>
         </div>
     </div>
 </main>
