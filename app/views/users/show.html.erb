@@ -22,12 +22,26 @@
     <div id="notifications" class="column">
         <h2>Recent Activity</h2>
         <div class="wrapper">
-            <% if current_user.recent_activity then %>
-                <%= render current_user.recent_activity %>
-            <% end %>
-            <div class="notice">
+            <div class="panel" id="notifs"></div>
+            <div class="notice" id="no-recent">
                 <h3>Nothing here!</h2>
                 <span>Your account has no recent recorded activity</span>
+                <span>Instead, you can <a href="#" id="view-older">view older activity</a></span>
+            </div>
+            <div class="notice" id="no-activity">
+                <h3>Nothing here!</h2>
+                <span>Your account has no recorded activity</span>
+            </div>
+            <div class="notice error" id="failure">
+                <h3>Well, this is embarrassing</h3>
+                <span>Something went wrong on our end loading your activity. Give it a try later.</span>
+                <pre id="error">Unknown Error Occurred</pre>
+            </div>
+            <div class="notice loading">
+                <h3>Loading</h3>
+            </div>
+            <div class="float" id="loading">
+                <span>Loading some more!</span>
             </div>
         </div>
     </div>

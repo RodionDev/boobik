@@ -31,9 +31,10 @@ private
         end
     end
     def get_activity( recent: false )
-        current_user.send( recent ? 'recent_activity' : 'activity', limit: params[:limit], offset: params[:offset] )
+        current_user.send( recent ? 'get_recent_activity' : 'get_activity', limit: params[:limit], offset: params[:offset] )
     end
     def construct_payload( payload, extra: false )
+        payload = payload || []
         export = { payload: payload }.merge( extra || {} )
         export.merge( { total_notifications: current_user.notifications.count, amount_provided: payload.count } )
     end
