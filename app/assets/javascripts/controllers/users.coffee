@@ -41,6 +41,7 @@ class ActivityPane
         notifWrapper.on "scroll", (event) =>
             return if @cache.loaded is @cache.total
             if ( notifPanel.innerHeight() - notifWrapper.scrollTop() ) <= ( notifWrapper.innerHeight() + 10 )
+                @recentMode = false
                 do @loadMore
         do @loadMore
     updatePane: ->
