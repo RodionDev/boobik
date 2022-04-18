@@ -92,7 +92,7 @@ nav
                 text-align: center
                 font-weight: bolder
                 color: rgba(0,0,0,0.67)
-            a.button#new
+            a.button.new-project
                 position: absolute
                 top: 1rem
                 right: 1rem
@@ -129,10 +129,6 @@ nav
                     margin-top: 25%
                 .notice:not(.loading)
                     display: none
-                .notice#no-recent a
-                    color: $bg-accent
-                    display: inline-block
-                    margin-top: 1rem
                 .notification
                     padding: 1rem 0
                     border-bottom: 1px dashed #bdbcbc
@@ -161,6 +157,7 @@ nav
                 .float#loading
                     position: fixed
                     bottom: 0
+                    display: none // Temp
                     background-color: white
                     text-align: center
         .column .wrapper .notice
@@ -178,9 +175,11 @@ nav
                 font-weight: 600
                 margin: 5px 0px
                 color: #616161
-            span
+            span, p
                 font-style: italic
                 color: #939090
             pre
                 color: #a2a2a2
                 font-weight: 900
+            a
+                color: $bg-accent

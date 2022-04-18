@@ -10,12 +10,13 @@
 <main>
     <div id="projects" class="column">
         <h1>Your Projects</h1>
-        <%= link_to '+ create', new_project_path, class: 'button', id: 'new' %>
+        <%= link_to '+ create', new_project_path, class: 'button new-project' %>
         <div class="wrapper">
             <div class="notice">
                 <%= image_tag "question-mark.png" %>
-                <h3>Well... This is embarrassing</h3>
+                <h3>Nothing here... yet!</h3>
                 <span>You haven't got any projects! You should really get to that!</span>
+                <p><a href="#" class="new-project">Click here to get started</a></p>
             </div>
         </div>
     </div>
@@ -25,8 +26,7 @@
             <div class="panel" id="notifs"></div>
             <div class="notice" id="no-recent">
                 <h3>Nothing here!</h2>
-                <span>Your account has no recent recorded activity</span>
-                <span>Instead, you can <a href="#" id="view-older">view older activity</a></span>
+                <span>Your account has no recent activity. Instead, you can <a href="#" id="view-older">view older activity</a></span>
             </div>
             <div class="notice" id="no-activity">
                 <h3>Nothing here!</h2>
