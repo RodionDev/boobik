@@ -14,7 +14,7 @@ class User < ApplicationRecord
     def get_recent_activity( limit: 10, offset: 0 )
         return @recent if @recent and @recent.any?
         latest_activity = get_activity( limit: limit, offset: offset )
-        recent = latest_activity.where( "created_at >= ? ", Time.zone.now - 1.hour )
+        recent = latest_activity.where( "created_at >= ? ", 1.week.ago )
         @recent = recent.any? ? recent : false
     end
     def get_activity( offset: 0, limit: 10 )
