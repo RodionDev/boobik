@@ -9,11 +9,3 @@
 $( document ).on "click", "a[data-scroll]", ( event ) ->
     do event.preventDefault if event
     scrollToTarget $( this ).attr("data-scroll"), Number $( this ).attr( "data-scroll-time" )
-$( window ).load ->
-    setTimeout ->
-        unless $( window.location.hash ).length
-            $ 'html, body'
-                .scrollTop( 0 )
-        else
-            scrollToTarget( window.location.hash )
-    , 10
