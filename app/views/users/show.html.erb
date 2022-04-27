@@ -1,3 +1,4 @@
+<% @page_title = "Dashboard" %>
 <% content_for :banner do %>
     <%= render 'dashboard_navigation' %>
     <div id="banner">
@@ -12,7 +13,8 @@
         <h1>Your Projects</h1>
         <%= link_to '+ create', new_project_path, class: 'button new-project' %>
         <div class="wrapper">
-            <div class="notice">
+            <div class="panel" id="projects"></div>
+            <div class="notice" id="no-projects">
                 <%= image_tag "question-mark.png" %>
                 <h3>Nothing here... yet!</h3>
                 <span>You haven't got any projects! You should really get to that!</span>

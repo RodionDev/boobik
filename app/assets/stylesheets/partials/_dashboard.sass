@@ -13,6 +13,7 @@ $bannerHeight: 350px
 $nav-height: 55px
 nav
     #banner
+        min-width: $minContainerWidth
         position: absolute
         top: 0
         left: 0
@@ -20,6 +21,7 @@ nav
         height: $bannerHeight
         background-color: $bg-accent
         color: #003148
+        z-index: 2
         box-shadow: 0px 0px 9px -2px black
         #wrapper
             position: absolute
@@ -44,7 +46,7 @@ nav
         left: 0
         right: 0
         top: 0
-        z-index: 1
+        z-index: 3
         a:not(.button)
             display: inline-block
             line-height: $nav-height
@@ -78,11 +80,19 @@ nav
     margin-top: $bannerHeight
     width: 100%
     max-width: none
+    a:not(.button)
+        color: $bg-accent
     main
+        min-width: $minContainerWidth
         padding: 0 1rem
+        position: absolute
+        top: $bannerHeight
+        bottom: 0
+        left: 0
+        right: 0
         .column
             position: absolute
-            top: $bannerHeight
+            top: 0
             bottom: 0
         .column#projects
             width: 73%
@@ -96,9 +106,70 @@ nav
                 position: absolute
                 top: 1rem
                 right: 1rem
-            .wrapper .notice img
-                width: 75px
-                margin-bottom: 23px
+            .wrapper
+                position: absolute
+                top: 67px
+                bottom: 0
+                left: 0
+                right: 0
+                overflow-y: auto
+                .panel#projects
+                    display: none
+                    margin-top: 25%
+                    padding: 0 1rem
+                    .project
+                        margin: 1rem auto
+                        max-width: 900px
+                        border-radius: 3px
+                        box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.4)
+                        position: relative
+                        .help-content, .content
+                            padding: 1rem
+                            .top-right-nav
+                                position: absolute
+                                right: 0
+                                top: 0
+                                padding: 1rem
+                                line-height: 1rem
+                        .help-content
+                            position: absolute
+                            left: 0
+                            right: 0
+                            bottom: 0
+                            top: 0
+                            overflow-y: auto
+                            background-color: white
+                            z-index: 2
+                            display: none
+                        .footer
+                            @extend .clearfix
+                            margin-top: 1rem
+                            span
+                                line-height: 37px
+                            .right
+                                float: right
+                        span, p
+                            color: grey
+                        span
+                            font-style: italic
+                        h2.title
+                            color: #464646
+                            font-size: 1.7rem
+                            margin: 0.5rem 0
+                        h2, h3
+                            font-family: Roboto
+                        h3.sub
+                            font-weight: initial
+                            margin-bottom: 5px
+                            color: #676767
+                        .placeholder-save
+                            margin-left: 0.8rem
+                    .project.placeholder
+                        textarea
+                            display: block
+                .notice img
+                    width: 75px
+                    margin-bottom: 23px
         .column#notifications
             width: 27%
             right: 0
@@ -181,5 +252,3 @@ nav
             pre
                 color: #a2a2a2
                 font-weight: 900
-            a
-                color: $bg-accent

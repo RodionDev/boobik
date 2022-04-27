@@ -28,8 +28,14 @@ a
     &:hover, &:active
         box-shadow: 0px 3px 17px -6px black
         background-color: #037bcc
+        &.sub
+            background-color: #464646
     &:active
         background-color: #0077c7
+        &.sub
+            background-color: #3e3e3e
+    &.sub
+        background-color: #656565
 .button:not(.inplace):hover
     transform: translateY(-1px)
 .google-auth-link
@@ -60,7 +66,7 @@ a
     max-width: 1100px
 .min-container
     @extend .container
-    min-width: 500px
+    min-width: $minContainerWidth
 =keyframes($name)
     @-webkit-keyframes #{$name}
         @content
