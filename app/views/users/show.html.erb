@@ -13,7 +13,43 @@
         <h1>Your Projects</h1>
         <%= link_to '+ create', new_project_path, class: 'button new-project' %>
         <div class="wrapper">
-            <div class="panel" id="projects"></div>
+            <div class="panel" id="projects">
+                <div class="project placeholder hidden">
+                    <div class="loading-overlay"></div>
+                    <div class="help-content">
+                        <a href="#" id="close-help" class="top-right-nav">&#10006;</a>
+                        <h2 class="title">You needed help?</h2>
+                        <span class="sub">Don't worry, we're here to help!</span>
+                        <h3 class="sub">Cannot submit</h3>
+                        <p>We work hard to fight against technical problems, but sometimes a couple squeeze by. If you're experiencing issues, please try <a href="#">clearing your cache</a>. Still doesn't work? Try again in a little while before <a href="#">contacting us</a>.</p>
+                        <h3 class="sub">Re-Captcha Code</h3>
+                        <p>For most users, captcha codes won't appear when creating a project; however if our system detects unusual activity we may prompt you to confirm you're not human.</p>
+                        <h3 class="sub">Other problems</h3>
+                        <p>Experiencing other issues with our form? No worries. Use the <a href="projects/new">older version</a> instead</p>
+                    </div>
+                    <div class="content">
+                        <form>
+                            <a href="#" id="new-help" class="top-right-nav">Help</a>
+                            <h2 class="title">New project</h2>
+                            <span class="sub">A project is where you'll plan your videos, upload your assets, and render your videos. Creating a project is free and easy, so why wait?</span>
+                            <h3 class="sub" data-related="name">Name</h3>
+                            <input type="text" name="title" placeholder="Lorem ipsum">
+                            <h3 class="sub" data-related="desc">Description</h3>
+                            <textarea name="desc" cols="20" rows="5" placeholder="An optional description of your project"></textarea>
+                            <div class="footer">
+                                <span data-related="tos-agreement">I agree to this websites <a href="/terms">terms of service</a></span>
+                                <input type="checkbox" name="tos-agreement">
+                                <div class="right">
+                                    <a href="#" class="button sub placeholder-close">Cancel</a>
+                                    <a href="#" class="button placeholder-save">
+                                        <div class="button-wrapper"><span>Create project</span><%= inline_svg 'loader.svg', class: 'inline-loader' %></div>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="notice" id="no-projects">
                 <%= image_tag "question-mark.png" %>
                 <h3>Nothing here... yet!</h3>

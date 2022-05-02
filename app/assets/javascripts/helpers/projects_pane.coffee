@@ -17,7 +17,7 @@ class @ProjectsPane
     refresh: ->
         $wrapper = $ ".column#projects .wrapper"
         $panel = $wrapper.find ".panel#projects"
-        projectCount = $panel.find(".project:not(.closing)").length
+        projectCount = $panel.find(".project:not(.hidden):not(.to-hide)").length
         $wrapper.find ".notice, .loading"
             .fadeOut 250
         if projectCount and not $panel.hasClass "open"
@@ -37,59 +37,39 @@ class @ProjectsPane
                 .animate
                     marginTop: '50px',
                     opacity: 0
-                , 250
+                , 150
                 .promise().done ->
                     $panel.hide().removeClass "open"
                     $wrapper.find ".notice#no-projects"
                         .fadeIn 250
         setTimeout ->
-            $panel.find ".closing"
-                .remove()
+            $panel.find ".hiding"
+                .addClass "hidden"
+                .removeClass "hiding"
         , 250
     spawnPlaceholder: ->
         $panel = $ ".column#projects .wrapper .panel#projects"
-        return console.debug "Ignoring request to spawn placeholder; placeholder already found inside panel!" if $panel.find(".project.placeholder").length
-        $placeholder = $ """
-            <div class="project placeholder">
-                <div class="help-content">
-                    <a href="#" id="close-help" class="top-right-nav">&#10006;</a>
-                    <h2 class="title">You needed help?</h2>
-                    <span>Don't worry, we're here to help!</span>
-                    <h3 class="sub">Cannot submit</h3>
-                    <p>We work hard to fight against technical problems, but sometimes a couple squeeze by. If you're experiencing issues, please try <a href="#">clearing your cache</a>. Still doesn't work? Try again in a little while before <a href="#">contacting us</a>.</p>
-                    <h3 class="sub">Re-Captcha Code</h3>
-                    <p>For most users, captcha codes won't appear when creating a project; however if our system detects unusual activity we may prompt you to confirm you're not human.</p>
-                    <h3 class="sub">Other problems</h3>
-                    <p>Experiencing other issues with our form? No worries. Use the <a href="projects/new">older version</a> instead</p>
-                </div>
-                <div class="content">
-                    <form>
-                        <a href="#" id="new-help" class="top-right-nav">Help</a>
-                        <h2 class="title">New project</h2>
-                        <span class="about">A project is where you'll plan your videos, upload your assets, and render your videos. Creating a project is free and easy, so why wait?</span>
-                        <h3 class="sub">Name</h3>
-                        <input type="text" placeholder="Lorem ipsum">
-                        <h3 class="sub">Description</h3>
-                        <textarea name="desc" cols="20" rows="5" placeholder="An optional description of your project"></textarea>
-                        <div class="footer">
-                            <span>I agree to this websites <a href="/terms">terms of service</a></span>
-                            <input type="checkbox">
-                            <div class="right">
-                                <a href="#" class="button sub placeholder-close">Cancel</a>
-                                <a href="#" class="button placeholder-save">Create project</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        """
-        $placeholder.prependTo $panel
+        return console.debug "Ignoring request to spawn placeholder; placeholder already visible inside panel!" if $panel.find(".project.placeholder:visible").length
+        if $panel.find(".project:not(.placeholder):not(.hidden)").length
+        else
+            $panel.find ".placeholder"
+                .removeClass "hidden"
+        setTimeout ->
+            $panel.find ".placeholder form input:visible:first"
+                .focus()
+        , 250
         do @refresh
     pushPlaceholder: ->
+        $panel = $ ".column#projects .wrapper .panel#projects"
+        $panel.find ".project.placeholder input, .project.placeholder textarea"
+            .attr "disabled", true
     removePlaceholder: ->
         window.location.hash = ""
-        $ ".column#projects .wrapper .panel#projects .project.placeholder"
-            .addClass "closing"
+        $panel = $ ".column#projects .wrapper .panel#projects"
+        if $panel.find(".project:not(.placeholder):not(.hidden)").length
+        else
+            $panel.find ".project.placeholder"
+                .addClass "hiding"
         do @refresh
     fetchProjects: (completeCallback, successCallback, errorCallback, insertionCallback) ->
     revealPlaceholderHelp: ->
