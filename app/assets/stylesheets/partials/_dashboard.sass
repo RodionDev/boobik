@@ -123,13 +123,24 @@ nav
                         border-radius: 3px
                         box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.4)
                         position: relative
+                        &.hidden
+                            display: none
+                        .loading-overlay
+                            position: absolute
+                            top: 0
+                            bottom: 0
+                            left: 0
+                            right: 0
+                            z-index: 5
+                            background-color: rgba( 255, 255, 255, 0.7 )
+                            display: none
                         .help-content, .content
-                            padding: 1rem
+                            padding: 1rem 1.5rem
                             .top-right-nav
                                 position: absolute
                                 right: 0
                                 top: 0
-                                padding: 1rem
+                                padding: 1rem 1.5rem
                                 line-height: 1rem
                         .help-content
                             position: absolute
@@ -148,9 +159,9 @@ nav
                                 line-height: 37px
                             .right
                                 float: right
-                        span, p
+                        span.sub, p
                             color: grey
-                        span
+                        span.sub
                             font-style: italic
                         h2.title
                             color: #464646

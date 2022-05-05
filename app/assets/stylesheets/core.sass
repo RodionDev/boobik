@@ -36,6 +36,33 @@ a
             background-color: #3e3e3e
     &.sub
         background-color: #656565
+    &.loading .button-wrapper
+        span
+            margin-right: 37px
+        .inline-loader
+            opacity: 1
+    .button-wrapper
+        position: relative
+        span
+            display: block
+            margin-right: 0
+            -webkit-transition: margin-right 0.2s ease-out
+            -o-transition: margin-right 0.2s ease-out
+            transition: margin-right 0.2s ease-out
+        .inline-loader
+            height: 29px
+            width: 29px
+            margin-top: 4px
+            opacity: 0
+            position: absolute
+            right: 0
+            top: 0
+            circle
+                stroke-width: 7px
+                stroke: #15c1ff
+            -webkit-transition: 0.2s opacity ease-out
+            -o-transition: 0.2s opacity ease-out
+            transition: 0.2s opacity ease-out
 .button:not(.inplace):hover
     transform: translateY(-1px)
 .google-auth-link
