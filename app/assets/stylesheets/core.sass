@@ -25,17 +25,20 @@ a
     height: 37px
     line-height: 37px
     font-weight: 600
-    &:hover, &:active
+    &:hover:not(.disabled), &:active:not(.disabled)
         box-shadow: 0px 3px 17px -6px black
         background-color: #037bcc
         &.sub
             background-color: #464646
-    &:active
+    &:active:not(.disabled)
         background-color: #0077c7
         &.sub
             background-color: #3e3e3e
     &.sub
         background-color: #656565
+    &.disabled
+        background-color: #737373
+        color: #353535
     &.loading .button-wrapper
         span
             margin-right: 37px
@@ -63,7 +66,7 @@ a
             -webkit-transition: 0.2s opacity ease-out
             -o-transition: 0.2s opacity ease-out
             transition: 0.2s opacity ease-out
-.button:not(.inplace):hover
+.button:not(.inplace):not(.disabled):hover
     transform: translateY(-1px)
 .google-auth-link
     display: inline-block

@@ -6,19 +6,19 @@ class @ProjectsPane
             event.preventDefault()
         placeholder = ".column#projects .wrapper .panel#projects .project.placeholder"
         $ "body"
-            .on "click", "#{placeholder} .placeholder-close", (event) =>
+            .on "click", "#{placeholder} .placeholder-close:not(.disabled)", (event) =>
                 do @removePlaceholder
             .on "click", "#{placeholder} #new-help", (event) =>
                 do @revealPlaceholderHelp
             .on "click", "#{placeholder} #close-help", (event) =>
                 do @hidePlaceholderHelp
-            .on "click", "#{placeholder} .placeholder-save", (event) =>
+            .on "click", "#{placeholder} .placeholder-save:not(.loading)", (event) =>
                 do @pushPlaceholder
     refresh: ->
         $wrapper = $ ".column#projects .wrapper"
         $panel = $wrapper.find ".panel#projects"
-        projectCount = $panel.find(".project:not(.hidden):not(.to-hide)").length
-        $wrapper.find ".notice, .loading"
+        projectCount = $panel.find(".project:not(.hidden):not(.hiding)").length
+        $wrapper.find ".notice"
             .fadeOut 250
         if projectCount and not $panel.hasClass "open"
             $panel
@@ -60,9 +60,13 @@ class @ProjectsPane
         , 250
         do @refresh
     pushPlaceholder: ->
-        $panel = $ ".column#projects .wrapper .panel#projects"
-        $panel.find ".project.placeholder input, .project.placeholder textarea"
+        $placeholder = $ ".column#projects .wrapper .panel#projects .project.placeholder"
+        $placeholder.find "input, textarea"
             .attr "disabled", true
+        $placeholder.find ".button.placeholder-save"
+            .addClass "loading inplace"
+        $placeholder.find ".button.placeholder-close"
+            .addClass "disabled"
     removePlaceholder: ->
         window.location.hash = ""
         $panel = $ ".column#projects .wrapper .panel#projects"
