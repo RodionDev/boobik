@@ -4,3 +4,34 @@ html, body
     content: ""
     display: table
     clear: both
+.abs-stretch
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+.abs-center
+    position: absolute
+    top: 50%
+    left: 50%
+    -webkit-transform: translate( -50%, -50% )
+    -ms-transform: translate( -50%, -50% )
+    -o-transform: translate( -50%, -50% )
+    transform: translate( -50%, -50% )
+.vertical-centre
+    position: absolute
+    top: 50%
+    -webkit-transform: translateY( -50% )
+    -ms-transform: translateY( -50% )
+    -o-transform: translateY( -50% )
+    transform: translateY( -50% )
+.horizontal-centre
+    margin: 0 auto
+.abs-horizontal-centre
+    @extend .horizontal-centre
+    position: absolute
+    left: 50%
+    -webkit-transform: translateX( -50% )
+    -ms-transform: translateX( -50% )
+    -o-transform: translateX( -50% )
+    transform: translateX( -50% )

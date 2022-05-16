@@ -1,0 +1,43 @@
+.min-container
+    min-width: 850px !important
+/*
+    DEPRECATION NOTICE
+    ------------------
+    The following chunk in this SASS file has been deprecated as the
+    users dashboard was redesigned.
+    To prevent accidental use, the code in question has been commented out.
+    ** THIS CHUNK IS SCHEDULED FOR REMOVAL ONCE FIRST RELEASE MILESTONE IS REACHED **
+    CHUNK FOLLOWS: */
+@import 'partials/dashboard/banner'
+#main
+    margin-top: $bannerHeight
+    width: 100%
+    max-width: none
+    a:not(.button)
+        color: $bg-accent
+    main
+        @extend .abs-stretch
+        min-width: $minContainerWidth
+        padding: 0 1rem
+        top: $bannerHeight
+        .column
+            position: absolute
+            top: 0
+            bottom: 0
+        @import 'partials/dashboard/projects'
+        @import 'partials/dashboard/activity'
+        .column .wrapper .notice
+            @extend .abs-center
+            width: 100%
+            padding: 0 1rem
+            text-align: center
+            h3
+                font-weight: 600
+                margin: 5px 0px
+                color: #616161
+            span, p
+                font-style: italic
+                color: #939090
+            pre
+                color: #a2a2a2
+                font-weight: 900
