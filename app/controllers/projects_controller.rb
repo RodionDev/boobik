@@ -11,6 +11,9 @@ class ProjectsController < ApplicationController
         @project = Project.new
     end
     def create
-        redirect_to '/dashboard', alert: "Project creation is currently down for maintainence. Please check back later."
+        respond_to do |format|
+            format.html { redirect_to '/dashboard', alert: "Project creation is currently down for maintainence. Please check back later." }
+            format.json { render :json => { error: "Project creation is currently down for maintainence. Please check back later." }, status: :internal_server_error }
+        end
     end
 end

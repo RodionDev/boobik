@@ -22,13 +22,13 @@
                         <span class="sub">Don't worry, we're here to help!</span>
                         <h3 class="sub">Cannot submit</h3>
                         <p>We work hard to fight against technical problems, but sometimes a couple squeeze by. If you're experiencing issues, please try <a href="#">clearing your cache</a>. Still doesn't work? Try again in a little while before <a href="#">contacting us</a>.</p>
-                        <h3 class="sub">Re-Captcha Code</h3>
-                        <p>For most users, captcha codes won't appear when creating a project; however if our system detects unusual activity we may prompt you to confirm you're not human.</p>
+                        <h3 class="sub">Re-Captcha Challenge</h3>
+                        <p>For most users, captcha codes won't appear when creating a project; however if our system detects unusual activity we may prompt you to confirm you're not a robot before allowing you to create a project.</p>
                         <h3 class="sub">Other problems</h3>
                         <p>Experiencing other issues with our form? No worries. Use the <a href="projects/new">older version</a> instead</p>
                     </div>
                     <div class="content">
-                        <form>
+                        <%= form_with model: @project, local: true do |form| %>
                             <a href="#" id="new-help" class="top-right-nav">Help</a>
                             <h2 class="title">New project</h2>
                             <span class="sub">A project is where you'll plan your videos, upload your assets, and render your videos. Creating a project is free and easy, so why wait?</span>
@@ -46,7 +46,7 @@
                                     </a>
                                 </div>
                             </div>
-                        </form>
+                        <% end %>
                     </div>
                 </div>
             </div>
