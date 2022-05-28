@@ -51,13 +51,12 @@ class @ActivityPane
             $ ".column#notifications .wrapper .notice.error#failure"
                 .stop( true ).fadeIn( 250 )
                 .find( "pre#error" ).text( @errorState )
-        else if @recentMode
-            if @cache.total > 0 and @cache.loaded is 0
-                $ ".column#notifications .wrapper .notice#no-recent"
-                    .stop( true ).fadeIn( 250 )
-            else if @cache.total is 0
-                $ ".column#notifications .wrapper .notice#no-activity"
-                    .stop( true ).fadeIn( 250 )
+        else if @recentMode and @cache.total > 0 and @cache.loaded is 0
+            $ ".column#notifications .wrapper .notice#no-recent"
+                .stop( true ).fadeIn( 250 )
+        else if @cache.total is 0
+            $ ".column#notifications .wrapper .notice#no-activity"
+                .stop( true ).fadeIn( 250 )
         $panel = $ ".column#notifications .wrapper .panel#notifs"
         if @cache.loaded > 0 and not $panel.hasClass "open"
             $panel
