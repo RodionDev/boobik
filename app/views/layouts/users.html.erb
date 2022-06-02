@@ -1,7 +1,6 @@
 <% content_for :nav do %>
-    <% unless content_for? :banner then %>
-        <%= render 'dashboard_navigation' %>
-    <% else %>
+    <%= render 'dashboard_navigation' %>
+    <% if content_for? :banner then %>
         <%= yield :banner %>
     <% end %>
 <% end %>

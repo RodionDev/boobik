@@ -2,7 +2,10 @@ class ProjectsController < ApplicationController
     before_action :require_login
     layout 'users'
     def index
-        redirect_to '/dashboard'
+        respond_to do |format|
+            format.html { redirect_to '/dashboard' }
+            format.json { render :json => { projects: construct_payload } }
+        end
     end
     def show
         @project = Project.find params[:id]
@@ -11,9 +14,37 @@ class ProjectsController < ApplicationController
         @project = Project.new
     end
     def create
-        respond_to do |format|
-            format.html { redirect_to '/dashboard', alert: "Project creation is currently down for maintainence. Please check back later." }
-            format.json { render :json => { error: "Project creation is currently down for maintainence. Please check back later." }, status: :internal_server_error }
+        title_field = ( params[:title] and !params[:title].empty? )
+        terms_field = ( params[:tos] and params[:tos] == "on" )
+        if not ( title_field and terms_field )
+            respond_to do |format|
+                format.html { redirect_to new_project_path, alert: "Failed to create project. Required fields (title and terms of service) not filled!" }
+                format.js { render :json => { error: "Failed to create project, required fields not filled", field_error: true, fields: { :title => title_field, :tos => terms_field }, params: params }, status: :internal_server_error }
+            end
+        else
+            begin
+                project = Project.create!(user_id: session[:user_id], title: params[:title].truncate( 25, :omission => ''), desc: params[:desc].truncate( 250, :omission => "... (truncated)" ))
+                if project and not project.new_record?
+                    respond_to do |format|
+                        format.html { redirect_to project, notice: "Project created!" }
+                        format.json { render :json => { notice: "Project created!", project_id: project.id, params: params }, status: :ok }
+                    end
+                else
+                    respond_to do |format|
+                        format.html { redirect_to new_projects_path, alert: "Failed to create project. Server error occurred. Please try again later" }
+                        format.json { render :json => { error: "Failed to create project. Server error occurred. Please try again later" }, status: :internal_server_error }
+                    end
+                end
+            rescue ActiveRecord::InvalidRecord
+                respond_to do |format|
+                    format.html { redirect_to new_projects_path, alert: "Failed to create project, validation failed." }
+                    format.json { render :json => { error: "Failed to create project, validation failed." }, status: :internal_server_error }
+                end
+            end
         end
+    end
+private
+    def construct_payload
+        return current_user.projects
     end
 end

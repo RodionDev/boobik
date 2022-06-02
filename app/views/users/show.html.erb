@@ -37,8 +37,8 @@
                             <h3 class="sub" data-related="desc">Description</h3>
                             <textarea name="desc" cols="20" rows="5" placeholder="An optional description of your project"></textarea>
                             <div class="footer">
-                                <span data-related="tos-agreement">I agree to this websites <a href="/terms">terms of service</a></span>
-                                <input type="checkbox" name="tos-agreement">
+                                <span data-related="tos">I agree to this websites <a href="/terms">terms of service</a></span>
+                                <input type="checkbox" name="tos">
                                 <div class="right">
                                     <a href="#" class="button sub placeholder-close">Cancel</a>
                                     <a href="#" class="button placeholder-save">
@@ -55,6 +55,9 @@
                 <h3>Nothing here... yet!</h3>
                 <span>You haven't got any projects! You should really get to that!</span>
                 <p><a href="#" class="new-project">Click here to get started</a></p>
+            </div>
+            <div class="notice loading">
+                <%= inline_svg 'loader.svg', class: 'spinner' %>
             </div>
         </div>
     </div>

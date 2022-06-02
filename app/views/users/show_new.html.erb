@@ -1,0 +1,46 @@
+<% @page_title = "Dashboard (Rework)" %>
+<% content_for :banner do %>
+    <div id="sub-banner">
+        <div class="min-container">
+            <h1 class="page-title">Dashboard</h1>
+        </div>
+    </div>
+<% end %>
+<!-- <section data-section="notices">
+    <h2 class="section-title">Notices</h2>
+</section> -->
+<section id="projects">
+    <h2 class="section-title">Projects</h2>
+    <div class="project-list">
+        <div class="project">
+            <div class="details">
+                <h2 class="project-title clearfix"><span class="title">Placeholder Project</span><span class="status">Submitted for approval</span></h2>
+                <p class="project-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque, fuga omnis eos ratione error esse.</p>
+                <div class="last-edit">Last edited yesterday</div>
+            </div>
+            <div class="edit">
+                <a href="/projects/1">
+                    <div class="wrapper">
+                        <%= inline_svg 'edit.svg' %>
+                        <span>21 Slides</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="project">
+            <div class="details">
+                <h2 class="project-title clearfix"><span class="title">Placeholder Project</span></h2>
+                <p class="project-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur repellat aliquid ullam quia magni debitis alias vitae!</p>
+                <div class="last-edit">Last edited 2 weeks ago</div>
+            </div>
+            <div class="edit">
+                <a href="/projects/2">
+                    <div class="wrapper">
+                        <%= inline_svg 'edit.svg' %>
+                        <span>13 Slides</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

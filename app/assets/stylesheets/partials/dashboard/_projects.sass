@@ -1,3 +1,19 @@
+/*
+ * DEPRECATION NOTICE
+ * Redesign: 16baaa (notifications) - dash.v02 - 31.03.2018
+ * ------------------
+ *
+ * The following chunk in this SASS file has been deprecated as the
+ * users dashboard is being redesigned.
+ *
+ * Usage of this file should be avoided. Once a removal date has been scheduled,
+ * this code will be commented out; Any site functionality relying on this SASS
+ * will fail at this time.
+ *
+ * THIS CHUNK HAS NO SCHEDULED REMOVAL DATE - See issue #1 for updates
+ *
+ * Copyright (c) Harry Felton 2018
+ */
 .column#projects
     width: 73%
     height: 100%
@@ -76,3 +92,11 @@
         .notice img
             width: 75px
             margin-bottom: 23px
+        .notice:not(.loading)
+            display: none
+        .notice.loading svg.spinner
+            width: 110px
+            height: 110px
+            circle
+                stroke: $bg-accent
+                stroke-width: 5px
