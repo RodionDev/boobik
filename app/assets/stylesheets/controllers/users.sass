@@ -14,7 +14,7 @@ body
                 color: #777777
                 font-weight: 100
                 font-size: 19px
-                padding-left: 1rem
+                padding-left: 1.5rem
 body #main section#projects .project-list
     padding: 1rem
     .project
@@ -29,27 +29,24 @@ body #main section#projects .project-list
             float: left
             width: 84%
             .project-title
-                padding: 14px 16px
+                padding: 14px 16px 10px 16px
                 background: #ffffff
-                box-shadow: 0px 0px 10px -5px black
-                border-bottom: 2px solid transparent
-                border-image: linear-gradient(to right, #0f9df1 0%, #7b37ff 100%)
-                border-image-slice: 1
                 color: $darkb-accent
                 margin: 0
                 font-weight: 100
-                font-size: 1.2rem
+                font-size: 1.3rem
                 text-align: right
                 span.title
                     float: left
                 .status
                     color: white
                     font-weight: 100
-                    font-size: 1rem
+                    font-size: 0.8rem
                     font-family: Roboto
                     background: $darkp-accent
                     padding: 5px 10px
                     border-radius: 50px
+                    box-shadow: 0px 0px 8px -3px black
                     &.error
                         background: #ff4040
                     &.success
@@ -57,6 +54,8 @@ body #main section#projects .project-list
             .project-desc
                 padding: 0 1rem
                 color: #4a4a4a
+                margin-top: 0
+                min-height: 2rem
             .last-edit
                 padding: 0.5rem 1rem 1rem 1rem
                 color: #317cf5
@@ -71,7 +70,9 @@ body #main section#projects .project-list
                 display: inline-block
                 width: 100%
                 height: 100%
-                border-left: 2px solid $darkp-accent
+                border-left: 2px solid transparent
+                border-image: linear-gradient(to bottom, #0f9df1 0%, #7b37ff 100%)
+                border-image-slice: 1
                 box-shadow: inset 5px 0px 9px -6px black
                 .wrapper
                     position: absolute
@@ -90,6 +91,23 @@ body #main section#projects .project-list
                         color: #7d7d7d
                         margin-top: 10px
                         display: block
+    .project.placeholder
+        background: #ffffff
+        overflow: hidden
+        margin-bottom: 2rem
+        border-radius: 3px
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3)
+        min-height: 120px
+        .line
+            max-width: 90%
+            height: 1rem
+            margin: 1rem
+            border-radius: 5px
+            animation-duration: 1s
+            animation-iteration-count: infinite
+            animation-name: placeholderWave
+            background: linear-gradient(to right, #0f9df1 40%, #7b37ff 48%, #0f9df1 60%)
+            background-size: 2000px
 footer
     position: absolute
     bottom: 0
@@ -103,3 +121,8 @@ footer
         text-decoration: underline
         &:hover
             color: grey
+@keyframes placeholderWave
+    0%
+        background-position-x: 0px
+    100%
+        background-position-x: 2000px
