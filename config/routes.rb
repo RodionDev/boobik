@@ -5,12 +5,10 @@ Rails.application.routes.draw do
     get '/signout', to: 'sessions#destroy'
     get '/dashboard', to: 'users#show'
     get '/new-dashboard', to: 'users#show_new'
-    resources :projects
-    resources :notifications, only: [:index, :update, :destroy]
-    get 'notifications/recent', to: 'notifications#recent'
     scope :api do
-        resources :notifications, only: [:index, :update, :destroy]
-        get 'notifications/recent', to: 'notifications#recent'
+        get '/projects/metadata', to: 'projects#get_metadata'
+        resources :projects
     end
+    get '/projects', to: redirect( path: '/dashboard' )
     root 'landing#index'
 end

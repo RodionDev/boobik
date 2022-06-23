@@ -1,0 +1,4 @@
+$project_list = $("section#projects .project-list")
+$project_list.find(".loading").fadeOut( 250 ).promise().done( function(){
+    $project_list.find(".content").html("<%= escape_javascript( render current_user.projects.order! 'updated_at DESC' ) %>").fadeIn( 250 );
+});
