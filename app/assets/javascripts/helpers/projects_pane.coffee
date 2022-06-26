@@ -1,3 +1,4 @@
+console.warn "DEPRECATION WARNING: This file (helpers/projects_pane.coffee) has been deprecated. It will be removed in the future, migrate code to new CoffeeScript"
 class @ProjectsPane
     errorState: false
     isLoading: false

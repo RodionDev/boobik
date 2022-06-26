@@ -1,3 +1,4 @@
+console.warn "DEPRECATION WARNING: This file (helpers/activity_pane.coffee) has been deprecated. It will be removed in the future, migrate code to new CoffeeScript"
 class @ActivityPane
     recentMode: true
     errorState: false
