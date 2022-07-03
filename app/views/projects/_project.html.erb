@@ -1,6 +1,6 @@
 <div class="project" data-id="<%= project.id %>" data-updated-at="<%= project.updated_at %>">
     <div class="details">
-        <h2 class="project-title clearfix"><span class="title"><%= project.title %></span><% if project.respond_to? :status and project.status then %><span class="status"><%= project.status %></span><% end %></h2>
+        <h2 class="project-title clearfix"><span class="title"><%= project.title %></span><% if project.status? %><span class="status<%= case project.status when 3 then " success" when 4 then " error" end %>"><%= project.formatted_status %></span><% end %></h2>
         <p class="project-desc"><%= project.desc %></p>
         <div class="last-edit">Last edited <span class="time"><%= time_ago_in_words( project.updated_at ) %></span> ago</div>
     </div>
