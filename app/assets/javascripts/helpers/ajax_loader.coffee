@@ -14,7 +14,7 @@ class @AjaxLoader
                     console.debug xhr
                     clearInterval @refreshingInterval
                 success: (xhr) =>
-                    return @reloadContent() if xhr.project_count is not $("section#projects .project-list .content .project").length
+                    return @reloadContent() if xhr.project_count != $("section#projects .project-list .content .project").length
                     $.each xhr.projects, (id, val) =>
                         project = $ "section#projects .project-list .content .project[data-id=#{id}]"
                         if ( val.raw != project.attr "data-updated-at" ) or not project.length
