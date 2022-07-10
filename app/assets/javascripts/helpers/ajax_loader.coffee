@@ -23,6 +23,18 @@ class @AjaxLoader
                         project.find ".time"
                             .html( val.formatted )
         , 60000
+    hookContent: ($content) ->
+        $content
+            .stop( true )
+            .fadeIn( 500 )
+            .find( ".project" )
+            .css("margin-top", "5rem")
+            .each (i) ->
+                setTimeout =>
+                    $( this ).animate
+                        marginTop: "1rem"
+                    , 250
+                , Math.min( 50 * i, 2000 )
     loadContent: ->
         clearInterval @refreshingInterval
         $.ajax
