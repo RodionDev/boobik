@@ -38,7 +38,7 @@ class @AjaxLoader
     loadContent: ->
         clearInterval @refreshingInterval
         $.ajax
-            url: 'api/projects'
+            url: 'api/projects?hook=ajaxLoader.hookContent'
             method: 'get'
             dataType: 'script'
             error: (xhr, state, display) =>
