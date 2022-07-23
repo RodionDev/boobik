@@ -1,7 +1,12 @@
-$project_list = $("section#projects .project-list")
-$project_list.find(".loading").fadeOut( 250 ).promise().done( function(){
-    res = $project_list.find(".content").html("<%= escape_javascript( render current_user.projects.order! 'updated_at DESC' ) %>")<%= params[:hook] ? "" : ".fadeIn( 250 )" %>;
-    <% if params[:hook] %>
-    window.<%= params[:hook] %>( res );
-    <% end %>
+(function( content ){
+    $("section#projects .content .loading").hide();
+    res = $("section#projects .content .projects").html( content );
+    res.stop( true ).fadeIn( 500 ).find( ".project" ).css("margin-top", "5rem").each( function( i ) {
+        var $item = $( this );
+        setTimeout( function(){
+                $item.animate({
+                    marginTop: "1rem"
+                }, 250 );
+        }, Math.min( 50 * i, 2000 ) );
+    });
 });

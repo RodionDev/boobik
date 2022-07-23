@@ -1,12 +1,18 @@
 include ActionView::Helpers::DateHelper
 class ProjectsController < ApplicationController
     before_action :require_login
-    layout 'users'
     def index
         respond_to do |format|
-            format.js
-            format.html { redirect_to '/dashboard' }
-            format.json { render :json => { projects: construct_payload } }
+            format.html
+            format.json do
+                render :json => {
+                    content: render_to_string( current_user.projects.order!( 'updated_at DESC' ), :formats => [:html] ),
+                    update_script: render_to_string( :formats => [:js] ),
+                    section_id: 'projects',
+                    section_title: 'Projects',
+                    title: 'Dashboard'
+                }
+            end
         end
     end
     def show
@@ -51,7 +57,7 @@ class ProjectsController < ApplicationController
         current_user.projects.each do |project|
             projects[project.id] = { raw: project.updated_at.to_s, formatted: time_ago_in_words( project.updated_at ) }
         end
-        render :json => payload, status: :ok
+        render :js => render_to_string( :locals => { :payload => payload } ), status: :ok
     end
 private
     def construct_payload

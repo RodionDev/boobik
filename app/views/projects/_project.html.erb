@@ -1,11 +1,11 @@
-<div class="project" data-id="<%= project.id %>" data-updated-at="<%= project.updated_at %>">
+<div class="project" data-ajax-scope="<%= project.id %>" data-updated-at="<%= project.updated_at %>" data-ajax-attr-pair="data-updated-at:raw" data-ajax-meta="project">
     <div class="details">
         <h2 class="project-title clearfix"><span class="title<%= !project.title ? " empty" : "" %>"><%= project.title or "No Title" %></span><% if project.status? %><span class="status<%= case project.status when 3 then " success" when 4 then " error" end %>"><%= project.formatted_status %></span><% end %></h2>
         <p class="project-desc<%= !project.desc ? " empty" : "" %>"><%= project.desc or "No description" %></p>
-        <div class="last-edit">Last edited <span class="time"><%= time_ago_in_words( project.updated_at ) %></span> ago</div>
+        <div class="last-edit">Last edited <span class="time ajax-insert" data-ajax-meta="project" data-ajax-attr-pair="formatted" data-ajax-scope="<%= project.id %>"><%= time_ago_in_words( project.updated_at ) %></span> ago</div>
     </div>
     <div class="edit">
-        <a href="<%= project_path( project ) %>">
+        <a href="/dashboard/project/<%= project.id %>">
             <div class="wrapper">
                 <%= inline_svg 'edit.svg' %>
                 <span><%= project.project_slides.count %> Slide<%= project.project_slides.count == 1 ? '' : 's' %></span>

@@ -1,0 +1,36 @@
+<% @page_title = "Dashboard" %>
+<% content_for :banner do %>
+    <div id="sub-banner">
+        <div class="min-container">
+            <h1 class="page-title ajax-insert" data-ajax-attr-pair="title" data-ajax-meta>Loading</h1>
+        </div>
+    </div>
+<% end %>
+<main>
+    <noscript>
+        <section id="noscript">
+            <h2>Uh oh...</h2>
+            <p>It appears that your Javascript is disabled inside of your browser. For instructions on how to enable JavaScript, and why you should, click <a href="https://enable-javascript.com/" target="_blank">here!</a></p>
+        </section>
+    </noscript>
+    <section id="projects" class="page-viewer">
+        <h2 class="section-title ajax-insert" data-ajax-attr-pair="section_title" data-ajax-meta>Fetching projects...</h2>
+        <div class="content">
+            <div class="loading">
+                <div class="project placeholder">
+                    <div class="line title" style="width: 40%;"></div>
+                    <div class="line" style="width: 70%;"></div>
+                    <div class="line" style="width: 60%;"></div>
+                    <div class="line last-edit" style="width: 15%;"></div>
+                </div>
+                <div class="project placeholder">
+                    <div class="line title" style="width: 60%;"></div>
+                    <div class="line" style="width: 70%;"></div>
+                    <div class="line" style="width: 40%;"></div>
+                    <div class="line last-edit" style="width: 15%;"></div>
+                </div>
+            </div>
+            <div class="projects"></div>
+        </div>
+    </section>
+</main>
