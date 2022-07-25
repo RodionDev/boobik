@@ -11,7 +11,7 @@ class @AjaxLoader
             @targetURL = "/api/projects"
         else
             console.error "[FATAL] Unable to load page, unable to map URL to valid RESTful endpoint! Check URL and try again."
-            window.location = "/dashboard"
+            @targetURL = "/api/projects"
     updateDOMFromPayload: (payload, meta='') ->
         $("[data-ajax-meta='#{meta}']").each ->
             scopedPayload = if $(this).attr "data-ajax-scope" then payload[ $(this).attr "data-ajax-scope" ] else payload
