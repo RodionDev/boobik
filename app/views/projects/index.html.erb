@@ -14,23 +14,28 @@
         </section>
     </noscript>
     <section id="projects" class="page-viewer">
-        <h2 class="section-title ajax-insert" data-ajax-attr-pair="section_title" data-ajax-meta>Fetching projects...</h2>
+        <h2 class="section-title ajax-insert" data-ajax-attr-pair="section_title" data-ajax-meta>Spinning up</h2>
         <div class="content">
-            <div class="loading">
-                <div class="project placeholder">
-                    <div class="line title" style="width: 40%;"></div>
-                    <div class="line" style="width: 70%;"></div>
-                    <div class="line" style="width: 60%;"></div>
-                    <div class="line last-edit" style="width: 15%;"></div>
-                </div>
-                <div class="project placeholder">
-                    <div class="line title" style="width: 60%;"></div>
-                    <div class="line" style="width: 70%;"></div>
-                    <div class="line" style="width: 40%;"></div>
-                    <div class="line last-edit" style="width: 15%;"></div>
-                </div>
-            </div>
+            <div class="loading"></div>
             <div class="projects"></div>
         </div>
     </section>
 </main>
+<div class="loading-types" style="display: none;">
+    <div id="index">
+        <div class="project placeholder">
+            <div class="line title" style="width: 40%;"></div>
+            <div class="line" style="width: 70%;"></div>
+            <div class="line" style="width: 60%;"></div>
+            <div class="line last-edit" style="width: 15%;"></div>
+        </div>
+        <div class="project placeholder">
+            <div class="line title" style="width: 60%;"></div>
+            <div class="line" style="width: 70%;"></div>
+            <div class="line" style="width: 40%;"></div>
+            <div class="line last-edit" style="width: 15%;"></div>
+        </div>
+    </div>
+    <div id="show">
+    </div>
+</div>
