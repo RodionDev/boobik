@@ -1,3 +1,6 @@
+<% content_for :head do %>
+    <%= javascript_pack_tag 'dashboard' %>
+<% end %>
 <% content_for :nav do %>
     <%= render 'dashboard_navigation' %>
     <% if content_for? :banner then %>
@@ -6,7 +9,7 @@
 <% end %>
 <% content_for :content do %>
     <div class="min-container clearfix" id="main">
-        <%= yield %>
+        <app-root></app-root>
     </div>
 <% end %>
 <% content_for :footer do %>

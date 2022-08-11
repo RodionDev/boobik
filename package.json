@@ -1,5 +1,26 @@
 {
   "name": "HerokuApp",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@angular-devkit/core": "^0.5.0",
+    "@angular/common": "^5.2.9",
+    "@angular/compiler": "^5.2.9",
+    "@angular/core": "^5.2.9",
+    "@angular/platform-browser": "^5.2.9",
+    "@angular/platform-browser-dynamic": "^5.2.9",
+    "@ngtools/webpack": "^6.0.0-rc.0",
+    "@rails/webpacker": "3.4",
+    "caniuse-lite": "^1.0.30000823",
+    "core-js": "^2.5.4",
+    "html-loader": "^0.5.5",
+    "rxjs": "^5.5.8",
+    "ts-loader": "3.5.0",
+    "typescript": "^2.8.1",
+    "webpack-sources": "^1.1.0",
+    "zone.js": "^0.8.24"
+  },
+  "devDependencies": {
+    "webpack-cli": "^2.0.13",
+    "webpack-dev-server": "2.11.1"
+  }
 }
