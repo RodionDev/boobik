@@ -1,3 +1,20 @@
-<app-banner></app-banner>
-<p>Test</p>
-<app-dashboard></app-dashboard>
+<nav *ngIf="showPageNavigation">
+    <div class="min-container" id="navigation">
+        <a class="title" href="/">Bikboo</a>
+        <a href="#">About</a>
+        <a href="#">Pricing</a>
+        <a id="profile" href="#" class="right" *ngIf="loggedInUser">
+            <img src="{{loggedInUser.image_url}}?size=40">
+            <span>&#x25BC;</span>
+        </a>
+        <app-profile-modal *ngIf="loggedInUser" [user]="loggedInUser"></app-profile-modal>
+    </div>
+    <div id="sub-banner">
+        <div class="min-container">
+            <h1 class="page-title">Loading</h1>
+        </div>
+    </div>
+</nav>
+<main>
+    <app-document-viewer></app-document-viewer>
+</main>
