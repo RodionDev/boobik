@@ -6,12 +6,11 @@ import 'rxjs/add/operator/map';
 import { LoggerService } from './logger.service';
 @Injectable()
 export class LocationService {
-    private urlObservable = new ReplaySubject<string>(1);
+    urlObservable = new ReplaySubject<string>(1);
     currentUrl = this.urlObservable
-        .map(url => this.location.normalize( url ))
-        .map(url => ( /(.*)(\?.+)/g.exec( url ) || [] )[1] )
+        .map(url => this.location.normalize( url ));
     currentUrlParams = this.urlObservable
-        .map(url => ( /(.*)\?(.+)/g.exec( url ) || [] )[2] )
+        .map(url => ( /(.*)\?(.+)/g.exec( url ) || [] )[2] );
     constructor( private location: Location, private logger: LoggerService ) {
         this.urlObservable.next( location.path( false ) );
         this.location.subscribe(state => {

@@ -11,7 +11,7 @@ export class EmbeddedComponentsService {
         private injector: Injector,
         private componentFactoryResolver: ComponentFactoryResolver,
         @Inject(EMBEDDED_COMPONENTS) private embeddedComponentsPairs: any[]) {}
-    createEmbedded( element: HTMLElement ) {
+    createEmbedded( element: HTMLElement, ref ) {
         const matchedComponents = Object.keys( this.embeddedComponentsPairs )
             .filter(selector => element.querySelector( this.embeddedComponentsPairs[selector].__annotations__[0].selector ) )
             .map(selector => this.embeddedComponentsPairs[selector])
@@ -22,17 +22,18 @@ export class EmbeddedComponentsService {
                 const factory = this.componentFactoryResolver.resolveComponentFactory( comp );
                 this.componentFactories.set( factory.selector, factory )
             });
-            return of( this.createComponents( element ) );
+            return of( this.createComponents( element, ref ) );
         }
     }
-    protected createComponents( element: HTMLElement ){
+    protected createComponents( element: HTMLElement, ref ) : ComponentRef<any>[] {
         const componentRefs: ComponentRef<any>[] = [];
-        this.componentFactories.forEach( (selector, factory) => {
+        this.componentFactories.forEach(({ selector, factory }) => {
+            console.log( selector )
             const components : NodeList = element.querySelectorAll( selector );
             for( let i = 0; i < components.length; i++ ) {
                 if( components[i] instanceof HTMLElement ) {
                     console.log("Found HTMLElement")
-                    componentRefs.push( factory.create( this.injector, [], components[i] ) );
+                    componentRefs.push( factory.create( this.injector, [], components[i], ref ) );
                 } else {
                     console.log("INVALID element", components[i]);
                 }

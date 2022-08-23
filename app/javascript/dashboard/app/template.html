@@ -16,5 +16,6 @@
     </div>
 </nav>
 <main>
-    <app-document-viewer></app-document-viewer>
+    <h2 *ngIf="!currentDocument">Loading document</h2>
+    <app-document-viewer [doc]="currentDocument" (docReceived)="onDocumentReceived()" (docPrepared)="onDocumentPrepared()" (docRemoved)="onDocumentRemoved()" (docInserted)="onDocumentInserted()" (viewSwapped)="onDocumentSwapComplete()"></app-document-viewer>
 </main>

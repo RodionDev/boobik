@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { DocumentViewerComponent } from './common/document-viewer.component.ts';
@@ -27,7 +28,8 @@ const embeddableComponents = [ ProjectListComponent, ProjectTileComponent, Proje
     ],
     imports: [
         BrowserModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        HttpClientModule
     ],
     providers: [
         LoggerService,

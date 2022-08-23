@@ -8,5 +8,7 @@ export class ProjectTileComponent implements OnInit {
     constructor(private logger: LoggerService) {
         this.logger.warn("Project tile created!");
     }
-    ngOnInit() {}
+    ngOnInit() {
+        this.logger.warn("Project tile INIT! I'm in the DOM!");
+    }
 }
