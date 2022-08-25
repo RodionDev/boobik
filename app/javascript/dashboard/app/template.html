@@ -1,4 +1,4 @@
-<nav *ngIf="showPageNavigation">
+<nav *ngIf="!isStarting">
     <div class="min-container" id="navigation">
         <a class="title" href="/">Bikboo</a>
         <a href="#">About</a>
@@ -9,13 +9,18 @@
         </a>
         <app-profile-modal *ngIf="loggedInUser" [user]="loggedInUser"></app-profile-modal>
     </div>
-    <div id="sub-banner">
+    <div id="sub-banner" *ngIf="DOMConfig.subBanner">
         <div class="min-container">
-            <h1 class="page-title">Loading</h1>
+            <h1 class="page-title">{{currentDocument.sub_title}}</h1>
         </div>
     </div>
 </nav>
-<main>
-    <h2 *ngIf="!currentDocument">Loading document</h2>
-    <app-document-viewer [doc]="currentDocument" (docReceived)="onDocumentReceived()" (docPrepared)="onDocumentPrepared()" (docRemoved)="onDocumentRemoved()" (docInserted)="onDocumentInserted()" (viewSwapped)="onDocumentSwapComplete()"></app-document-viewer>
-</main>
+<app-document-viewer
+    [doc]="currentDocument"
+    (docReceived)="onDocumentReceived()"
+    (docPrepared)="onDocumentPrepared()"
+    (docRemoved)="onDocumentRemoved()"
+    (docInserted)="onDocumentInserted()"
+    (viewSwapped)="onDocumentSwapComplete()"
+    [hidden]="isStarting">
+</app-document-viewer>

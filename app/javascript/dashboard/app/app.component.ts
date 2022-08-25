@@ -11,13 +11,17 @@ import templateString from './template.html';
     template: templateString
 })
 export class AppComponent implements OnInit {
+    protected DOMConfig = {
+        subBanner: false as any
+    };
     isStarting:boolean = true;
     isFetching:boolean = false;
     isRendering:boolean = false;
     private progressBarTimeout:any;
-    navigationEnabled: boolean = false;
-    currentUrl: string;
-    currentDocument: DocumentContents;
+    currentUrl:string;
+    currentDocument:DocumentContents;
+    @HostBinding('class')
+    protected hostClasses:string = '';
     constructor(
         private documentService: DocumentService,
         private userService: UserService,
@@ -27,11 +31,14 @@ export class AppComponent implements OnInit {
     ) {}
     ngOnInit() {
         this.locationService.currentUrl.subscribe(url => {
-            this.currentUrl = url;
-            clearTimeout( this.progressBarTimeout )
-            this.progressBarTimeout = setTimeout( () => {
-                this.isFetching = true;
-            }, 200 )
+            if( url == this.currentUrl ) {
+            } else {
+                this.currentUrl = url;
+                clearTimeout( this.progressBarTimeout )
+                this.progressBarTimeout = setTimeout( () => {
+                    this.isFetching = true;
+                }, 200 )
+            }
         })
         this.documentService.currentDocument.subscribe(doc => this.currentDocument = doc);
     }
@@ -42,19 +49,26 @@ export class AppComponent implements OnInit {
             this.isRendering = true;
         }
     }
-    onDocumentPrepared(){
-        this.logger.debug("[Embedded Document] Prepared");
-    }
-    onDocumentRemoved(){
-        this.logger.debug("[Embedded Document] Removed");
-    }
-    onDocumentInserted(){
-        this.logger.debug("[Embedded Document] Inserted");
+    onDocumentPrepared(){ }
+    onDocumentRemoved(){ }
+    onDocumentInserted() {
+        setTimeout(() => this.updateHost(), 0);
     }
     onDocumentSwapComplete(){
         setTimeout(() => {
+            this.isStarting = false
+            this.DOMConfig.subBanner = this.currentDocument.sub_title;
+        }, 0);
+        setTimeout(() => {
             this.isRendering = false;
         }, 500);
+    }
+    updateHost() {
+        const pageSlug = this.currentUrl ? /^\/*(.+?)\/*$/g.exec( this.currentUrl )[1].replace(/\
+        this.hostClasses = [
+            `page-${pageSlug}`,
+            `tree-${pageSlug.match(/[^-]+/)[0]}`
+        ].join(' ')
     }
     @HostListener('click', ['$event.target', '$event.button', '$event.ctrlKey', '$event.metaKey'])
     onClick( eventTarget: HTMLElement, button: number, ctrlKey: boolean, metaKey: boolean ) {

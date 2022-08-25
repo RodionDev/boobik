@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { DocumentContents } from '../interfaces';
 import { LoggerService } from './logger.service';
 import { LocationService } from './location.service';
-const DOCUMENT_BASE_URL:string = '/api/';
+const DOCUMENT_BASE_URL:string = '/api';
 @Injectable()
 export class DocumentService {
     currentDocument: Observable<DocumentContents>;
@@ -17,7 +17,7 @@ export class DocumentService {
         this.currentDocument = locationService.currentUrl.switchMap(url => this.fetchDocumentContents( url ));
     }
     private fetchDocumentContents(url: string) : Observable<DocumentContents> {
-        return this.http.get<DocumentContents>( `${DOCUMENT_BASE_URL}${url || 'index'}.json`, { responseType: 'json' } )
+        return this.http.get<DocumentContents>( `${DOCUMENT_BASE_URL}${url || '/index'}.json`, { responseType: 'json' } )
             .do(data => {
                 if( !data || typeof data !== 'object' ) {
                     throw Error('Invalid JSON data received from ' + url);

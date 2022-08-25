@@ -5,6 +5,6 @@ export interface UserInformation {
 }
 export interface DocumentContents {
     title: string,
-    content: string,
-    section_title?: string
+    sub_title?: string,
+    content: string
 }

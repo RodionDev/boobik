@@ -6,11 +6,9 @@ class ProjectsController < ApplicationController
             format.html
             format.json do
                 render :json => {
-                    content: render_to_string( current_user.projects.order!( 'updated_at DESC' ), :formats => [:html] ),
-                    update_script: render_to_string( :formats => [:js] ),
-                    section_id: 'projects',
-                    section_title: 'Projects',
-                    title: 'Dashboard'
+                    content: render_to_string( :layout => false, :formats => [:html] ),
+                    title: 'Dashboard',
+                    sub_title: 'Projects'
                 }
             end
         end

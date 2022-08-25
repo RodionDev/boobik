@@ -70,8 +70,8 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
                 this.currentView = this.pendingView
                 this.pendingView = old
                 this.pendingView.innerHTML = '';
+                this.viewSwapped.emit()
             })
-            .do(() => this.viewSwapped.emit() );
     }
     protected loadNextView(doc: DocumentContents) : Observable<void> {
         return this.void$
