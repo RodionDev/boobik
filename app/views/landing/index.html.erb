@@ -1,6 +1,6 @@
 <div id="splash">
     <% if current_user %>
-        <span id="login-status"><%= current_user.name %> | <%= link_to 'Sign out', signout_path %></span>
+        <span id="login-status"><%= current_user.name %> | <%= link_to 'Sign out', signout_path, class: 'no-follow' %></span>
     <% else %>
         <span id="cookie-policy">By logging in to this service via Google, you permit our use of cookies defined in our <a href="#">cookie policy</a>.</span>
     <% end %>
