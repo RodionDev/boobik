@@ -50,12 +50,15 @@ class ProjectsController < ApplicationController
         end
     end
     def get_metadata
-        payload = { project_count: current_user.projects.count, projects: {} }
+        payload = { project_count: current_user.projects.count, projects: [] }
         projects = payload[:projects]
         current_user.projects.each do |project|
-            projects[project.id] = { raw: project.updated_at.to_s, formatted: time_ago_in_words( project.updated_at ) }
+            projectJSON = project.as_json
+            projectJSON[:slide_count] = project.project_slides.count
+            projectJSON[:formatted_updated_at] = time_ago_in_words(project.updated_at)
+            projects.push( projectJSON )
         end
-        render :js => render_to_string( :locals => { :payload => payload } ), status: :ok
+        render :json => payload
     end
 private
     def construct_payload

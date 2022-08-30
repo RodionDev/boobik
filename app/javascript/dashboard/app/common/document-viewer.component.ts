@@ -56,6 +56,8 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
         this.onDestroy$.emit();
     }
     protected disassembleView() {
+        this.embeddedComponents.forEach(comp => comp.destroy());
+        this.embeddedComponents = [];
     }
     protected rotateViews() {
         if( this.currentView.parentElement ) {
@@ -78,6 +80,7 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
             .do(() => this.docReceived.emit() )
             .do(() => this.pendingView.innerHTML = doc.content || '')
             .switchMap(() => this.embeddedService.createEmbedded( this.pendingView, this.viewContainerRef ) )
+            .do(() => this.disassembleView())
             .do(comps => this.embeddedComponents = comps)
             .do(() => this.docPrepared.emit() )
             .switchMap(() => this.rotateViews())

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     scope :api do
         get 'index.json', to: 'landing#fetch_json'
         get 'dashboard.json', to: 'projects#index'
+        get '/projects/metadata.json', to: 'projects#get_metadata'
         resources :projects
     end
     root 'landing#index'
