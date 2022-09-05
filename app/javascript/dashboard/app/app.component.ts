@@ -58,6 +58,7 @@ export class AppComponent implements OnInit {
         setTimeout(() => {
             this.isStarting = false
             this.DOMConfig.subBanner = this.currentDocument.sub_title;
+            this.updateHost()
         }, 0);
         setTimeout(() => {
             this.isRendering = false;
@@ -67,7 +68,8 @@ export class AppComponent implements OnInit {
         const pageSlug = this.currentUrl ? /^\/*(.+?)\/*$/g.exec( this.currentUrl )[1].replace(/\
         this.hostClasses = [
             `page-${pageSlug}`,
-            `tree-${pageSlug.match(/[^-]+/)[0]}`
+            `tree-${pageSlug.match(/[^-]+/)[0]}`,
+            `${this.isStarting ? "not-" : ""}ready`
         ].join(' ')
     }
     @HostListener('click', ['$event.target', '$event.button', '$event.ctrlKey', '$event.metaKey'])

@@ -1,21 +1,27 @@
 @import 'core'
 body
     /**/
+    .loading
+        @extend .abs-center
+        text-align: center
+        h1
+            color: grey
+            font-weight: 100
+            font-style: italic
+            font-size: 2rem
+            margin-top: 0
+        svg
+            width: 150px
+            height: 150px
+            circle
+                stroke: $lightb-accent
     bikboo-shell
         display: block
-        .loading
-            @extend .abs-center
-            text-align: center
-            h1
-                color: grey
-                font-weight: 100
-                font-style: italic
-                font-size: 2rem
-                margin-top: 0
-            svg
-                width: 150px
-                height: 150px
-                circle
-                    stroke: $lightb-accent
+        opacity: 0
+        -webkit-transition: opacity 200ms ease
+        -o-transition: opacity 200ms ease
+        transition: opacity 200ms ease
+        &.ready
+            opacity: 1
     @import 'partials/splash'
     @import 'partials/dashboard/core'
