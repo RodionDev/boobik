@@ -8,8 +8,10 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/takeUntil';
+import $ from 'jquery';
 import { DocumentContents } from '../interfaces';
 const ANIMATIONS:boolean = true;
 const ANIMATION_EXCLUDE:string = 'no-animations';
@@ -60,33 +62,61 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
         this.embeddedComponents = [];
     }
     protected rotateViews() {
-        if( this.currentView.parentElement ) {
-            this.currentView.parentElement.removeChild( this.currentView );
-            this.docRemoved.emit()
+        const animationsEnabled = ANIMATIONS && !this.hostElement.classList.contains( ANIMATION_EXCLUDE )
+        function runAnimation(target:HTMLElement, animatingIn:boolean, duration:number = 200) {
+            if( animationsEnabled ) {
+                return of(target)
+                    .do(() => {
+                        $( target )[ animatingIn ? "addClass" : "removeClass" ]( "active" )
+                    })
+                    .delay(duration);
+            } else {
+                return of(target)
+            }
         }
-        return this.void$
-            .do(() => this.hostElement.appendChild( this.pendingView ) )
-            .do(() => this.docInserted.emit() )
-            .do(() => {
-                const old = this.currentView
-                this.currentView = this.pendingView
-                this.pendingView = old
-                this.pendingView.innerHTML = '';
-                this.viewSwapped.emit()
+        return of(this.currentView)
+            .switchMap(view => {
+                if( view.parentElement ) {
+                    return runAnimation( view, false )
+                        .do(() => view.parentElement.removeChild( view ))
+                        .do(() => this.docRemoved.emit())
+                        .switchMap(() => of( this.pendingView ) )
+                }
+                return of( this.pendingView );
             })
+            .do(view => this.hostElement.appendChild( view ))
+            .do(() => this.docInserted.emit())
+            .switchMap(pending => {
+                const old = this.currentView;
+                this.currentView = pending;
+                this.pendingView = old;
+                this.pendingView.innerHTML = '';
+                return of( pending )
+            })
+            .delay( animationsEnabled ? 200 : 0 )
+            .switchMap(view => {
+                return runAnimation( view, true )
+                    .do(() => this.viewSwapped.emit())
+            })
+            .catch(err => {
+                this.logger.error( `[Document viewer] Unable to rotate views, error: ${ err.message || err.stack || err }` )
+                return of( err )
+            });
     }
-    protected loadNextView(doc: DocumentContents) : Observable<void> {
-        return this.void$
-            .do(() => this.docReceived.emit() )
-            .do(() => this.pendingView.innerHTML = doc.content || '')
+    protected loadNextView(doc: DocumentContents) : Observable<DocumentContents> {
+        this.docReceived.emit();
+        this.pendingView.innerHTML = doc.content || '';
+        return of(doc)
             .switchMap(() => this.embeddedService.createEmbedded( this.pendingView, this.viewContainerRef ) )
-            .do(() => this.disassembleView())
-            .do(comps => this.embeddedComponents = comps)
-            .do(() => this.docPrepared.emit() )
+            .do(comps => {
+                this.disassembleView()
+                this.embeddedComponents = comps
+                this.docPrepared.emit()
+            })
             .switchMap(() => this.rotateViews())
             .catch(err => {
                 this.logger.error(`Failed to load next view for document titled "${doc.title}", error: "${err.stack || err}".`);
-                return this.void$;
+                return of( err );
             });
     }
 }

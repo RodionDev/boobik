@@ -1,4 +1,4 @@
-<nav *ngIf="!isStarting">
+<nav *ngIf="!isStarting && DOMConfig.banner">
     <div class="min-container" id="navigation">
         <a class="title" href="/">Bikboo</a>
         <a href="#">About</a>
@@ -9,7 +9,7 @@
         </a>
         <app-profile-modal *ngIf="loggedInUser" [user]="loggedInUser"></app-profile-modal>
     </div>
-    <div id="sub-banner" *ngIf="DOMConfig.subBanner">
+    <div id="sub-banner" *ngIf="DOMConfig.subBanner && currentDocument.sub_title">
         <div class="min-container">
             <h1 class="page-title">{{currentDocument.sub_title}}</h1>
         </div>

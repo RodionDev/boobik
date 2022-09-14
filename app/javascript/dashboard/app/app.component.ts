@@ -12,6 +12,7 @@ import templateString from './template.html';
 })
 export class AppComponent implements OnInit {
     protected DOMConfig = {
+        banner: false as any,
         subBanner: false as any
     };
     isStarting:boolean = true;
@@ -57,7 +58,6 @@ export class AppComponent implements OnInit {
     onDocumentSwapComplete(){
         setTimeout(() => {
             this.isStarting = false
-            this.DOMConfig.subBanner = this.currentDocument.sub_title;
             this.updateHost()
         }, 0);
         setTimeout(() => {
@@ -66,6 +66,8 @@ export class AppComponent implements OnInit {
     }
     updateHost() {
         const pageSlug = this.currentUrl ? /^\/*(.+?)\/*$/g.exec( this.currentUrl )[1].replace(/\
+        this.DOMConfig.banner = pageSlug != "index"
+        this.DOMConfig.subBanner = this.currentDocument.sub_title;
         this.hostClasses = [
             `page-${pageSlug}`,
             `tree-${pageSlug.match(/[^-]+/)[0]}`,

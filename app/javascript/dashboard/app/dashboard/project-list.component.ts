@@ -59,7 +59,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isStarting = false;
         this.queryProjectMetadata(() => {
-            this.logger.debug("Initial project metadata load successful. Starting periodic updates.")
             Observable
                 .interval(60000)
                 .do(() => this.queryProjectMetadata() )
