@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostBinding, HostListener,
          OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { DocumentService } from './services/document.service';
 import { LoggerService } from './services/logger.service';
 import { UserService } from './services/user.service';
@@ -8,7 +9,19 @@ import { DocumentContents } from './interfaces';
 import templateString from './template.html';
 @Component({
     selector: 'bikboo-shell',
-    template: templateString
+    template: templateString,
+    animations: [
+        trigger("navState", [
+            transition(':enter', [
+                style({transform: 'translateY(-100%)', opacity: 0}),
+                animate('100ms ease-out', style({transform: 'translateY(0)', opacity: 1}))
+            ]),
+            transition(':leave', [
+                style({transform: 'translateY(0)', opacity: 1}),
+                animate('100ms ease-in', style({transform: 'translateY(-100%)', opacity: 0}))
+            ])
+        ])
+    ]
 })
 export class AppComponent implements OnInit {
     protected DOMConfig = {

@@ -1,4 +1,4 @@
-<nav *ngIf="!isStarting && DOMConfig.banner">
+<nav *ngIf="!isStarting && DOMConfig.banner" [@navState]>
     <div class="min-container" id="navigation">
         <a class="title" href="/">Bikboo</a>
         <a href="#">About</a>
