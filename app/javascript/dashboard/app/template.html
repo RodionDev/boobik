@@ -1,17 +1,19 @@
 <nav *ngIf="!isStarting && DOMConfig.banner" [@navState]>
-    <div class="min-container" id="navigation">
-        <a class="title" href="/">Bikboo</a>
-        <a href="#">About</a>
-        <a href="#">Pricing</a>
-        <a id="profile" href="#" class="right" *ngIf="loggedInUser">
-            <img src="{{loggedInUser.image_url}}?size=40">
-            <span>&#x25BC;</span>
-        </a>
-        <app-profile-modal *ngIf="loggedInUser" [user]="loggedInUser"></app-profile-modal>
+    <div id="primary-banner">
+        <div class="min-container" id="navigation">
+            <a class="title" href="/">Bikboo</a>
+            <a href="#">About</a>
+            <a href="#">Pricing</a>
+            <a id="profile" href="#" class="right" *ngIf="loggedInUser">
+                <img src="{{loggedInUser.image_url}}?size=40">
+                <span>&#x25BC;</span>
+            </a>
+            <app-profile-modal *ngIf="loggedInUser" [user]="loggedInUser"></app-profile-modal>
+        </div>
     </div>
-    <div id="sub-banner" *ngIf="DOMConfig.subBanner && currentDocument.sub_title">
+    <div id="sub-banner" *ngIf="DOMConfig.subBanner" [@navState]>
         <div class="min-container">
-            <h1 class="page-title">{{currentDocument.sub_title}}</h1>
+            <h1 class="page-title">{{DOMConfig.subBanner}}</h1>
         </div>
     </div>
 </nav>

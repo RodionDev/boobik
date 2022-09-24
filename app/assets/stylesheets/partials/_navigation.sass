@@ -2,40 +2,49 @@ $nav-height: 55px
 nav
     background: white
     box-shadow: 0px 0px 16px -5px rgb(0, 0, 0)
-    &.fixed
-        position: fixed
-        left: 0
-        right: 0
-        top: 0
-    .container
-        position: relative
-        a:not(.button)
-            display: inline-block
-            line-height: $nav-height
-            padding: 0 1rem
-            color: #b4e7ff
-            &:hover
-                color: white
-            &.title
-                font-size: 1.8rem
-                font-weight: bold
-                color: #0b71a0
-                float: left
+    #primary-banner
+        background: inherit
+        .min-container#navigation
+            position: relative
+            a:not(.button)
+                display: inline-block
+                line-height: $nav-height
+                padding: 0 1rem
+                color: $darkb-accent
+                font-weight: bolder
                 &:hover
-                    color: #004565
-            &.right
-                float: right
-            &#profile
-                img
-                    display: inline-block
-                    height: $nav-height
-                    padding: 11px 1px
-                    border-radius: 50%
+                    color: white
+                &.title
+                    font-size: 1.8rem
+                    font-weight: bold
+                    color: $darkb-accent
                     float: left
-                span
-                    font-size: 13px
-                    color: #0070a5
-                    display: inline-block
-                &:hover span
-                    color: #004565
-        @import 'partials/profile_modal'
+                    &:hover
+                        color: #004565
+                &.right
+                    float: right
+                &#profile
+                    img
+                        display: inline-block
+                        height: $nav-height
+                        padding: 11px 1px
+                        border-radius: 50%
+                        float: left
+                    span
+                        font-size: 13px
+                        color: #0070a5
+                        display: inline-block
+                    &:hover span
+                        color: #004565
+            @import 'partials/profile_modal'
+    #sub-banner
+        background: $bg-gradient
+        > .min-container
+            padding: 1rem
+            h1.page-title
+                margin: 0
+                color: $darkb-accent
+                font-family: Roboto
+                font-size: 1.1rem
+                text-transform: uppercase
+                font-weight: 100

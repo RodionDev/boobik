@@ -26,7 +26,7 @@ import templateString from './template.html';
 export class AppComponent implements OnInit {
     protected DOMConfig = {
         banner: false as any,
-        subBanner: false as any
+        subBanner: '' as string
     };
     isStarting:boolean = true;
     isFetching:boolean = false;
