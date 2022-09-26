@@ -5,6 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { interval } from 'rxjs/observable/interval';
 import { switchMap } from 'rxjs/operators';
 import 'rxjs/add/observable/interval';
+import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
 import { ProjectMetadataList } from '../interfaces';
 import { LoggerService } from '../services/logger.service';
 import { ProjectService } from '../services/project.service';
@@ -19,7 +20,7 @@ import { ProjectService } from '../services/project.service';
     <section id="projects">
         <h2 class="section-title">{{sectionTitle}}</h2>
         <div class="content">
-            <div class="loading" *ngIf="isFetching">
+            <div class="loading" *ngIf="isFetching || isStarting" [@loadingPlaceholders]>
                 <div class="project placeholder">
                     <div class="line title" style="width: 40%;"></div>
                     <div class="line" style="width: 70%;"></div>
@@ -33,15 +34,42 @@ import { ProjectService } from '../services/project.service';
                     <div class="line last-edit" style="width: 15%;"></div>
                 </div>
             </div>
-            <div class="projects" *ngIf="projectMetadata && !isFetching && !fetchError">
+            <div class="projects" *ngIf="projectMetadata.projects" [@tileAnimation]="projectMetadata.projects.length">
                 <app-project-tile *ngFor="let project of projectMetadata.projects" [project]="project"></app-project-tile>
             </div>
         </div>
     </section>
-    `
+    `,
+    animations: [
+        trigger('tileAnimation', [
+            transition('* => *', [
+                query(':enter', [
+                    style({ opacity: 0, marginTop: '150px' }),
+                    stagger(50, [
+                        animate('250ms ease', style({ opacity: 1, marginTop: '0' }))
+                    ])
+                ]),
+                query(':leave', [
+                    stagger(100, [
+                        animate('250ms', style({ opacity: 0 }))
+                    ])
+                ], {optional: true})
+            ])
+        ]),
+        trigger('loadingPlaceholders', [
+            transition(':enter', [
+                style({opacity: 0}),
+                animate('100ms ease-out', style({opacity: 1}))
+            ]),
+            transition(':leave', [
+                style({opacity: 1}),
+                animate('100ms ease-in', style({opacity: 0}))
+            ])
+        ])
+    ]
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
-    projectMetadata:ProjectMetadataList;
+    projectMetadata:ProjectMetadataList = <ProjectMetadataList>{};
     isStarting:boolean = true;
     isFetching:boolean = false;
     fetchError:string = '';

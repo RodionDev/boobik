@@ -17,6 +17,8 @@ body
                 stroke: $lightb-accent
     bikboo-shell
         @import 'partials/navigation'
+        app-document-viewer, app-project-list, app-project-tile
+            display: block
         display: block
         opacity: 0
         background-color: white
@@ -34,7 +36,6 @@ body
             -o-transform: scale(1)
             transform: scale(1)
         app-document-viewer
-            display: block
             > div
                 /* Dynamic */
                 opacity: 0
