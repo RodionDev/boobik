@@ -1,3 +1,4 @@
+<div class="fetch-progress" [ngStyle]="{'width': ( fetchProgress * 100 ) + '%'}" *ngIf="isFetching" [@progressFade]></div>
 <nav *ngIf="!isStarting && DOMConfig.banner" [@navState]>
     <div id="primary-banner">
         <div class="min-container" id="navigation">

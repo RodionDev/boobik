@@ -52,7 +52,7 @@ class ProjectsController < ApplicationController
     def get_metadata
         payload = { project_count: current_user.projects.count, projects: [] }
         projects = payload[:projects]
-        current_user.projects.each do |project|
+        current_user.projects.order('updated_at DESC').each do |project|
             projectJSON = project.as_json
             projectJSON[:slide_count] = project.project_slides.count
             projectJSON[:formatted_updated_at] = time_ago_in_words(project.updated_at)

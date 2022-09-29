@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEvent, HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { switchMap } from 'rxjs/operators';
@@ -9,15 +9,19 @@ import { LocationService } from './location.service';
 const DOCUMENT_BASE_URL:string = '/api';
 @Injectable()
 export class DocumentService {
-    currentDocument: Observable<DocumentContents>;
+    currentDocument: Observable<HttpEvent<any>>;
     constructor(
         private locationService: LocationService,
         private logger: LoggerService,
         private http: HttpClient) {
         this.currentDocument = locationService.currentUrl.switchMap(url => this.fetchDocumentContents( url ));
     }
-    private fetchDocumentContents(url: string) : Observable<DocumentContents> {
-        return this.http.get<DocumentContents>( `${DOCUMENT_BASE_URL}${url || '/index'}.json`, { responseType: 'json' } )
+    private fetchDocumentContents(url: string) {
+        const req = new HttpRequest('GET', `${DOCUMENT_BASE_URL}${url || '/index'}.json`, {
+            reportProgress: true,
+            observe: 'response'
+        })
+        return this.http.request( req )
             .do(data => {
                 if( !data || typeof data !== 'object' ) {
                     throw Error('Invalid JSON data received from ' + url);

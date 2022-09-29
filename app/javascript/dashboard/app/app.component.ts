@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostBinding, HostListener,
          OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { HttpRequest, HttpEvent, HttpEventType } from '@angular/common/http';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { DocumentService } from './services/document.service';
 import { LoggerService } from './services/logger.service';
@@ -20,6 +21,16 @@ import templateString from './template.html';
                 style({transform: 'translateY(0)', opacity: 1}),
                 animate('100ms ease-in', style({transform: 'translateY(-100%)', opacity: 0}))
             ])
+        ]),
+        trigger("progressFade", [
+            transition(':enter', [
+                style({opacity: 0}),
+                animate('200ms ease-out', style({opacity: 1}))
+            ]),
+            transition(':leave', [
+                style({opacity: 1}),
+                animate('500ms ease-in', style({opacity: 0}))
+            ])
         ])
     ]
 })
@@ -29,8 +40,9 @@ export class AppComponent implements OnInit {
         subBanner: '' as string
     };
     isStarting:boolean = true;
-    isFetching:boolean = false;
-    isRendering:boolean = false;
+    isFetching:boolean = true;
+    fetchProgress:number = 0;
+    protected requestContentLength:number = 0;
     private progressBarTimeout:any;
     currentUrl:string;
     currentDocument:DocumentContents;
@@ -54,27 +66,41 @@ export class AppComponent implements OnInit {
                 }, 200 )
             }
         })
-        this.documentService.currentDocument.subscribe(doc => this.currentDocument = doc);
+        this.documentService.currentDocument.subscribe( ( event:HttpEvent<any> ) => {
+            switch( event.type ) {
+                case HttpEventType.Sent:
+                    this.fetchProgress = 0.1;
+                    break;
+                case HttpEventType.ResponseHeader:
+                    this.fetchProgress = 0.2;
+                    this.requestContentLength = parseInt( event.headers.get('content-length') ) || 1;
+                    break;
+                case HttpEventType.DownloadProgress:
+                    this.fetchProgress = Math.max( this.fetchProgress, Math.min( event.loaded / this.requestContentLength, 0.9 ) );
+                    break;
+                case HttpEventType.Response:
+                    this.fetchProgress = 0.9;
+                    this.requestContentLength = 0;
+                    this.currentDocument = event.body;
+            }
+        });
     }
     onDocumentReceived(){
-        clearTimeout( this.progressBarTimeout );
-        if( this.isFetching ) {
-            this.isFetching = false;
-            this.isRendering = true;
-        }
     }
     onDocumentPrepared(){ }
     onDocumentRemoved(){ }
     onDocumentInserted() {
+        clearTimeout( this.progressBarTimeout );
         setTimeout(() => this.updateHost(), 0);
     }
     onDocumentSwapComplete(){
+        this.fetchProgress = 1;
         setTimeout(() => {
             this.isStarting = false
             this.updateHost()
         }, 0);
         setTimeout(() => {
-            this.isRendering = false;
+            this.isFetching = false
         }, 500);
     }
     updateHost() {
