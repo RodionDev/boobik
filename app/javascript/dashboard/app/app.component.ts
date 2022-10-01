@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
                 clearTimeout( this.progressBarTimeout )
                 this.progressBarTimeout = setTimeout( () => {
                     this.isFetching = true;
-                }, 200 )
+                }, 300 )
             }
         })
         this.documentService.currentDocument.subscribe( ( event:HttpEvent<any> ) => {
@@ -85,12 +85,12 @@ export class AppComponent implements OnInit {
             }
         });
     }
-    onDocumentReceived(){
-    }
-    onDocumentPrepared(){ }
-    onDocumentRemoved(){ }
-    onDocumentInserted() {
+    onDocumentReceived(){}
+    onDocumentPrepared(){
         clearTimeout( this.progressBarTimeout );
+    }
+    onDocumentRemoved(){}
+    onDocumentInserted() {
         setTimeout(() => this.updateHost(), 0);
     }
     onDocumentSwapComplete(){
