@@ -34,7 +34,7 @@ import { ProjectService } from '../services/project.service';
                     <div class="line last-edit" style="width: 15%;"></div>
                 </div>
             </div>
-            <div class="projects" *ngIf="projectMetadata.projects" [@tileAnimation]="projectMetadata.projects.length">
+            <div class="projects" *ngIf="projectMetadata.projects && !isFetching" [@tileAnimation]="projectMetadata.projects.length">
                 <app-project-tile *ngFor="let project of projectMetadata.projects" [project]="project"></app-project-tile>
             </div>
         </div>
@@ -70,23 +70,18 @@ import { ProjectService } from '../services/project.service';
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
     projectMetadata:ProjectMetadataList = <ProjectMetadataList>{};
-    isStarting:boolean = true;
     isFetching:boolean = false;
     fetchError:string = '';
     protected onDestroy$ = new EventEmitter<void>();
     protected void$ = of<void>(undefined);
     get sectionTitle() : string {
-        if( this.isStarting ) {
-            return "Spinning Up"
-        } else if ( this.isFetching ) {
-            return "Fetching Projects"
-        }
-        return "Projects"
+        return ( this.isFetching ? "Fetching " : "" ) + "Projects"
     }
     constructor(private logger: LoggerService, private projectService: ProjectService) {}
     ngOnInit() {
-        this.isStarting = false;
+        this.isFetching = true
         this.queryProjectMetadata(() => {
+            this.isFetching = false;
             Observable
                 .interval(60000)
                 .do(() => this.queryProjectMetadata() )
@@ -98,11 +93,9 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         this.onDestroy$.emit();
     }
     protected queryProjectMetadata(successCb = () => {}) {
-        const fetchingTimeout = setTimeout(() => this.isFetching = true, 200);
         return this.void$
             .switchMap(() => this.projectService.getProjectMetadata() )
             .do(meta => this.projectMetadata = meta)
-            .do(() => { this.isFetching = false; clearTimeout( fetchingTimeout ) } )
             .catch(err => {
                 this.fetchError = `${err.name} - ${err.status}: ${err.message}`;
                 throw `Failed to fetch ${err.message}`;
