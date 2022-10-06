@@ -14,12 +14,12 @@ import templateString from './template.html';
     animations: [
         trigger("navState", [
             transition(':enter', [
-                style({transform: 'translateY(-100%)', opacity: 0}),
-                animate('100ms ease-out', style({transform: 'translateY(0)', opacity: 1}))
+                style({transform: 'translateY(-10%)', opacity: 0}),
+                animate('200ms ease', style({transform: 'translateY(0)', opacity: 1}))
             ]),
             transition(':leave', [
                 style({transform: 'translateY(0)', opacity: 1}),
-                animate('100ms ease-in', style({transform: 'translateY(-100%)', opacity: 0}))
+                animate('200ms ease', style({transform: 'translateY(-10%)', opacity: 0}))
             ])
         ]),
         trigger("progressFade", [
