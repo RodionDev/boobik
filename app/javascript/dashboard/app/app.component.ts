@@ -104,7 +104,8 @@ export class AppComponent implements OnInit {
         }, 500);
     }
     updateHost() {
-        const pageSlug = this.currentUrl ? /^\/*(.+?)\/*$/g.exec( this.currentUrl )[1].replace(/\
+        const urlWithoutSearch = this.currentUrl.match(/[^?]*/)[0];
+        const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
         this.DOMConfig.banner = pageSlug != "index"
         this.DOMConfig.subBanner = this.currentDocument.sub_title;
         this.hostClasses = [

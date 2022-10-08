@@ -17,10 +17,10 @@ import { ProjectService } from '../services/project.service';
         <p>We were unable to fetch project information from the remote server, please try again later.</p>
         <p>Error message received: <code>{{fetchError}}</code></p>
     </section>
-    <section id="projects">
+    <section id="projects" *ngIf="!fetchError">
         <h2 class="section-title">{{sectionTitle}}</h2>
         <div class="content">
-            <div class="loading" *ngIf="isFetching || isStarting" [@loadingPlaceholders]>
+            <div class="loading" *ngIf="isFetching" [@loadingPlaceholders]>
                 <div class="project placeholder">
                     <div class="line title" style="width: 40%;"></div>
                     <div class="line" style="width: 70%;"></div>

@@ -14,10 +14,19 @@ export class DocumentService {
         private locationService: LocationService,
         private logger: LoggerService,
         private http: HttpClient) {
-        this.currentDocument = locationService.currentUrl.switchMap(url => this.fetchDocumentContents( url ));
+        this.currentDocument = locationService.currentUrl
+            .switchMap(url => {
+                const splitRegex = /^([^?]*)(\?[^?]+)$/
+                if( url.match( splitRegex ) )
+                    return of( url.replace( splitRegex, ( input, pre, post ) => ( pre || '/index' ) + ".json" + post ) )
+                return of( ( url || "/index" ) + ".json" );
+            })
+            .switchMap(url => this.fetchDocumentContents( url ));
     }
     private fetchDocumentContents(url: string) {
-        const req = new HttpRequest('GET', `${DOCUMENT_BASE_URL}${url || '/index'}.json`, {
+        if( !url )
+            throw Error(`No URL provided to fetchDocumentContents, unable to continue with fetch`)
+        const req = new HttpRequest('GET', `${DOCUMENT_BASE_URL}${url}`, {
             reportProgress: true,
             observe: 'response'
         })

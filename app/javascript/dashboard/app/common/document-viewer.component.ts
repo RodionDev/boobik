@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef, ElementRef,
          ComponentRef, OnDestroy, DoCheck,
-         EventEmitter, Input, Output } from '@angular/core';
+         EventEmitter, Input, Output, Inject } from '@angular/core';
 import { LoggerService } from '../services/logger.service';
 import { DocumentService } from '../services/document.service';
 import { EmbeddedComponentsService } from '../services/embeddedComponents.service';
@@ -40,7 +40,7 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
     }
     constructor(
         elementRef: ElementRef,
-        private viewContainerRef: ViewContainerRef,
+        @Inject( ViewContainerRef ) private viewContainerRef,
         private logger: LoggerService,
         private documentService: DocumentService,
         private embeddedService: EmbeddedComponentsService
