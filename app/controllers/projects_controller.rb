@@ -20,8 +20,8 @@ class ProjectsController < ApplicationController
             format.json do
                 render :json => {
                     content: render_to_string( :layout => false, :formats => [:html] ),
-                    title: 'Error',
-                    sub_title: 'Error: Not yet defined'
+                    title: 'Project Information',
+                    sub_title: @project.title || 'Unnamed Project'
                 }
             end
         end
