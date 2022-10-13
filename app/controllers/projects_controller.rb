@@ -14,14 +14,14 @@ class ProjectsController < ApplicationController
         end
     end
     def show
-        @project = Project.find params[:id]
+        @project = Project.find_by_id params[:id]
         respond_to do |format|
             format.html
             format.json do
                 render :json => {
                     content: render_to_string( :layout => false, :formats => [:html] ),
                     title: 'Project Information',
-                    sub_title: @project.title || 'Unnamed Project'
+                    sub_title: ( @project && @project.title ) || 'Unnamed Project'
                 }
             end
         end
