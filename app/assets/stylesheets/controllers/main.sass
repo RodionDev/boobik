@@ -17,7 +17,7 @@ body
                 stroke: $lightb-accent
     bikboo-shell
         @import 'partials/navigation'
-        app-document-viewer, app-project-list, app-project-tile
+        app-document-viewer, app-project-list, app-project-tile, app-project-viewer
             display: block
         display: block
         opacity: 0
@@ -26,9 +26,9 @@ body
         -ms-transform: scale(0.97)
         -o-transform: scale(0.97)
         transform: scale(0.97)
-        -webkit-transition: opacity 200ms ease 500ms, transform 200ms ease 500ms
-        -o-transition: opacity 200ms ease 500ms, transform 200ms ease 500ms
-        transition: opacity 200ms ease 500ms, transform 200ms ease 500ms
+        -webkit-transition: opacity 200ms ease, transform 200ms ease
+        -o-transition: opacity 200ms ease, transform 200ms ease
+        transition: opacity 200ms ease, transform 200ms ease
         .fetch-progress
             height: 2px
             background: $bg-gradient

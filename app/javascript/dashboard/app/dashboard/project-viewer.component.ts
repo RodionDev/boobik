@@ -23,8 +23,21 @@ import { ProjectService } from '../services/project.service';
             <div class="loading" *ngIf="isFetching" [@loadingPlaceholders]>
                 <p>Loading...</p>
             </div>
-            <div class="project-info" *ngIf="projectMetadata && !isFetching" >
-                <p>Loaded</p>
+            <div class="project" *ngIf="projectMetadata && !isFetching" >
+                <div id="top-row">
+                    <div class="project-metadata">
+                        <!-- Information about project, ability to change title/desc -->
+                        <div id="project-title"><h2>Title</h2><span>{{projectMetadata.title}}</span></div>
+                        <div id="project-desc"><h2>Desc</h2><span>{{projectMetadata.desc}}</span></div>
+                    </div>
+                    <div class="project-submission">
+                        <!-- A separate tile for submitting the project for creation, or seeing the reason it was rejected -->
+                        <p>You cannot submit your project yet because you don't have any slides</p>
+                    </div>
+                </div>
+                <div class="project-slides">
+                    <!-- Preview of all slides in the project, including a way to open the slide editor -->
+                </div>
             </div>
         </div>
     </section>
