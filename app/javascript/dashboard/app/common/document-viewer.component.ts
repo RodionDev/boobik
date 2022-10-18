@@ -1,6 +1,7 @@
 import { Component, ViewContainerRef, ElementRef,
          ComponentRef, OnDestroy, DoCheck,
          EventEmitter, Input, Output, Inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { LoggerService } from '../services/logger.service';
 import { DocumentService } from '../services/document.service';
 import { EmbeddedComponentsService } from '../services/embeddedComponents.service';
@@ -41,6 +42,7 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
     constructor(
         elementRef: ElementRef,
         @Inject( ViewContainerRef ) private viewContainerRef,
+        private titleService: Title,
         private logger: LoggerService,
         private documentService: DocumentService,
         private embeddedService: EmbeddedComponentsService
@@ -113,6 +115,7 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
                 this.embeddedComponents = comps
                 this.docPrepared.emit()
             })
+            .do(() => this.titleService.setTitle( "Bikboo \u2014 " + doc.title || 'No Title' ) )
             .switchMap(() => this.rotateViews())
             .catch(err => {
                 this.logger.error(`Failed to load next view for document titled "${doc.title}", error: "${err.stack || err}".`);

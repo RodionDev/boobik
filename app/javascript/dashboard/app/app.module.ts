@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -43,7 +43,8 @@ const embeddableComponents = [ ProjectListComponent, ProjectTileComponent, Proje
         ProjectService,
         Location,
         { provide: LocationStrategy, useClass: PathLocationStrategy },
-        { provide: EMBEDDED_COMPONENTS, useValue: embeddableComponents }
+        { provide: EMBEDDED_COMPONENTS, useValue: embeddableComponents },
+        Title
     ],
     entryComponents: embeddableComponents,
     bootstrap: [AppComponent]
