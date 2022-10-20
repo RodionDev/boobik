@@ -1,7 +1,11 @@
 export interface UserInformation {
+    id: number,
     name: string,
+    email: string,
+    created_at: string,
+    updated_at: string,
     image_url: string,
-    user_id: number
+    auth_token: string
 }
 export interface DocumentContents {
     title: string,
@@ -21,6 +25,4 @@ export interface ProjectMetadata {
 export interface ProjectMetadataList {
     project_count: number,
     projects: ProjectMetadata[]
-}
-export interface ProjectContents {
 }

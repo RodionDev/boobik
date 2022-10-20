@@ -10,6 +10,7 @@ const DOCUMENT_BASE_URL:string = '/api';
 @Injectable()
 export class DocumentService {
     currentDocument: Observable<HttpEvent<any>>;
+    private lastUrl:string;
     constructor(
         private locationService: LocationService,
         private logger: LoggerService,
@@ -21,11 +22,13 @@ export class DocumentService {
                     return of( url.replace( splitRegex, ( input, pre, post ) => ( pre || '/index' ) + ".json" + post ) )
                 return of( ( url || "/index" ) + ".json" );
             })
-            .switchMap(url => this.fetchDocumentContents( url ));
+            .switchMap(url => this.fetchDocumentContents( url ) );
     }
     private fetchDocumentContents(url: string) {
         if( !url )
             throw Error(`No URL provided to fetchDocumentContents, unable to continue with fetch`)
+        else if( url == this.lastUrl )
+            return of( this.currentDocument )
         const req = new HttpRequest('GET', `${DOCUMENT_BASE_URL}${url}`, {
             reportProgress: true,
             observe: 'response'
@@ -35,6 +38,7 @@ export class DocumentService {
                 if( !data || typeof data !== 'object' ) {
                     throw Error('Invalid JSON data received from ' + url);
                 }
+                this.lastUrl = url
             })
             .catch(error => {
                 if( error.status == 404 ) {

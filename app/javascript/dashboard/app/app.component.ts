@@ -2,11 +2,12 @@ import { Component, ElementRef, HostBinding, HostListener,
          OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { HttpRequest, HttpEvent, HttpEventType } from '@angular/common/http';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { ProfileModalComponent } from './common/profile-modal.component';
 import { DocumentService } from './services/document.service';
 import { LoggerService } from './services/logger.service';
 import { UserService } from './services/user.service';
 import { LocationService } from './services/location.service';
-import { DocumentContents } from './interfaces';
+import { DocumentContents, UserInformation } from './interfaces';
 import templateString from './template.html';
 @Component({
     selector: 'bikboo-shell',
@@ -44,6 +45,10 @@ export class AppComponent implements OnInit {
     fetchProgress:number = 0;
     protected requestContentLength:number = 0;
     private progressBarTimeout:any;
+    loggedInUser:UserInformation;
+    @ViewChild( ProfileModalComponent )
+    profileModal:ProfileModalComponent;
+    @ViewChild( 'profileToggle' ) profileToggle:ElementRef;
     currentUrl:string;
     currentDocument:DocumentContents;
     @HostBinding('class')
@@ -65,14 +70,14 @@ export class AppComponent implements OnInit {
                     this.isFetching = true;
                 }, 300 )
             }
-        })
+        });
         this.documentService.currentDocument.subscribe( ( event:HttpEvent<any> ) => {
             switch( event.type ) {
                 case HttpEventType.Sent:
-                    this.fetchProgress = 0.1;
+                    this.fetchProgress = 0.2;
                     break;
                 case HttpEventType.ResponseHeader:
-                    this.fetchProgress = 0.2;
+                    this.fetchProgress = 0.4;
                     this.requestContentLength = parseInt( event.headers.get('content-length') ) || 1;
                     break;
                 case HttpEventType.DownloadProgress:
@@ -84,6 +89,12 @@ export class AppComponent implements OnInit {
                     this.currentDocument = event.body;
             }
         });
+        this.userService.currentUser.subscribe( (data) => {
+            const user = data.user
+            if( !user && this.loggedInUser ) {
+            }
+            this.loggedInUser = user;
+        } );
     }
     onDocumentReceived(){}
     onDocumentPrepared(){
@@ -114,10 +125,20 @@ export class AppComponent implements OnInit {
             `${this.isStarting ? "not-" : ""}ready`
         ].join(' ')
     }
+    toggleProfileModal() {
+        this.profileModal.toggle();
+    }
     @HostListener('click', ['$event.target', '$event.button', '$event.ctrlKey', '$event.metaKey'])
     onClick( eventTarget: HTMLElement, button: number, ctrlKey: boolean, metaKey: boolean ) {
         if( button !== 0 || ctrlKey || metaKey ) {
             return true
+        }
+        if(
+            this.profileModal && this.profileModal.isOpen &&
+            !( this.profileModal.nativeElement.contains( eventTarget ) || this.profileToggle.nativeElement.contains( eventTarget ) )
+        ) {
+            this.profileModal.toggle();
+            return false;
         }
         let current: HTMLElement|null = eventTarget;
         while( current && !( current instanceof HTMLAnchorElement ) ) {

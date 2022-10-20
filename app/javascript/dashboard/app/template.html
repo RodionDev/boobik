@@ -5,7 +5,7 @@
             <a class="title" href="/">Bikboo</a>
             <a href="#">About</a>
             <a href="#">Pricing</a>
-            <a id="profile" href="#" class="right" *ngIf="loggedInUser">
+            <a id="profile" href="{{currentUrl}}#" class="right no-follow" *ngIf="loggedInUser" (click)="toggleProfileModal()" #profileToggle>
                 <img src="{{loggedInUser.image_url}}?size=40">
                 <span>&#x25BC;</span>
             </a>
