@@ -12,7 +12,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
                     </div>
                     <div id="profile" class="vertical-centre">
                         <div class="wrapper">
-                            <h1>Placeholder</h1>
+                            <h1>{{loggedInUser.name}}</h1>
                             <a href="/dashboard">Dashboard</a>
                             <span>&mdash;</span>
                             <a href="/account">Account</a>
