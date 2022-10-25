@@ -44,8 +44,14 @@ export class DocumentService {
                 if( error.status == 404 ) {
                     this.locationService.replace("404");
                     throw "URL not found, redirecting to 404 - Not Found page";
+                } else if( error.status == 401 ) {
+                    const UrlWithoutExtension = url.match(/[^.]+/);
+                    if( UrlWithoutExtension && UrlWithoutExtension[0] )
+                        this.locationService.replace(`/signin?continue=${UrlWithoutExtension[0]}`);
+                    else
+                        window.location.reload();
                 }
-                return of(error);
+                return of( error );
             });
     }
 }
