@@ -45,9 +45,9 @@ export class DocumentService {
                     this.locationService.replace("404");
                     throw "URL not found, redirecting to 404 - Not Found page";
                 } else if( error.status == 401 ) {
-                    const UrlWithoutExtension = url.match(/[^.]+/);
-                    if( UrlWithoutExtension && UrlWithoutExtension[0] )
-                        this.locationService.replace(`/signin?continue=${UrlWithoutExtension[0]}`);
+                    const UrlWithoutExtension = url.match(/[^.]+/)[0];
+                    if( UrlWithoutExtension )
+                        this.locationService.replace(`/signin?continue=${UrlWithoutExtension}`);
                     else
                         window.location.reload();
                 }
