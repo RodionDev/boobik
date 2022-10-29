@@ -12,11 +12,21 @@ import { ProjectService } from '../services/project.service';
 @Component({
     selector: 'app-project-viewer',
     template: `
-    <section id="error" *ngIf="fetchError">
-        <h2 class="section-title">Fetch Failed</h2>
-        <p>We were unable to fetch project information from the remote server, please try again later.</p>
-        <p>Error message received: <code>{{fetchError}}</code></p>
-    </section>
+    <div id="fetch-errors" [ngSwitch]="fetchError?.status" *ngIf="fetchError">
+        <section id="error" *ngSwitchCase="404">
+            <h2 class="section-title">Project Not Found</h2>
+            <p>The request for this projects details failed with 404 - not found. Please check that the URL for this project is correct, and that it hasn't moved or been removed.</p>
+        </section>
+        <section id="error" *ngSwitchCase="401">
+            <h2 class="section-title">Permission denied</h2>
+            <p>Unable to access project, request sender was deemed unauthorized by the server. Please check that the URL you accessed is correct.</p>
+        </section>
+        <section id="error" *ngSwitchDefault>
+            <h2 class="section-title">Fetch Failed</h2>
+            <p>We were unable to fetch project information from the remote server, please try again later.</p>
+            <p>Error message received: <code>{{fetchError}}</code></p>
+        </section>
+    </div>
     <section id="project" *ngIf="!fetchError">
         <h2 class="section-title">{{sectionTitle}}</h2>
         <div class="content">
@@ -59,7 +69,7 @@ export class ProjectViewerComponent implements OnInit {
     projectID:string = '';
     projectMetadata:ProjectMetadata;
     isFetching:boolean = false;
-    fetchError:string = '';
+    fetchError:Error;
     protected onDestroy$ = new EventEmitter<void>();
     protected void$ = of<void>(undefined);
     get sectionTitle() : string {
@@ -91,7 +101,7 @@ export class ProjectViewerComponent implements OnInit {
             .switchMap(() => this.projectService.getProjectInformation( this.projectID ) )
             .do(meta => this.projectMetadata = meta)
             .catch(err => {
-                this.fetchError = `${err.name} - ${err.status}: ${err.message}`;
+                this.fetchError = err;
                 throw `Failed to fetch ${err.message}`;
             })
             .do(data => successCb())
