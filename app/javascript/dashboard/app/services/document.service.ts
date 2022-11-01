@@ -1,34 +1,48 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent, HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { of } from 'rxjs/observable/of';
-import { switchMap } from 'rxjs/operators';
-import { DocumentContents } from '../interfaces';
+import { switchMap, mergeMap } from 'rxjs/operators';
+import { DocumentContents, UserInformation } from '../interfaces';
 import { LoggerService } from './logger.service';
+import { UserService } from './user.service';
 import { LocationService } from './location.service';
 const DOCUMENT_BASE_URL:string = '/api';
 @Injectable()
 export class DocumentService {
     currentDocument: Observable<HttpEvent<any>>;
     private lastUrl:string;
+    private lastUser:UserInformation;
+    protected onUrlUpdate$ = new ReplaySubject<string>(1);
     constructor(
         private locationService: LocationService,
+        private userService: UserService,
         private logger: LoggerService,
         private http: HttpClient) {
-        this.currentDocument = locationService.currentUrl
+        this.currentDocument = this.onUrlUpdate$
+            .switchMap(url => this.fetchDocumentContents( url ) );
+        this.locationService.currentUrl
             .switchMap(url => {
                 const splitRegex = /^([^?]*)(\?[^?]+)$/
                 if( url.match( splitRegex ) )
                     return of( url.replace( splitRegex, ( input, pre, post ) => ( pre || '/index' ) + ".json" + post ) )
                 return of( ( url || "/index" ) + ".json" );
             })
-            .switchMap(url => this.fetchDocumentContents( url ) );
+            .do( url => {
+                if( url != this.lastUrl )
+                    this.onUrlUpdate$.next( url )
+            } )
+            .subscribe();
+    }
+    reload() {
+        if( !this.lastUrl )
+            throw Error('Unable to reload document @ DocumentService; there is no URL on record to reload, wait until after initial load before attempting to reload');
+        this.onUrlUpdate$.next( this.lastUrl );
     }
     private fetchDocumentContents(url: string) {
         if( !url )
             throw Error(`No URL provided to fetchDocumentContents, unable to continue with fetch`)
-        else if( url == this.lastUrl )
-            return of( this.currentDocument )
         const req = new HttpRequest('GET', `${DOCUMENT_BASE_URL}${url}`, {
             reportProgress: true,
             observe: 'response'
