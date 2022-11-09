@@ -7,6 +7,7 @@ import { DocumentService } from './services/document.service';
 import { LoggerService } from './services/logger.service';
 import { UserService } from './services/user.service';
 import { LocationService } from './services/location.service';
+import { SocketService } from './services/socket.service';
 import { DocumentContents, UserInformation } from './interfaces';
 import templateString from './template.html';
 @Component({

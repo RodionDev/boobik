@@ -12,6 +12,7 @@
     "@ngtools/webpack": "^6.0.0-rc.0",
     "@rails/webpacker": "3.4",
     "@types/node": "^9.6.2",
+    "actioncable": "^5.2.0",
     "caniuse-lite": "^1.0.30000823",
     "core-js": "^2.5.4",
     "css-loader": "^0.28.11",

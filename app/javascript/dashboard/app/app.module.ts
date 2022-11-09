@@ -16,6 +16,7 @@ import { DocumentService } from './services/document.service';
 import { UserService } from './services/user.service';
 import { LocationService } from './services/location.service';
 import { ProjectService } from './services/project.service';
+import { SocketService } from './services/socket.service';
 import { EmbeddedComponentsService, EMBEDDED_COMPONENTS } from './services/embeddedComponents.service';
 const embeddableComponents = [ ProjectListComponent, ProjectTileComponent, ProjectViewerComponent ]
 @NgModule({
@@ -41,6 +42,7 @@ const embeddableComponents = [ ProjectListComponent, ProjectTileComponent, Proje
         LocationService,
         EmbeddedComponentsService,
         ProjectService,
+        SocketService,
         Location,
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         { provide: EMBEDDED_COMPONENTS, useValue: embeddableComponents },
