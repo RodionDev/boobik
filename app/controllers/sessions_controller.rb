@@ -39,7 +39,7 @@ class SessionsController < ApplicationController
         redirect_to flash.alert ? root_url : redirect_path
     end
     def destroy
-        reset_session
+        destroy_session
         redirect_to '/', notice: 'Signed out'
     end
 private
@@ -53,5 +53,7 @@ private
         reset_session
         session[:auth_token] = user.auth_token
         session[:user_id] = user.id
+        cookies.encrypted[:user_id] = user.id
+        cookies.encrypted[:auth_token] = user.auth_token
     end
 end

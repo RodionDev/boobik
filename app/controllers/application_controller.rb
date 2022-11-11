@@ -29,12 +29,20 @@ private
         if user_id and auth_token
             user = User.find_by_id user_id
             unless user and user.auth_token == auth_token
-                reset_session
+                destroy_session
                 redirect_to '/', alert: "Session invalidated; your user has been logged out of all devices. Please log in again."
             end
         elsif user_id or auth_token
-            reset_session
+            destroy_session
         end
+    end
+    def destroy_session
+        return unless current_user
+        current_user_id = current_user.id
+        reset_session
+        cookies.delete :user_id
+        cookies.delete :auth_token
+        ActionCable.server.broadcast "user_status:#{current_user_id}", { action: "destroy_session" }
     end
     helper_method :current_user, :url_absolute?
 end

@@ -61,7 +61,7 @@ export class DocumentService {
                 } else if( error.status == 401 ) {
                     const UrlWithoutExtension = url.match(/[^.]+/)[0];
                     if( UrlWithoutExtension )
-                        this.locationService.replace(`/signin?continue=${UrlWithoutExtension}`);
+                        this.locationService.replace(`/?continue=${UrlWithoutExtension}`);
                     else
                         window.location.reload();
                 }

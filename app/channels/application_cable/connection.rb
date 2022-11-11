@@ -6,10 +6,10 @@ module ApplicationCable
 		end
 	private
 		def verify_current_user
-			if user = User.find_by_id_and_auth_token( session[:user_id], session[:auth_token] ) then
+			if user = User.find_by_id_and_auth_token( cookies.encrypted[:user_id], cookies.encrypted[:auth_token] ) then
 				user
 			else
-				raise "Refusing to establish web socket connection; user either not found, or auth_token has expired"
+				reject_unauthorized_connection
 			end
 		end
 	end
