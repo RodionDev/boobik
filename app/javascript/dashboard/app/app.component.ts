@@ -92,9 +92,10 @@ export class AppComponent implements OnInit {
             }
         });
         this.userService.currentUser.subscribe( (user) => {
-            if( !user && this.loggedInUser ) {
+            if( ( !user && this.loggedInUser ) || ( user && !this.loggedInUser ) || ( user && this.loggedInUser && user.id != this.loggedInUser.id ) ) {
                 this.documentService.reload();
-                ( window as any ).notices.queue("Account has been logged out in another tab, refreshed page");
+                if( !user )
+                    ( window as any ).notices.queue("Account has been logged out in another tab, refreshed page");
             }
             this.loggedInUser = user;
         } );
