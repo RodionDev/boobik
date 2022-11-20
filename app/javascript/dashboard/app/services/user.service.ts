@@ -46,7 +46,7 @@ export class UserService {
             this.establishSocketConnection()
         } else {
             this.logger.debug("Attempting to close socket")
-            this.destroySocketConnection();
+            this.destroySocketConnection( true );
         }
     }
     protected establishSocketConnection() {
@@ -61,16 +61,28 @@ export class UserService {
                             return this.getAuthenticationDetails();
                         }
                     }
+                },
+                disconnected: ({willAttemptReconnect}) => {
+                    console.log("disconnected", willAttemptReconnect);
+                    if( !willAttemptReconnect ) {
+                        this.destroySocketConnection();
+                    }
                 }
-            })
+            });
+            (window as any).soc = this.socket
+        } else {
+            this.logger.debug("Refusing to establishSocketConnection; a socket already exists")
         }
     }
-    protected destroySocketConnection() {
+    protected destroySocketConnection( uninstall = false ) {
         this.logger.debug("Attempting to destroy socket")
         if( this.socket ) {
             this.logger.debug("unsubscribing socket")
             this.socket.unsubscribe()
+            this.socket = undefined;
         }
-        this.socketService.disconnectCable();
+        if( uninstall ) {
+            this.socketService.disconnectCable();
+        }
     }
 }
