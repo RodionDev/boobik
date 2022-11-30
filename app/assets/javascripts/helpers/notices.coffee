@@ -6,7 +6,7 @@
     passed from rails
     Copyright (c) Harry Felton 2017
 class @Notices
-    focused: true
+    focused: false
     constructor: ->
         @notices = []
         $( document )
@@ -23,6 +23,7 @@ class @Notices
             window.addEventListener 'load', =>
                 $( document ).trigger 'notices:ready', this
             , false
+            @focused = document.visibilityState == 'visible'
             document.addEventListener 'visibilitychange', =>
                 oldFocus = @focused
                 @focused = document.visibilityState == 'visible'
