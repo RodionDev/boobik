@@ -60,5 +60,6 @@ class @Notices
     popCurrent: ->
         @notices.shift()
         @showCurrent()
-$( document ).ready =>
+window.addEventListener 'load', =>
     @notices = new Notices
+, false
