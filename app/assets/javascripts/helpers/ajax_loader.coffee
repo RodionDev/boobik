@@ -7,6 +7,7 @@ class @AjaxLoader
         url: false
         type: 'unknown'
     constructor: ->
+        console.warn("[DEPRECATION NOTICE] ajax_loader.coffee is deprecated. Please see issue #1 at GitLab.com/hbomb79/bikboo/issues/1 for more information.")
         do @refreshTargetURL
         @updateLoadingPreset true
         window.addEventListener 'load', @loadContent.call @ , false

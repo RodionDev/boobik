@@ -1,3 +1,4 @@
+console.warn("[DEPRECATION NOTICE] nav.coffee is deprecated. Please see issue #1 at GitLab.com/hbomb79/bikboo/issues/1 for more information.")
 _missHandler = (event) ->
     $modal = $ 'nav #profile-modal'
     return unless $modal.attr( "data-open" ) is 'true'
