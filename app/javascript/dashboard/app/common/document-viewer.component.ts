@@ -21,7 +21,7 @@ const ANIMATION_EXCLUDE:string = 'no-animations';
     template: ''
 })
 export class DocumentViewerComponent implements DoCheck, OnDestroy {
-    private hostElement: HTMLElement;
+    hostElement: HTMLElement;
     protected embeddedComponents: ComponentRef<any>[] = [];
     private void$ = of<void>(undefined);
     private onDestroy$ = new EventEmitter<void>();
