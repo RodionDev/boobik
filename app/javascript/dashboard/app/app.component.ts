@@ -104,6 +104,7 @@ export class AppComponent implements OnInit {
             }
             this.loggedInUser = user;
         } );
+        this.onResize();
     }
     onDocumentReceived(){}
     onDocumentPrepared(){
