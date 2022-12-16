@@ -34,8 +34,15 @@ import { ProjectService } from '../services/project.service';
                     <div class="line last-edit" style="width: 15%;"></div>
                 </div>
             </div>
-            <div class="projects" *ngIf="projectMetadata.projects && !isFetching" [@tileAnimation]="projectMetadata.projects.length">
+            <div class="projects" *ngIf="projectMetadata.projects?.length && !isFetching" [@tileAnimation]="projectMetadata.projects.length">
                 <app-project-tile *ngFor="let project of projectMetadata.projects" [project]="project"></app-project-tile>
+            </div>
+            <div class="projects" *ngIf="projectMetadata.projects?.length == 0 && !isFetching">
+                <div class="empty">
+                    <h2>No projects</h2>
+                    <img src="{{questionMarkSrc}}" alt="Question mark image"/>
+                    <a href="/create" id="create">Create Project</a>
+                </div>
             </div>
         </div>
     </section>
@@ -70,6 +77,7 @@ import { ProjectService } from '../services/project.service';
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
     projectMetadata:ProjectMetadataList = <ProjectMetadataList>{};
+    questionMarkSrc = require("images/question-mark.png");
     isFetching:boolean = false;
     fetchError:string = '';
     protected onDestroy$ = new EventEmitter<void>();
