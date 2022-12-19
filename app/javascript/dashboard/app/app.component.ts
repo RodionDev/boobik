@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
     docViewer:DocumentViewerComponent;
     currentUrl:string;
     currentDocument:DocumentContents;
-    private resizeTimeout:number;
+    private resizeTimeout:any;
     @HostBinding('class')
     protected hostClasses:string = '';
     constructor(
@@ -104,7 +104,6 @@ export class AppComponent implements OnInit {
             }
             this.loggedInUser = user;
         } );
-        this.onResize();
     }
     onDocumentReceived(){}
     onDocumentPrepared(){
@@ -134,6 +133,7 @@ export class AppComponent implements OnInit {
             `tree-${pageSlug.match(/[^-]+/)[0]}`,
             `${this.isStarting ? "not-" : ""}ready`
         ].join(' ')
+        this.onResize();
     }
     toggleProfileModal() {
         this.profileModal.toggle();
@@ -158,12 +158,12 @@ export class AppComponent implements OnInit {
             return this.locationService.handleAnchorClick( current )
         }
     }
-    @HostListener('window:resize', ['$event.target.innerWidth'])
+    @HostListener('window:resize')
     onResize() {
         clearTimeout( this.resizeTimeout );
         this.resizeTimeout = setTimeout( () => {
             const $docViewer = $( this.docViewer.hostElement );
-            $docViewer.css( 'min-height', $( window ).height() - $docViewer.offset().top )
+            $docViewer.css( 'height', $( window ).height() - $docViewer.offset().top )
         }, 50 );
     }
 }

@@ -41,7 +41,7 @@ import { ProjectService } from '../services/project.service';
                 <div class="empty">
                     <h2>No projects</h2>
                     <img src="{{questionMarkSrc}}" alt="Question mark image"/>
-                    <a href="/create" id="create">Create Project</a>
+                    <a href="/dashboard/create" id="create" class="button">Create Project</a>
                 </div>
             </div>
         </div>
