@@ -38,7 +38,7 @@ import { ProjectService } from '../services/project.service';
                 <app-project-tile *ngFor="let project of projectMetadata.projects" [project]="project"></app-project-tile>
             </div>
             <div class="projects" *ngIf="projectMetadata.projects?.length == 0 && !isFetching">
-                <div class="empty">
+                <div class="empty" id="no-projects">
                     <h2>No projects</h2>
                     <img src="{{questionMarkSrc}}" alt="Question mark image"/>
                     <a href="/dashboard/create" id="create" class="button">Create Project</a>

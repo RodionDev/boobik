@@ -1,7 +1,7 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, enableProdMode } from '@angular/core';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { AppComponent } from './app.component';
 import { DocumentViewerComponent } from './common/document-viewer.component.ts';
@@ -19,6 +19,8 @@ import { ProjectService } from './services/project.service';
 import { SocketService } from './services/socket.service';
 import { EmbeddedComponentsService, EMBEDDED_COMPONENTS } from './services/embeddedComponents.service';
 const embeddableComponents = [ ProjectListComponent, ProjectTileComponent, ProjectViewerComponent ]
+if( process.env.NODE_ENV == 'production' )
+    enableProdMode()
 @NgModule({
     declarations: [
         AppComponent,

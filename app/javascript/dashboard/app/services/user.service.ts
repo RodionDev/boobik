@@ -47,16 +47,22 @@ export class UserService {
         if( this.socket ) return
         this.socket = this.socketService.actionCable.subscriptions.create( "UserChannel", {
             received: (data) => {
-                console.log( data )
-                switch( data.action ) {
-                    case 'destroy_session': return this.getAuthenticationDetails();
-                    case 'auth_token_revoked': {
-                        return this.getAuthenticationDetails((user) => {
-                            if( !user )
-                                (window as any).notices.queue("Account authentication token has been revoked. Please sign in again to issue a new token.", true);
-                        })
+                setTimeout( () => {
+                    switch( data.action ) {
+                        case 'destroy_session': {
+                            return this.getAuthenticationDetails((user) => {
+                                if( !user )
+                                    (window as any).notices.queue("Signed out in another tab!");
+                            });
+                        }
+                        case 'auth_token_revoked': {
+                            return this.getAuthenticationDetails((user) => {
+                                if( !user )
+                                    (window as any).notices.queue("Account authentication token has been revoked. Please sign in again to issue a new token.", true);
+                            })
+                        }
                     }
-                }
+                }, 250 );
             },
             disconnected: ({willAttemptReconnect}) => {
                 if( !willAttemptReconnect )
