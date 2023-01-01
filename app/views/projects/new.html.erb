@@ -3,19 +3,7 @@
         <h2 class="section-title">Create Project</h2>
         <div class="content">
             <div class="wrapper" id="form">
-                <%= form_with model: @project do |form| %>
-                    <section id="title">
-                        <%= form.label :title %>
-                        <%= form.text_field :title %>
-                    </section>
-                    <section id="desc">
-                        <%= form.label :description, for: :project_desc %>
-                        <%= form.text_area :desc, placeholder: 'This field is optional' %>
-                    </section>
-                    <section id="submit">
-                        <%= form.submit class: 'button' %>
-                    </section>
-                <% end %>
+                <app-project-create></app-project-create>
             </div>
         </div>
     </section>

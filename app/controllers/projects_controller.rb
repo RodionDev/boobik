@@ -27,6 +27,7 @@ class ProjectsController < ApplicationController
         end
     end
     def new
+        logger.info "Rending new project form"
         @project = Project.new
         respond_to do |format|
             format.html
@@ -40,13 +41,12 @@ class ProjectsController < ApplicationController
         end
     end
     def create
+        logger.info "Attempting to request creation of new project"
         title_field = ( params[:title] and !params[:title].empty? )
         terms_field = ( params[:tos] and params[:tos] == "on" )
         if not ( title_field and terms_field )
-            respond_to do |format|
-                format.html { redirect_to new_project_path, alert: "Failed to create project. Required fields (title and terms of service) not filled!" }
-                format.js { render :json => { error: "Failed to create project, required fields not filled", field_error: true, fields: { :title => title_field, :tos => terms_field }, params: params }, status: :internal_server_error }
-            end
+            logger.warn "Title or terms field missing, rejecting request via format"
+            render :json => { error: "Failed to create project, required fields not filled", field_error: true, fields: { :title => title_field, :tos => terms_field }, params: params }, status: :internal_server_error
         else
             begin
                 project = Project.create!(user_id: session[:user_id], title: params[:title].truncate( 25, :omission => ''), desc: params[:desc].truncate( 250, :omission => "... (truncated)" ))
