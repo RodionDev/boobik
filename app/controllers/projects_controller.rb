@@ -15,13 +15,14 @@ class ProjectsController < ApplicationController
     end
     def show
         @project = Project.find_by_id params[:id]
+        auth = ( @project && @project.user_id ) == current_user.id
         respond_to do |format|
             format.html
             format.json do
                 render :json => {
                     content: render_to_string( :layout => false, :formats => [:html] ),
                     title: 'Project Information',
-                    sub_title: ( @project && @project.title ) || 'Unnamed Project'
+                    sub_title: auth ? ( ( @project && @project.title ) || 'Unnamed Project' ) : 'Invalid Request'
                 }
             end
         end
@@ -41,31 +42,20 @@ class ProjectsController < ApplicationController
         end
     end
     def create
-        logger.info "Attempting to request creation of new project"
         title_field = ( params[:title] and !params[:title].empty? )
         terms_field = ( params[:tos] and params[:tos] == "on" )
         if not ( title_field and terms_field )
-            logger.warn "Title or terms field missing, rejecting request via format"
-            render :json => { error: "Failed to create project, required fields not filled", field_error: true, fields: { :title => title_field, :tos => terms_field }, params: params }, status: :internal_server_error
+            render :json => { error: "Failed to create project, required fields not filled", field_error: true, fields: { :title => title_field, :tos => terms_field } }, status: :internal_server_error
         else
             begin
                 project = Project.create!(user_id: session[:user_id], title: params[:title].truncate( 25, :omission => ''), desc: params[:desc].truncate( 250, :omission => "... (truncated)" ))
                 if project and not project.new_record?
-                    respond_to do |format|
-                        format.html { redirect_to project, notice: "Project created!" }
-                        format.json { render :json => { notice: "Project created!", project_id: project.id, params: params }, status: :ok }
-                    end
+                    render :json => { notice: "Project created!", project_id: project.id }, status: :ok
                 else
-                    respond_to do |format|
-                        format.html { redirect_to new_projects_path, alert: "Failed to create project. Server error occurred. Please try again later" }
-                        format.json { render :json => { error: "Failed to create project. Server error occurred. Please try again later" }, status: :internal_server_error }
-                    end
+                    render :json => { error: "Failed to create project. Server error occurred. Please try again later" }, status: :internal_server_error
                 end
             rescue ActiveRecord::InvalidRecord
-                respond_to do |format|
-                    format.html { redirect_to new_projects_path, alert: "Failed to create project, validation failed." }
-                    format.json { render :json => { error: "Failed to create project, validation failed." }, status: :internal_server_error }
-                end
+                render :json => { error: "Failed to create project, validation failed." }, status: :internal_server_error
             end
         end
     end
@@ -82,11 +72,16 @@ class ProjectsController < ApplicationController
     end
     def get_project_information()
         project = Project.find params[:id]
-        payload = {
-            :project => project.as_json,
-            :slides => project.project_slides.as_json
-        }
-        render :json => payload
+        if( ( project && project.user_id ) == current_user.id ) then
+            render :json => {
+                :project => project.as_json,
+                :slides => project.project_slides.as_json
+            }
+        else
+            render :json => {
+                :message => "Unable to retrieve project information; user not authorized"
+            }, status: :unauthorized
+        end
     end
 private
     def construct_payload
