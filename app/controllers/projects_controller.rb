@@ -8,7 +8,8 @@ class ProjectsController < ApplicationController
                 render :json => {
                     content: render_to_string( :layout => false, :formats => [:html] ),
                     title: 'Dashboard',
-                    sub_title: 'Projects'
+                    sub_title: 'Projects',
+                    banner_link: '<a href="/dashboard/create" class="new" title="Create project"><span>Create</span></a>'
                 }
             end
         end

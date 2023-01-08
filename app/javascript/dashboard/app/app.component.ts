@@ -36,13 +36,24 @@ import templateString from './template.html';
                 style({opacity: 1}),
                 animate('500ms ease-in', style({opacity: 0}))
             ])
+        ]),
+        trigger("linkState", [
+            transition(':enter', [
+                style({transform: 'translateX(20%)', opacity: 0}),
+                animate('200ms ease', style({transform: 'translateX(0)', opacity: 1}))
+            ]),
+            transition(':leave', [
+                style({transform: 'translateX(0)', opacity: 1}),
+                animate('200ms ease', style({transform: 'translateX(20%)', opacity: 0}))
+            ])
         ])
     ]
 })
 export class AppComponent implements OnInit {
     protected DOMConfig = {
         banner: false as any,
-        subBanner: '' as string
+        subBanner: '' as string,
+        bannerLink: false as any
     };
     isStarting:boolean = true;
     isFetching:boolean = true;
@@ -125,6 +136,7 @@ export class AppComponent implements OnInit {
         const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
         this.DOMConfig.banner = pageSlug != "index"
         this.DOMConfig.subBanner = this.currentDocument.sub_title;
+        this.DOMConfig.bannerLink = this.currentDocument.banner_link;
         this.hostClasses = [
             `page-${pageSlug}`,
             `tree-${pageSlug.match(/[^-]+/)[0]}`,
