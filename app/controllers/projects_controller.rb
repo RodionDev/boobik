@@ -23,7 +23,8 @@ class ProjectsController < ApplicationController
                 render :json => {
                     content: render_to_string( :layout => false, :formats => [:html] ),
                     title: 'Project Information',
-                    sub_title: auth ? ( ( @project && @project.title ) || 'Unnamed Project' ) : 'Invalid Request'
+                    sub_title: auth ? ( ( @project && @project.title ) || 'Unnamed Project' ) : false,
+                    banner_link: "<a href=\"/dashboard/project/#{@project.id}/edit\" class=\"edit_project\" title=\"Edit project details\"><span>Edit</span></a>"
                 }
             end
         end

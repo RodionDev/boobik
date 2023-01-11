@@ -41,6 +41,7 @@ nav
         background: $bg-gradient
         > .min-container
             padding: 1rem
+            position: relative
             h1.page-title
                 margin: 0
                 color: $darkb-accent
@@ -50,14 +51,20 @@ nav
                 font-weight: 100
                 display: inline-block
             #banner-link
-                float: right
-                > a.new
+                @extend .vertical-centre
+                right: 0
+                > a
                     background-color: rgba(0, 0, 0, 0.14)
                     border-radius: 5px
                     padding: 12px
                     box-shadow: inset 0px 0px 5px -3px black
+                    -webkit-transition: background-color 200ms ease
+                    -o-transition: background-color 200ms ease
+                    transition: background-color 200ms ease
                     span
                         font-family: Roboto
                         text-transform: uppercase
                         font-size: 13px
                         line-height: 13px
+                    &:hover
+                        background-color: rgba(0, 0, 0, 0.20)

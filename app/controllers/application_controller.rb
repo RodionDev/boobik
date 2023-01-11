@@ -36,7 +36,7 @@ private
             destroy_session
         end
     end
-    def destroy_session
+    def destroy_session(silent)
         return unless current_user
         current_user_id = current_user.id
         reset_session

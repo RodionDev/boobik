@@ -39,12 +39,12 @@ import templateString from './template.html';
         ]),
         trigger("linkState", [
             transition(':enter', [
-                style({transform: 'translateX(20%)', opacity: 0}),
-                animate('200ms ease', style({transform: 'translateX(0)', opacity: 1}))
+                style({transform: 'translate(20%, -50%)', opacity: 0}),
+                animate('200ms ease', style({transform: 'translate(0, -50%)', opacity: 1}))
             ]),
             transition(':leave', [
-                style({transform: 'translateX(0)', opacity: 1}),
-                animate('200ms ease', style({transform: 'translateX(20%)', opacity: 0}))
+                style({transform: 'translate(0, -50%)', opacity: 1}),
+                animate('200ms ease', style({transform: 'translate(20%, -50%)', opacity: 0}))
             ])
         ])
     ]
