@@ -39,7 +39,13 @@ class SessionsController < ApplicationController
         redirect_to flash.alert ? root_url : redirect_path
     end
     def destroy
-        destroy_session
+        if params[:revoke] then
+            logger.warn "Session destruction confirmed; authentication token regenerated."
+            current_user.generate_auth_token
+            destroy_session true
+        else
+            destroy_session
+        end
         redirect_to '/', notice: 'Signed out'
     end
 private

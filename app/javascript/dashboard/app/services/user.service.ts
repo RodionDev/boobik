@@ -55,7 +55,7 @@ export class UserService {
                                     (window as any).notices.queue("Signed out in another tab!");
                             });
                         }
-                        case 'auth_token_revoked': {
+                        case 'revoke_auth_token': {
                             return this.getAuthenticationDetails((user) => {
                                 if( !user )
                                     (window as any).notices.queue("Account authentication token has been revoked. Please sign in again to issue a new token.", true);
