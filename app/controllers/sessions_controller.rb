@@ -14,11 +14,11 @@ class SessionsController < ApplicationController
                 flash.notice = "Signed in!"
             rescue ActiveRecord::RecordNotFound
                 @auth.destroy!
-                flash.alert = "Unable to sigin. Authorization points to missing user account. Please try again now that dwindling authentications have been destroyed."
+                flash.alert = "Unable to sign in. Authorization points to missing user account. Please try again now that dwindling authentications have been destroyed."
             end
         else
             if not verify_google_email
-                flash.alert = "Failed to signup. Email address (#{info['email']}) has not been verified. Please verify this email on Google and retry"
+                flash.alert = "Failed to sign up. Email address (#{info['email']}) has not been verified. Please verify this email on Google and retry"
             elsif User.find_by_email info['email']
                 flash.alert = "Unable to sign up; email address is already in use."
             else
