@@ -152,10 +152,8 @@ export class AppComponent implements OnInit {
         if( button !== 0 || ctrlKey || metaKey ) {
             return true
         }
-        if(
-            this.profileModal && this.profileModal.isOpen &&
-            !( this.profileModal.nativeElement.contains( eventTarget ) || this.profileToggle.nativeElement.contains( eventTarget ) )
-        ) {
+        let modalOpen:boolean = this.profileModal && this.profileModal.isOpen;
+        if( modalOpen && !( this.profileModal.nativeElement.contains( eventTarget ) || this.profileToggle.nativeElement.contains( eventTarget ) ) ) {
             this.profileModal.toggle();
             return false;
         }
@@ -164,7 +162,13 @@ export class AppComponent implements OnInit {
             current = current.parentElement;
         }
         if( current instanceof HTMLAnchorElement ) {
-            return this.locationService.handleAnchorClick( current )
+            if( !this.locationService.handleAnchorClick( current ) ) {
+                if( modalOpen ) {
+                    this.profileModal.toggle();
+                }
+                return false;
+            }
+            return true
         }
     }
     @HostListener('window:resize')
