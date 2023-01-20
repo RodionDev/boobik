@@ -26,7 +26,8 @@
     (docRemoved)="onDocumentRemoved()"
     (docInserted)="onDocumentInserted()"
     (viewSwapped)="onDocumentSwapComplete()"
-    [hidden]="isStarting">
+    [hidden]="isStarting"
+    [hasBanner]="DOMConfig.banner">
 </app-document-viewer>
 <div id="flash-notices">
     <div class="notice">

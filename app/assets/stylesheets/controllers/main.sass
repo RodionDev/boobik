@@ -44,8 +44,10 @@ body
             -o-transform: scale(1)
             transform: scale(1)
         app-document-viewer
-            > div
-                /* Dynamic */
+            height: 100vh
+            position: relative
+            z-index: -1
+            > div.dynamic
                 opacity: 0
                 -webkit-transform: scale( 0.95 )
                 -ms-transform: scale( 0.95 )

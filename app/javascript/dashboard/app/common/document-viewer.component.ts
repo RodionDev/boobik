@@ -18,7 +18,7 @@ const ANIMATIONS:boolean = true;
 const ANIMATION_EXCLUDE:string = 'no-animations';
 @Component({
     selector: 'app-document-viewer',
-    template: ''
+    template: `<div id="spacer" *ngIf="hasBanner"></div>`
 })
 export class DocumentViewerComponent implements DoCheck, OnDestroy {
     hostElement: HTMLElement;
@@ -39,6 +39,7 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
             this.docContents$.emit( document );
         }
     }
+    @Input() hasBanner:boolean;
     constructor(
         elementRef: ElementRef,
         @Inject( ViewContainerRef ) private viewContainerRef,
@@ -48,6 +49,8 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
         private embeddedService: EmbeddedComponentsService
     ) {
         this.hostElement = elementRef.nativeElement;
+        $( this.currentView ).addClass("dynamic");
+        $( this.pendingView ).addClass("dynamic");
         this.docContents$
             .switchMap( doc => this.loadNextView( doc ) )
             .takeUntil( this.onDestroy$ ) 
