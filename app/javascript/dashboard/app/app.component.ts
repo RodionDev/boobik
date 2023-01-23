@@ -50,8 +50,8 @@ import templateString from './template.html';
     ]
 })
 export class AppComponent implements OnInit {
-    protected DOMConfig = {
-        banner: false as any,
+    DOMConfig = {
+        banner: false as boolean,
         subBanner: '' as string,
         bannerLink: false as any
     };
@@ -90,18 +90,23 @@ export class AppComponent implements OnInit {
             }
         });
         this.documentService.currentDocument.subscribe( ( event:HttpEvent<any> ) => {
+            this.logger.log( event )
             switch( event.type ) {
                 case HttpEventType.Sent:
+                    this.logger.log("Request sent")
                     this.fetchProgress = 0.2;
                     break;
                 case HttpEventType.ResponseHeader:
+                    this.logger.log("Request response headers received")
                     this.fetchProgress = 0.4;
                     this.requestContentLength = parseInt( event.headers.get('content-length') ) || 1;
                     break;
                 case HttpEventType.DownloadProgress:
-                    this.fetchProgress = Math.max( this.fetchProgress, Math.min( event.loaded / this.requestContentLength, 0.9 ) );
+                    this.logger.log("Request download progress report")
+                    this.fetchProgress = Math.max( this.fetchProgress, Math.min( event.loaded / this.requestContentLength, 0.8 ) );
                     break;
                 case HttpEventType.Response:
+                    this.logger.log("Request response")
                     this.fetchProgress = 0.9;
                     this.requestContentLength = 0;
                     this.currentDocument = event.body;
@@ -134,7 +139,7 @@ export class AppComponent implements OnInit {
     updateHost() {
         const urlWithoutSearch = this.currentUrl.match(/[^?]*/)[0];
         const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
-        this.DOMConfig.banner = pageSlug != "index"
+        this.DOMConfig.banner = pageSlug != "index" && !this.currentDocument.no_banner
         this.DOMConfig.subBanner = this.currentDocument.sub_title;
         this.DOMConfig.bannerLink = this.currentDocument.banner_link;
         this.hostClasses = [
