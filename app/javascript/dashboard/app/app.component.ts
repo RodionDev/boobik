@@ -147,13 +147,7 @@ export class AppComponent implements OnInit {
             `tree-${pageSlug.match(/[^-]+/)[0]}`,
             `${this.isStarting ? "not-" : ""}ready`
         ].join(' ')
-        setTimeout(() => {
-            const activeDiv = $( this.docViewer.hostElement ).find("div#spacer");
-            console.log(activeDiv);
-            console.log($("nav"));
-            console.log($("nav").outerHeight());
-            activeDiv.css("padding-top", $("nav").outerHeight());
-        }, 0);
+        this.onResize();
     }
     toggleProfileModal() {
         this.profileModal.toggle();
@@ -184,5 +178,10 @@ export class AppComponent implements OnInit {
     }
     @HostListener('window:resize')
     onResize() {
+        clearTimeout( this.resizeTimeout );
+        this.resizeTimeout = setTimeout( () => {
+            const activeDiv = $( this.docViewer.hostElement ).find("div.dynamic");
+            activeDiv.css("padding-top", this.DOMConfig.banner && $("nav").outerHeight() || 0);
+        }, 50 );
     }
 }
