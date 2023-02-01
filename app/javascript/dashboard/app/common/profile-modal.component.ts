@@ -6,18 +6,18 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
     template: `
         <div id="profile-modal" *ngIf="isOpen" [@modalState]>
             <div class="wrapper">
-                <div id="top" class="clearfix">
-                    <div id="image">
-                        <img bind-src="loggedInUser.image_url" alt="Profile avatar">
-                    </div>
-                    <div id="profile" class="vertical-centre">
-                        <div class="wrapper">
-                            <h1>{{loggedInUser.name}}</h1>
-                            <a href="/dashboard">Dashboard</a>
-                            <span>&mdash;</span>
-                            <a href="/account">Account</a>
+                <div id="top">
+                    <div class="wrapper">
+                        <div id="image">
+                            <img bind-src="loggedInUser.image_url" alt="Profile avatar">
                         </div>
+                        <span>{{loggedInUser.name}}</span>
                     </div>
+                </div>
+                <div id="mid">
+                    <a href="/dashboard">Projects</a>
+                    <a href="/account">Settings</a>
+                    <a href="/help">Help</a>
                 </div>
                 <a href="/signout" class="button inplace no-follow" id="signout">Sign out</a>
             </div>
@@ -27,10 +27,10 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
         trigger("modalState", [
             transition(':enter', [
                 style({ opacity: 0, top: "45px"}),
-                animate('100ms ease-out', style({opacity: 1, top: "55px"}))
+                animate('100ms ease-out', style({opacity: 1, top: "60px"}))
             ]),
             transition(':leave', [
-                style({opacity: 1, top: "55px"}),
+                style({opacity: 1, top: "60px"}),
                 animate('100ms ease-in', style({opacity: 0, top: "45px"}))
             ])
         ])
