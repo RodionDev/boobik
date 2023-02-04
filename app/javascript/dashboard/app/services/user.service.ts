@@ -7,15 +7,18 @@ import { switchMap } from 'rxjs/operators';
 import 'rxjs/add/observable/interval';
 import { UserInformation } from '../interfaces';
 import { LoggerService } from './logger.service';
+import { LocationService } from './location.service';
 import { SocketService } from './socket.service';
 @Injectable()
 export class UserService {
     currentUser = new EventEmitter<UserInformation>();
     private socket;
+    private signingOut:boolean;
     constructor(
         private logger: LoggerService,
         private http: HttpClient,
-        private socketService: SocketService
+        private socketService: SocketService,
+        private locationService: LocationService
     ) {
         this.getAuthenticationDetails(() => {
             Observable
@@ -23,6 +26,17 @@ export class UserService {
                 .do(() => this.getAuthenticationDetails() )
                 .subscribe();
         });
+    }
+    signOut() {
+        console.log("Signing out")
+        this.signingOut = true;
+        this.http.get<any>('/signout.json', { responseType: 'json' } )
+            .subscribe({
+                error: (error) => {
+                    console.log( error );
+                    throw Error(`Unable to sign out user, error: ${error.message}. Not able to continue de-auth process`);
+                }
+            });
     }
     protected getAuthenticationDetails( cb = (user?) => {} ) {
         this.http.get<any>('/api/user.json', { responseType: 'json' })
@@ -48,17 +62,35 @@ export class UserService {
         this.socket = this.socketService.actionCable.subscriptions.create( "UserChannel", {
             received: (data) => {
                 setTimeout( () => {
+                    console.warn("Websocket event fired of data");
+                    console.log( data );
                     switch( data.action ) {
                         case 'destroy_session': {
                             return this.getAuthenticationDetails((user) => {
-                                if( !user )
-                                    (window as any).notices.queue("Signed out in another tab!");
+                                if( !user ) {
+                                    if( this.signingOut ) {
+                                        (window as any).notices.queue("Signed out!");
+                                        console.warn("Resetting sign out status");
+                                        this.signingOut = false;
+                                        this.locationService.go("/");
+                                    } else {
+                                        (window as any).notices.queue("Signed out in another tab!");
+                                    }
+                                }
                             });
                         }
                         case 'revoke_auth_token': {
                             return this.getAuthenticationDetails((user) => {
-                                if( !user )
-                                    (window as any).notices.queue("Account authentication token has been revoked. Please sign in again to issue a new token.", true);
+                                if( !user ) {
+                                    if( this.signingOut ){
+                                        (window as any).notices.queue("Signed out of all devices");
+                                        console.warn("Resetting sign out status");
+                                        this.signingOut = false;
+                                        this.locationService.go("/");
+                                    } else {
+                                        (window as any).notices.queue("Account authentication token has been revoked. Please sign in again to issue a new token.", true);
+                                    }
+                                }
                             })
                         }
                     }

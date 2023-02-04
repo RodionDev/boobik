@@ -46,7 +46,14 @@ class SessionsController < ApplicationController
         else
             destroy_session
         end
-        redirect_to '/', notice: 'Signed out'
+        respond_to do |format|
+            format.html { redirect_to '/', notice: 'Signed out' }
+            format.json do
+                render :json => {
+                    content: 'Signed out!'
+                }, status: :ok
+            end
+        end
     end
 private
     def verify_google_email
