@@ -27,26 +27,30 @@ import { ProjectService } from '../services/project.service';
             <p>Error message received: <code>{{fetchError}}</code></p>
         </section>
     </div>
-    <section id="project" *ngIf="!fetchError">
-        <h2 class="section-title">{{sectionTitle}}</h2>
+    <section class="main" *ngIf="!fetchError">
         <div class="content">
             <div class="loading" *ngIf="isFetching" [@loadingPlaceholders]>
                 <p>Loading...</p>
             </div>
-            <div class="project" *ngIf="projectMetadata && !isFetching" >
-                <div id="top-row">
-                    <div class="project-metadata">
-                        <!-- Information about project, ability to change title/desc -->
-                        <div id="project-title"><h2>Title</h2><span>{{projectMetadata.title}}</span></div>
-                        <div id="project-desc"><h2>Desc</h2><span>{{projectMetadata.desc}}</span></div>
+            <div *ngIf="projectMetadata && !isFetching">
+                <section id="header-notice" *ngIf="!projectMetadata.project.status">
+                    <div class="wrapper warning" *ngIf="projectMetadata.slides.length > 1 && projectMetadata.slides.length < 10">
+                        <p>Unable to submit project for creation because you haven't got enough slides; you need at least 10 slides to submit</p>
                     </div>
-                    <div class="project-submission">
-                        <!-- A separate tile for submitting the project for creation, or seeing the reason it was rejected -->
-                        <p>You cannot submit your project yet because you don't have any slides</p>
+                    <div class="wrapper info" *ngIf="projectMetadata.slides.length >= 10">
+                        <p>All done creating slides? Submit your project for creation!</p>
                     </div>
-                </div>
-                <div class="project-slides">
-                    <!-- Preview of all slides in the project, including a way to open the slide editor -->
+                </section>
+                <div id="slide-container" [ngSwitch]="projectMetadata.slides.length">
+                    <div id="slide-notice" class="empty-notice" *ngSwitchCase="0">
+                        <h2>No Slides</h2>
+                        <img src="{{questionMarkSrc}}" alt="Question mark image"/>
+                        <a href="/editor/project/{{projectID}}" id="edit" class="button">Create Slides</a>
+                    </div>
+                    <div id="slides" *ngSwitchDefault>
+                        <h2 class="section-title">Project Slides</h2>
+                        <p>Test</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,6 +73,7 @@ export class ProjectViewerComponent implements OnInit {
     projectID:string = '';
     projectMetadata:ProjectMetadata;
     isFetching:boolean = false;
+    questionMarkSrc = require("images/question-mark.png");
     fetchError:Error;
     protected onDestroy$ = new EventEmitter<void>();
     protected void$ = of<void>(undefined);
@@ -100,6 +105,7 @@ export class ProjectViewerComponent implements OnInit {
         return this.void$
             .switchMap(() => this.projectService.getProjectInformation( this.projectID ) )
             .do(meta => this.projectMetadata = meta)
+            .do(() => console.log( this.projectMetadata ))
             .catch(err => {
                 this.fetchError = err;
                 throw `Failed to fetch ${err.message}`;

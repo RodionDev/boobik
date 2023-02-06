@@ -51,12 +51,9 @@ export class ProfileModalComponent implements OnInit {
     }
     @HostListener('click', ['$event.target', '$event.button', '$event.ctrlKey', '$event.metaKey'])
     onClick( eventTarget: HTMLElement, button: number, ctrlKey: boolean, metaKey: boolean ) {
-        if( button !== 0 || ctrlKey || metaKey ) {
-            return true;
-        } else if ( !this.signOutButton.nativeElement.contains( eventTarget ) ) {
+        if( button !== 0 || ctrlKey || metaKey || !this.signOutButton.nativeElement.contains( eventTarget ) ) {
             return true;
         }
-        console.warn("Blocking anchor tag event and logging out");
         this.userService.signOut();
         return false;
     }
