@@ -1,7 +1,4 @@
-console.warn "DEPRECATION WARNING: This file (helpers/projects_pane.coffee) has been deprecated. It will be removed in the future, migrate code to new CoffeeScript"
 class @ProjectsPane
-    errorState: false
-    isLoading: false
     constructor: ->
         $( "a.new-project" ).on "click", (event) =>
             do @spawnPlaceholder
@@ -23,43 +20,33 @@ class @ProjectsPane
         projectCount = $panel.find(".project:not(.hidden):not(.hiding)").length
         $wrapper.find ".notice"
             .fadeOut 250
-        if @isLoading
-            @hidePanel ->
-                $wrapper.find ".notice.loading"
-                    .fadeIn 250
-        else if projectCount and not $panel.hasClass "open"
-            do @showPanel
+        if projectCount and not $panel.hasClass "open"
+            $panel
+                .stop true
+                .addClass "open"
+                .show().css
+                    opacity: 0,
+                    marginTop: "50px"
+                .animate
+                    marginTop: 0,
+                    opacity: 1
+                , 250
         else if not projectCount and $panel.hasClass "open"
-            @hidePanel ->
-                $wrapper.find ".notice#no-projects"
-                    .fadeIn 250
+            $panel
+                .stop true
+                .animate
+                    marginTop: '50px',
+                    opacity: 0
+                , 150
+                .promise().done ->
+                    $panel.hide().removeClass "open"
+                    $wrapper.find ".notice#no-projects"
+                        .fadeIn 250
         setTimeout ->
             $panel.find ".hiding"
                 .addClass "hidden"
                 .removeClass "hiding"
         , 250
-    hidePanel: (done) ->
-        $panel = $ ".column#projects .wrapper .panel#projects"
-        $panel
-            .stop true
-            .animate
-                marginTop: '50px',
-                opacity: 0
-            , 150
-            .promise().done ->
-                $panel.hide().removeClass "open"
-                do done if done
-    showPanel: ->
-        $ ".column#projects .wrapper .panel#projects"
-            .stop true
-            .addClass "open"
-            .show().css
-                opacity: 0,
-                marginTop: "50px"
-            .animate
-                marginTop: 0,
-                opacity: 1
-            , 250
     spawnPlaceholder: ->
         $panel = $ ".column#projects .wrapper .panel#projects"
         return console.debug "Ignoring request to spawn placeholder; placeholder already visible inside panel!" if $panel.find(".project.placeholder:visible").length
@@ -98,8 +85,6 @@ class @ProjectsPane
                 console.log "SUCCESS"
                 console.log payload
                 console.log state
-                notices.queue "Created project!"
-                do @removePlaceholder
             error: (xhr, state, display) =>
                 console.error "Ajax error while pushing new project. #{state}, #{display}. XHR dump follows"
                 console.debug xhr
@@ -114,14 +99,6 @@ class @ProjectsPane
                 .addClass "hiding"
         do @refresh
     fetchProjects: (completeCallback, successCallback, errorCallback, insertionCallback) ->
-        $.ajax
-            url: '/projects'
-            dataType: 'json'
-            method: 'GET'
-            complete: (event) =>
-            success: (payload, state, xhr) =>
-                $panel = $ "<div class='panel' id='projects'></div>"
-            error: (xhr, state, display) =>
     revealPlaceholderHelp: ->
         $placeholder = $ ".column#projects .wrapper .panel#projects .project.placeholder"
         if $placeholder.length

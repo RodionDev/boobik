@@ -1,6 +1,8 @@
+    A coffeescript 'partial', abstracting away the splash screen
+    animations.
+    Copyright (c) Harry Felton 2017
 class @SplashHelper
     constructor: ->
-        console.warn("[DEPRECATION NOTICE] landing_splash.coffee is deprecated. Please see issue #1 at GitLab.com/hbomb79/bikboo/issues/1 for more information.")
         $( document ).ready =>
             $ '#learn-more'
                 .on 'click', (event) =>

@@ -3,18 +3,9 @@ Rails.application.routes.draw do
     get '/auth/failure', to: 'sessions#failure'
     get '/signin', to: redirect( path: '/auth/google' )
     get '/signout', to: 'sessions#destroy'
-    get '/dashboard', to: 'projects#index'
-    get '/dashboard/project/:id', to: 'projects#index'
-    get '/dashboard/create', to: 'projects#new'
-    scope :api do
-        get 'index.json', to: 'landing#fetch_json'
-        get 'dashboard.json', to: 'projects#index'
-        get 'user.json', to: 'users#get_current_user'
-        get '/dashboard/create.json', to: 'projects#new'
-        get '/dashboard/project/:id', to: 'projects#show'
-        get '/projects/metadata.json', to: 'projects#get_metadata'
-        get '/projects/:id.json', to: 'projects#get_project_information'
-        resources :projects
-    end
+    get '/dashboard', to: 'users#show'
+    resources :projects
+    resources :notifications, only: [:index, :update, :destroy]
+    get 'notifications/recent', to: 'notifications#recent'
     root 'landing#index'
 end
