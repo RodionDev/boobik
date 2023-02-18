@@ -6,8 +6,16 @@
     passed from rails
     Copyright (c) Harry Felton 2017
 class @Notices
+    focused: false
     constructor: ->
         @notices = []
+        @$noticeContainer = $ "#flash-notices"
+        @$notice = @$noticeContainer.find ".notice" if @$noticeContainer
+        @popCurrent() if @notices.length
+        setTimeout( () =>
+            $( document ).trigger( 'notices:ready', this )
+        , 0 )
+        @focused = document.visibilityState == 'visible'
         $( document )
             .on 'mouseenter', 'div#flash-notices .notice', =>
                 @showCurrent true
@@ -15,13 +23,14 @@ class @Notices
                 @showCurrent()
             .on "click", "div#flash-notices .notice #notice-close", (event) =>
                 @hideCurrent()
-        $( document ).ready =>
-            @$noticeContainer = $ "#flash-notices"
-            @$notice = @$noticeContainer.find ".notice" if @$noticeContainer
-            @popCurrent() if @notices.length
-            window.addEventListener 'load', =>
-                $( document ).trigger 'notices:ready', this
-            , false
+        document.addEventListener 'visibilitychange', =>
+            oldFocus = @focused
+            @focused = document.visibilityState == 'visible'
+            if oldFocus != @focused
+                clearTimeout( @timeout ) if @timeout
+                if @focused
+                    @timeout = setTimeout( @hideCurrent, 3000 )
+        , false
     queue: (notice, isAlert) ->
         @notices.push [ notice, isAlert ]
         @showCurrent()
@@ -30,8 +39,9 @@ class @Notices
         $notice = @$notice
         $noticeContainer = @$noticeContainer
         return if $noticeContainer.attr( "data-no-interrupt" ) is 'true'
-        clearTimeout( @timeout ) if @timeout
-        @timeout = setTimeout( @hideCurrent, 3000 ) unless noTimeout
+        if @focused
+            clearTimeout( @timeout ) if @timeout
+            @timeout = setTimeout( @hideCurrent, 3000 ) unless noTimeout
         $notice.find "p"
             .text @notices[ 0 ][ 0 ]
         $notice[ @notices[ 0 ][ 1 ] and 'addClass' or 'removeClass' ] 'alert'
@@ -49,5 +59,6 @@ class @Notices
     popCurrent: ->
         @notices.shift()
         @showCurrent()
-$( document ).ready =>
+window.addEventListener 'load', =>
     @notices = new Notices
+, false

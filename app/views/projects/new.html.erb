@@ -1,24 +1,10 @@
-<div class="sidebar">
-    <div class="wrapper" id="profile">
-        <h2 class="title">New Project</h2>
-        <p>A project provides a space to design your induction video.</p>
-        <p>Creating and designing a project is <i>completely free</i>.</p>
-    </div>
-</div>
-<main>
-    <div class="wrapper" id="form">
-        <%= form_with model: @project, local: true do |form| %>
-            <section id="title">
-                <%= form.label :title %>
-                <%= form.text_field :title %>
-            </section>
-            <section id="desc">
-                <%= form.label :description, for: :project_desc %>
-                <%= form.text_area :desc, placeholder: 'This field is optional' %>
-            </section>
-            <section id="submit">
-                <%= form.submit class: 'button' %>
-            </section>
-        <% end %>
-    </div>
+<main class="min-container">
+    <section id="create-project">
+        <h2 class="section-title">Create Project</h2>
+        <div class="content">
+            <div class="wrapper" id="form">
+                <app-project-create></app-project-create>
+            </div>
+        </div>
+    </section>
 </main>

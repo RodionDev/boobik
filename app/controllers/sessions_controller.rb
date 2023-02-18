@@ -14,11 +14,11 @@ class SessionsController < ApplicationController
                 flash.notice = "Signed in!"
             rescue ActiveRecord::RecordNotFound
                 @auth.destroy!
-                flash.alert = "Unable to sigin. Authorization points to missing user account. Please try again now that dwindling authentications have been destroyed."
+                flash.alert = "Unable to sign in. Authorization points to missing user account. Please try again now that dwindling authentications have been destroyed."
             end
         else
             if not verify_google_email
-                flash.alert = "Failed to signup. Email address (#{info['email']}) has not been verified. Please verify this email on Google and retry"
+                flash.alert = "Failed to sign up. Email address (#{info['email']}) has not been verified. Please verify this email on Google and retry"
             elsif User.find_by_email info['email']
                 flash.alert = "Unable to sign up; email address is already in use."
             else
@@ -39,8 +39,21 @@ class SessionsController < ApplicationController
         redirect_to flash.alert ? root_url : redirect_path
     end
     def destroy
-        reset_session
-        redirect_to '/', notice: 'Signed out'
+        if params[:revoke] then
+            logger.warn "Session destruction confirmed; authentication token regenerated."
+            current_user.generate_auth_token
+            destroy_session true
+        else
+            destroy_session
+        end
+        respond_to do |format|
+            format.html { redirect_to '/', notice: 'Signed out' }
+            format.json do
+                render :json => {
+                    content: 'Signed out!'
+                }, status: :ok
+            end
+        end
     end
 private
     def verify_google_email
@@ -53,5 +66,7 @@ private
         reset_session
         session[:auth_token] = user.auth_token
         session[:user_id] = user.id
+        cookies.encrypted[:user_id] = user.id
+        cookies.encrypted[:auth_token] = user.auth_token
     end
 end
