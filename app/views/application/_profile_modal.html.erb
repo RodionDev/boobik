@@ -1,0 +1,18 @@
+<div id="profile-modal">
+    <div class="wrapper">
+        <div id="top" class="clearfix">
+            <div id="image">
+                <img src="<%= current_user.image_url %>?size=100" alt="Profile avatar">
+            </div>
+            <div id="profile" class="vertical-centre">
+                <div class="wrapper">
+                    <h1><%= current_user.name %></h1>
+                    <a href="/dashboard">Dashboard</a>
+                    <span>&mdash;</span>
+                    <a href="/account">Account</a>
+                </div>
+            </div>
+        </div>
+        <a href="/signout" class="button inplace" id="signout">Sign out</a>
+    </div>
+</div>

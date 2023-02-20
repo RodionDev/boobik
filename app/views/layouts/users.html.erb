@@ -1,0 +1,13 @@
+<% content_for :nav do %>
+    <% unless content_for? :banner then %>
+        <%= render 'dashboard_navigation' %>
+    <% else %>
+        <%= yield :banner %>
+    <% end %>
+<% end %>
+<% content_for :content do %>
+    <div class="min-container clearfix" id="main">
+        <%= yield %>
+    </div>
+<% end %>
+<%= render file: 'layouts/application' %>

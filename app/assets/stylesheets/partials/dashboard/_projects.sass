@@ -1,0 +1,78 @@
+.column#projects
+    width: 73%
+    height: 100%
+    display: inline-block
+    h1
+        font-size: 2rem
+        text-align: center
+        font-weight: bolder
+        color: rgba(0,0,0,0.67)
+    a.button.new-project
+        position: absolute
+        top: 1rem
+        right: 1rem
+    .wrapper
+        @extend .abs-stretch
+        top: 67px
+        overflow-y: auto
+        .panel#projects
+            display: none
+            margin-top: 25%
+            padding: 0 1rem
+            .project
+                margin: 1rem auto
+                max-width: 900px
+                border-radius: 3px
+                box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.4)
+                position: relative
+                &.hidden
+                    display: none
+                .loading-overlay
+                    @extend .abs-stretch
+                    z-index: 5
+                    background-color: rgba( 255, 255, 255, 0.7 )
+                    display: none
+                .help-content, .content
+                    padding: 1rem 1.5rem
+                    .top-right-nav
+                        position: absolute
+                        right: 0
+                        top: 0
+                        padding: 1rem 1.5rem
+                        line-height: 1rem
+                .help-content
+                    @extend .abs-stretch
+                    overflow-y: auto
+                    background-color: white
+                    z-index: 2
+                    display: none
+                .footer
+                    @extend .clearfix
+                    margin-top: 1rem
+                    span
+                        line-height: 37px
+                    .right
+                        float: right
+                span.sub, p
+                    color: grey
+                    margin-top: 0
+                span.sub
+                    font-style: italic
+                h2.title
+                    color: #464646
+                    font-size: 1.7rem
+                    margin: 0.5rem 0
+                h2, h3
+                    font-family: Roboto
+                h3.sub
+                    font-weight: initial
+                    margin-bottom: 5px
+                    color: #676767
+                .placeholder-save
+                    margin-left: 0.8rem
+            .project.placeholder
+                textarea
+                    display: block
+        .notice img
+            width: 75px
+            margin-bottom: 23px
