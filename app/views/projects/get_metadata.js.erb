@@ -1,0 +1,15 @@
+(function( manager ){
+    var payload = <%= payload.to_json.html_safe %>;
+    var $projects = $("section#projects .content .projects .project");
+    if ( payload.project_count != $projects.length )
+        return manager.reloadContent();
+    var allOK = true;
+    $projects.each(function(){
+        if ( $(this).attr("data-updated-at") != payload.projects[$(this).attr("data-ajax-scope")].raw ) {
+            manager.reloadContent();
+            return allOK = false;
+        }
+    });
+    if ( allOK )
+        manager.updateDOMFromPayload( payload.projects, "project" )
+});

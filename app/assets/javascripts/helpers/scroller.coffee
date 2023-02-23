@@ -1,3 +1,4 @@
+console.warn("[DEPRECATION NOTICE] scroller.coffee has been deprecated. Please see issue #1 at GitLab.com/hbomb79/bikboo/issues/1 for more information.")
 @scrollToTarget = (target, time) ->
     return console.error "Unable to scroll to target #{target}. Target
         doesn't exist in DOM -- refactor query and retry

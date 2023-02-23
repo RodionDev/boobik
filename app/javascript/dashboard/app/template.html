@@ -1,0 +1,37 @@
+<div class="fetch-progress" [ngStyle]="{'width': ( fetchProgress * 100 ) + '%'}" *ngIf="isFetching" [@progressFade]></div>
+<nav *ngIf="!isStarting && DOMConfig.banner" [@navState]>
+    <div id="primary-banner">
+        <div class="min-container" id="navigation">
+            <a class="title" href="/">Bikboo</a>
+            <a href="#">About</a>
+            <a href="#">Pricing</a>
+            <a id="profile" href="{{currentUrl}}#" class="right no-follow" *ngIf="loggedInUser" (click)="toggleProfileModal()" #profileToggle>
+                <img src="{{loggedInUser.image_url}}?size=40">
+                <span>&#x25BC;</span>
+            </a>
+            <app-profile-modal *ngIf="loggedInUser" [user]="loggedInUser"></app-profile-modal>
+        </div>
+    </div>
+    <div id="sub-banner" *ngIf="DOMConfig.subBanner" [@navState]>
+        <div class="min-container">
+            <h1 class="page-title">{{DOMConfig.subBanner}}</h1>
+            <div id="banner-link" *ngIf="DOMConfig.bannerLink" [innerHTML]="DOMConfig.bannerLink" [@linkState]></div>
+        </div>
+    </div>
+</nav>
+<app-document-viewer
+    [doc]="currentDocument"
+    (docReceived)="onDocumentReceived()"
+    (docPrepared)="onDocumentPrepared()"
+    (docRemoved)="onDocumentRemoved()"
+    (docInserted)="onDocumentInserted()"
+    (viewSwapped)="onDocumentSwapComplete()"
+    [hidden]="isStarting"
+    [hasBanner]="DOMConfig.banner">
+</app-document-viewer>
+<div id="flash-notices">
+    <div class="notice">
+        <a href="{{currentUrl}}#" id="notice-close">&#10006;</a>
+        <p>If you can see this, something went wrong.</p>
+    </div>
+</div>

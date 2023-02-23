@@ -1,48 +1,58 @@
 #profile-modal
-    display: none
-    opacity: 0
+    z-index: 1
     position: absolute
-    top: 45px
+    top: 60px
     right: 0
-    width: 310px
+    width: 200px
     background-color: white
     box-shadow: 0px 6px 7px -3px rgba(0, 0, 0, 0.17)
     border: solid 1px #d2d2d2
     border-top: none
-    .wrapper
-        #top
-            padding: 1.5rem 1rem
-            position: relative
+    border-radius: 5px
+    overflow: hidden
+    #top
+        text-align: center
+        padding: 0.3rem 0
+        background-color: #f3f3f3
+        box-shadow: 0px 2px 5px -5px black
+        .wrapper
+            height: 30px
             #image
-                float: left
-                margin-right: 1rem
+                display: inline-block
                 img
-                    border-radius: 50%
-                    height: 69px
-            #profile
-                float: right
-                text-align: center
-                right: 1rem
-                .wrapper
-                    display: inline-block
-                    text-align: left
-                    h1
-                        margin-top: 0
-                        color: #424242
-                        font-size: 20px
-                    a
-                        line-height: initial
-                        padding: 0
-                        color: #00adff
-                        float: none
-                        &:hover
-                            color: #0b71a0
-                            text-decoration: underline
-                    span
-                        padding: 0px 5px
-        .button#signout
-            width: 100%
-            border-radius: 0
-            height: 47px
-            line-height: 47px
-            text-align: center
+                    width: 30px
+                    height: 30px
+                    line-height: 30px
+                    border-radius: 100%
+                    box-shadow: 0px 0px 9px -3px black
+            span
+                line-height: 30px
+                display: inline-block
+                vertical-align: top
+                color: #636363
+                margin-left: 6px
+                overflow: hidden
+                max-height: 30px
+                word-break: break-all
+                max-width: 150px
+    #mid
+        padding: 8px 0
+        a
+            display: block
+            line-height: inherit
+            padding: 8px 12px
+            margin-left: 1rem
+            color: #828482
+            font-weight: 100
+            -webkit-transition: margin-left 200ms ease, color 200ms ease
+            -o-transition: margin-left 200ms ease, color 200ms ease
+            transition: margin-left 200ms ease, color 200ms ease
+            &:hover
+                margin-left: 1.1rem
+                color: #5f5f5f
+    #signout
+        width: 100%
+        text-align: center
+        border-radius: 0
+        padding: 6px 13px
+        height: inherit
