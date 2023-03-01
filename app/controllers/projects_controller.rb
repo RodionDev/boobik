@@ -93,8 +93,4 @@ private
             }, status: :unauthorized
         end
     end
-private
-    def construct_payload
-        return current_user.projects
-    end
 end
