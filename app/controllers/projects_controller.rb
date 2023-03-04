@@ -65,10 +65,6 @@ class ProjectsController < ApplicationController
             end
         end
     end
-private
-    def construct_payload
-        return current_user.projects
-    end
     def get_metadata
         payload = { project_count: current_user.projects.count, projects: [] }
         projects = payload[:projects]
@@ -92,5 +88,9 @@ private
                 :message => "Unable to retrieve project information; user not authorized"
             }, status: :unauthorized
         end
+    end
+private
+    def construct_payload
+        return current_user.projects
     end
 end
