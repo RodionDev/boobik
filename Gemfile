@@ -62,3 +62,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Include a gem to embed SVG files inline (to enhance styling capabilities)
 gem 'inline_svg'
+
+# Added at 2018-06-05 11:27:49 +1200 by harryfelton:
+gem "redis", "~> 4.0"
