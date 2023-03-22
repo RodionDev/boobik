@@ -53,12 +53,12 @@ import { ProjectService } from '../services/project.service';
                 query(':enter', [
                     style({ opacity: 0, marginTop: '50px' }),
                     stagger(75, [
-                        animate('200ms ease-out', style({ opacity: 1, marginTop: '0' }))
+                        animate('200ms 100ms ease-out', style({ opacity: 1, marginTop: '0' }))
                     ])
                 ], {optional: true}),
                 query(':leave', [
                     stagger(100, [
-                        animate('250ms', style({ opacity: 0 }))
+                        animate('150ms', style({ opacity: 0 }))
                     ])
                 ], {optional: true})
             ])
@@ -66,7 +66,7 @@ import { ProjectService } from '../services/project.service';
         trigger('loadingPlaceholders', [
             transition(':enter', [
                 style({opacity: 0}),
-                animate('100ms ease-out', style({opacity: 1}))
+                animate('100ms 150ms ease-out', style({opacity: 1}))
             ]),
             transition(':leave', [
                 style({opacity: 1}),
@@ -88,9 +88,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     constructor(private logger: LoggerService, private projectService: ProjectService) {}
     ngOnInit() {
         setTimeout( () => {
-            const fetchingTimeout = setTimeout( () => this.isFetching = true, 200 )
+            this.isFetching = true;
             this.queryProjectMetadata(() => {
-                clearTimeout( fetchingTimeout )
                 this.isFetching = false;
                 Observable
                     .interval(60000)
