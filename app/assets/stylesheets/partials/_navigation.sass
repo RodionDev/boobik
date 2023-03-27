@@ -1,6 +1,6 @@
-$nav-height: 55px
+$nav-height: 50px
 nav
-    background: white
+    background: #212529
     box-shadow: 0px 0px 16px -5px rgb(0, 0, 0)
     position: absolute
     width: 100%
@@ -12,37 +12,43 @@ nav
                 display: inline-block
                 line-height: $nav-height
                 padding: 0 1rem
-                color: $darkb-accent
-                font-weight: bolder
+                color: #dcdbdb
+                font-size: 0.9rem
+                font-family: Roboto
                 &:hover
                     color: white
+                &.link
+                    border-radius: 6px
+                    line-height: initial
+                    padding: 6px 12px
+                    margin: 10px 0
+                    -webkit-transition: 100ms background-color ease
+                    -o-transition: 100ms background-color ease
+                    transition: 100ms background-color ease
+                    &:hover
+                        background-color: #31353a    
                 &.title
                     font-size: 1.8rem
-                    font-weight: bold
-                    color: $darkb-accent
                     float: left
-                    &:hover
-                        color: #004565
+                    font-weight: bold
+                    color: white
+                    font-family: Questrial, sans-serif
                 &.right
                     float: right
                 &#profile
                     img
                         display: inline-block
                         height: $nav-height
-                        padding: 11px 1px
-                        border-radius: 50%
+                        padding: 7px 0px
+                        border-radius: 100%
                         float: left
-                    span
-                        font-size: 13px
-                        color: #0070a5
-                        display: inline-block
                     &:hover span
                         color: #004565
             @import 'partials/profile_modal'
     #sub-banner
         background: $bg-gradient
         > .min-container
-            padding: 1rem
+            padding: 1.3rem 1rem
             position: relative
             h1.page-title
                 margin: 0
@@ -57,7 +63,7 @@ nav
                 right: 1rem
                 > a
                     background-color: rgba(0, 0, 0, 0.14)
-                    border-radius: 5px
+                    border-radius: 3px
                     padding: 12px
                     box-shadow: inset 0px 0px 5px -3px black
                     -webkit-transition: background-color 200ms ease
