@@ -13,7 +13,15 @@
     </div>
     <div id="sub-banner" *ngIf="DOMConfig.subBanner" [@navState]>
         <div class="min-container">
-            <h1 class="page-title">{{DOMConfig.subBanner}}</h1>
+            <h1 class="page-title">
+                <ul class="breadcrumbs">
+                    <li class="breadcrumb" *ngFor="let crumb of DOMConfig.breadcrumbs">
+                        <a href="{{crumb[1]}}" class="breadcrumb-link">{{crumb[0]}}</a>
+                        <span class="crumb-spacer">></span>
+                    </li>
+                    <span class="breadcrumb-link">{{DOMConfig.subBanner}}</span>
+                </ul>
+            </h1>
             <div id="banner-link" *ngIf="DOMConfig.bannerLink" [innerHTML]="DOMConfig.bannerLink" [@linkState]></div>
         </div>
     </div>

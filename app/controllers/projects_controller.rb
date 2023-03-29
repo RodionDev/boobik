@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
                 render :json => {
                     content: render_to_string( :layout => false, :formats => [:html] ),
                     title: 'Dashboard',
-                    sub_title: 'Projects',
+                    sub_title: 'Dashboard',
                     banner_link: '<a href="/dashboard/create" class="new" title="Create project"><span>Create</span></a>'
                 }
             end
@@ -25,7 +25,10 @@ class ProjectsController < ApplicationController
                         content: render_to_string( :layout => false, :formats => [:html] ),
                         title: 'Project Information',
                         sub_title: auth ? ( ( @project && @project.title ) || 'Unnamed Project' ) : false,
-                        banner_link: @project ? "<a href=\"/dashboard/project/#{@project.id}/edit\" class=\"edit_project\" title=\"Edit project details\"><span>Edit</span></a>" : ""
+                        banner_link: @project ? "<a href=\"/dashboard/project/#{@project.id}/edit\" class=\"edit_project\" title=\"Edit project details\"><span>Edit</span></a>" : "",
+                        breadcrumbs: [
+                            [ "Dashboard", "/dashboard" ]
+                        ]
                     }
                 end
             end
@@ -42,7 +45,10 @@ class ProjectsController < ApplicationController
                 render :json => {
                     content: render_to_string( :layout => false, :formats => [:html] ),
                     title: 'New Project',
-                    sub_title: 'New Project'
+                    sub_title: 'New Project',
+                    breadcrumbs: [
+                        [ "Dashboard", "/dashboard" ]
+                    ]
                 }
             end
         end
