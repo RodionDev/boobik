@@ -43,9 +43,16 @@ import { ProjectService } from '../services/project.service';
                 </section>
                 <div id="slide-container" [ngSwitch]="projectMetadata.slides.length">
                     <div id="slide-notice" class="empty-notice" *ngSwitchCase="0">
-                        <h2>No Slides</h2>
-                        <img src="{{questionMarkSrc}}" alt="Question mark image"/>
-                        <a href="/editor/project/{{projectID}}" id="edit" class="button">Create Slides</a>
+                        <div class="wrapper clearfix">
+                            <div id="left">
+                                <img src="{{questionMarkSrc}}" alt="Question mark image"/>
+                            </div>
+                            <div id="right">
+                                <h2>No Slides</h2>
+                                <p>This project doesn't have any slides yet, create some now in our slide editor</p>
+                                <a href="/editor/project/{{projectID}}" id="edit" class="button">Open Editor</a>
+                            </div>
+                        </div>
                     </div>
                     <div id="slides" *ngSwitchDefault>
                         <h2 class="section-title">Project Slides</h2>
