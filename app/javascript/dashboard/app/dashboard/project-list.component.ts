@@ -18,7 +18,7 @@ import { ProjectService } from '../services/project.service';
         <p>Error message received: <code>{{fetchError}}</code></p>
     </section>
     <section id="projects" class="main" *ngIf="!fetchError">
-        <h2 class="section-title">{{sectionTitle}}</h2>
+        <h2 class="section-title" *ngIf="projectMetadata.projects?.length">{{sectionTitle}}</h2>
         <div class="content">
             <div class="loading" *ngIf="isFetching" [@loadingPlaceholders]>
                 <div class="project placeholder">
@@ -39,9 +39,16 @@ import { ProjectService } from '../services/project.service';
             </div>
             <div class="projects" *ngIf="projectMetadata.projects?.length == 0 && !isFetching">
                 <div class="empty-notice" id="no-projects">
-                    <h2>No projects</h2>
-                    <img src="{{questionMarkSrc}}" alt="Question mark image"/>
-                    <a href="/dashboard/create" id="create" class="button">Create Project</a>
+                    <div class="wrapper clearfix">
+                        <div id="left">
+                            <img src="{{questionMarkSrc}}" alt="Question mark image"/>
+                        </div>
+                        <div id="right">
+                            <h2>No Projects</h2>
+                            <p>You haven't got any projects yet. Let's fix that now by creating one!</p>
+                            <a href="/dashboard/create" id="create" class="button">Create Project</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
