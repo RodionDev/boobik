@@ -59,8 +59,9 @@ bikboo-shell.tree-dashboard
                     #right
                         float: right
                         display: inline-block
-                        margin-left: 80px
+                        margin-left: 112px
                         padding: 0.5rem 1rem
+                        border-left: solid 1px #cccaca
                         h2
                             color: #525252
                         p
@@ -69,15 +70,14 @@ bikboo-shell.tree-dashboard
                             color: grey
             .project
                 background: #ffffff
-                overflow: hidden
-                position: relative
                 margin-bottom: 2rem
                 border-radius: 3px
+                border: solid 1px #d0d0d0
                 box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3)
                 min-height: 120px
+                display: flex
                 .details
-                    float: left
-                    width: 70%
+                    flex: auto
                     .empty
                         font-style: italic
                     .project-title
@@ -86,9 +86,9 @@ bikboo-shell.tree-dashboard
                         color: $darkb-accent
                         font-weight: 100
                         font-size: 1.3rem
-                        text-align: right
+                        display: flex
                         span.title
-                            float: left
+                            flex: 1
                             &.empty
                                 color: rgba(11, 69, 146, 0.7)
                         .status
@@ -100,6 +100,8 @@ bikboo-shell.tree-dashboard
                             padding: 5px 10px
                             border-radius: 50px
                             box-shadow: 0px 0px 8px -3px black
+                            float: right
+                            height: fit-content
                             &.error
                                 background: #ff4040
                             &.success
@@ -117,11 +119,9 @@ bikboo-shell.tree-dashboard
                         font-style: italic
                 .edit
                     text-align: center
-                    width: 30%
-                    max-width: 150px
-                    position: absolute
-                    right: 0
-                    height: 100%
+                    width: 150px
+                    position: relative
+                    flex: none
                     a
                         background: #fff
                         display: inline-block

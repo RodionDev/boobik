@@ -31,7 +31,7 @@ body
         transition: opacity 200ms ease, transform 200ms ease
         .fetch-progress
             height: 2px
-            background: linear-gradient(to right, #0f9df1 0%, #7b37ff 100%)
+            background: $bg-gradient
             position: absolute
             z-index: 1
             -webkit-transition: width 200ms ease-out
@@ -45,6 +45,7 @@ body
             transform: scale(1)
         app-document-viewer
             height: 100vh
+            overflow-y: auto
             position: relative
             z-index: -1
             > div.dynamic
