@@ -182,7 +182,7 @@ export class AppComponent implements OnInit {
     onResize() {
         clearTimeout( this.resizeTimeout );
         this.resizeTimeout = setTimeout( () => {
-            const activeDiv = $( this.docViewer.hostElement ).find("div.dynamic");
+            const activeDiv = $( this.docViewer.hostElement ).find("div.dynamic-nav-padding");
             activeDiv.css("padding-top", this.DOMConfig.banner && $("nav").outerHeight() || 0);
         }, 50 );
     }

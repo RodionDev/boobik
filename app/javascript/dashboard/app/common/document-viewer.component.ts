@@ -49,8 +49,8 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
         private embeddedService: EmbeddedComponentsService
     ) {
         this.hostElement = elementRef.nativeElement;
-        $( this.currentView ).addClass("dynamic");
-        $( this.pendingView ).addClass("dynamic");
+        $( this.currentView ).addClass("dynamic-nav-padding document");
+        $( this.pendingView ).addClass("dynamic-nav-padding document");
         this.docContents$
             .switchMap( doc => this.loadNextView( doc ) )
             .takeUntil( this.onDestroy$ ) 

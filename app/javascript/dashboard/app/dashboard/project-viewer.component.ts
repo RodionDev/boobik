@@ -33,15 +33,34 @@ import { ProjectService } from '../services/project.service';
                 <p>Loading...</p>
             </div>
             <div *ngIf="projectMetadata && !isFetching">
-                <section id="header-notice" *ngIf="!projectMetadata.project.status">
+                <!--<section id="header-notice" *ngIf="!projectMetadata.project.status">
                     <div class="wrapper warning" *ngIf="projectMetadata.slides.length > 1 && projectMetadata.slides.length < 10">
                         <p>Unable to submit project for creation because you haven't got enough slides; you need at least 10 slides to submit</p>
                     </div>
                     <div class="wrapper info" *ngIf="projectMetadata.slides.length >= 10">
                         <p>All done creating slides? Submit your project for creation!</p>
                     </div>
-                </section>
-                <div id="slide-container" [ngSwitch]="projectMetadata.slides.length">
+                </section>-->
+                <div id="sidebar" class="dynamic-nav-padding">
+                    <div class="wrapper">
+                        <div class="title">
+                            <h2>Project Editor</h2>
+                            <span class="sub">{{projectMetadata?.title}}</span>
+                        </div>
+                        <div class="options">
+                            <ul id="top-level">
+                                <li><a href="#">Overview</a></li>
+                                <li><a href="#">Slide Editor</a></li>
+                                <li><a href="#">Help</a></li>
+                                <li><a href="#">Settings</a></li>
+                                <li id="bottom">
+                                    <a href="#">Collapse</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="dynamic-container" [ngSwitch]="projectMetadata.slides.length">
                     <div id="slide-notice" class="empty-notice" *ngSwitchCase="0">
                         <div class="wrapper clearfix">
                             <div id="left">
