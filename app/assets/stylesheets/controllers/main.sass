@@ -33,7 +33,7 @@ body
             height: 2px
             background: linear-gradient(to right, #0f9df1 0%, #7b37ff 100%)
             position: absolute
-            z-index: 1
+            z-index: 101
             -webkit-transition: width 200ms ease-out
             -o-transition: width 200ms ease-out
             transition: width 200ms ease-out
@@ -45,9 +45,7 @@ body
             transform: scale(1)
         app-document-viewer
             height: 100vh
-            overflow-y: auto
             position: relative
-            z-index: -1
             > div.document
                 opacity: 0
                 -webkit-transform: scale( 0.95 )
