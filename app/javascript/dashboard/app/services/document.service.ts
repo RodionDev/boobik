@@ -71,6 +71,8 @@ export class DocumentService {
                 this.lastUrl = url
             })
             .catch(error => {
+                console.error("DocumentService received error while trying to fetch document contents for", url);
+                console.debug(error);
                 let doc_response:DocumentContents = {
                     content: ERROR_CONTENT.replace(/STATUSTEXT/g, error.statusText)
                                           .replace(/STATUSCODE/g, error.status),
