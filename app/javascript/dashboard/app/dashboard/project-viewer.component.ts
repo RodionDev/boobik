@@ -45,7 +45,7 @@ import { ProjectService } from '../services/project.service';
                     <div class="wrapper">
                         <div class="title">
                             <h2>Project Editor</h2>
-                            <span class="sub">{{projectMetadata?.title}}</span>
+                            <span class="sub">{{projectMetadata?.project.title}}</span>
                         </div>
                         <div class="options">
                             <ul id="top-level">
