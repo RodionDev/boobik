@@ -84,10 +84,6 @@ export class AppComponent implements OnInit {
             if( url == this.currentUrl ) {
             } else {
                 this.currentUrl = url;
-                clearTimeout( this.progressBarTimeout )
-                this.progressBarTimeout = setTimeout( () => {
-                    this.isFetching = true;
-                }, 300 )
             }
         });
         this.documentService.currentDocument.subscribe( ( event:HttpEvent<any> ) => {
@@ -95,6 +91,7 @@ export class AppComponent implements OnInit {
             switch( event.type ) {
                 case HttpEventType.Sent:
                     this.logger.log("Request sent")
+                    this.isFetching = true
                     this.fetchProgress = 0.2;
                     break;
                 case HttpEventType.ResponseHeader:

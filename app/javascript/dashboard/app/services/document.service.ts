@@ -39,12 +39,13 @@ export class DocumentService {
             next: (user) => { this.currentUser = user }
         });
         this.locationService.currentUrl
-            .switchMap(url => {
+            .switchMap( url => of( url.replace( /#.*$/, "" ) ) )
+            .switchMap( url => {
                 const splitRegex = /^([^?]*)(\?[^?]+)$/
                 if( url.match( splitRegex ) )
                     return of( url.replace( splitRegex, ( input, pre, post ) => ( pre || '/index' ) + ".json" + post ) )
                 return of( ( url || "/index" ) + ".json" );
-            })
+            } )
             .do( url => {
                 if( url != this.lastUrl )
                     this.onUrlUpdate$.next( url )
