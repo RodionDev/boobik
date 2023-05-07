@@ -6,9 +6,10 @@ import { interval } from 'rxjs/observable/interval';
 import { switchMap } from 'rxjs/operators';
 import 'rxjs/add/observable/interval';
 import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
-import { ProjectMetadata } from '../interfaces';
+import { ProjectMetadata, SidebarStatus } from '../interfaces';
 import { LoggerService } from '../services/logger.service';
 import { ProjectService } from '../services/project.service';
+import { SidebarService } from '../services/sidebar.service';
 @Component({
     selector: 'app-project-viewer',
     template: `
@@ -101,6 +102,8 @@ export class ProjectViewerComponent implements OnInit {
     isFetching:boolean = false;
     questionMarkSrc = require("images/question-mark.png");
     fetchError:Error;
+    protected sidebarActive:boolean = false;
+    protected sidebarCollapsed:boolean = false;
     protected onDestroy$ = new EventEmitter<void>();
     protected void$ = of<void>(undefined);
     get sectionTitle() : string {
@@ -109,14 +112,23 @@ export class ProjectViewerComponent implements OnInit {
     constructor(
         private el: ElementRef,
         private logger: LoggerService,
-        private projectService: ProjectService
+        private projectService: ProjectService,
+        private sidebarService: SidebarService
     ) {
         this.projectID = el.nativeElement.attributes.project.value;
+        this.sidebarService.status.subscribe( ( status:SidebarStatus ) => {
+            this.sidebarActive = status.active;
+            this.sidebarCollapsed = status.collapsed;
+        } );
     }
     ngOnInit() {
         this.isFetching = true
         this.queryProjectInfo(() => {
             this.isFetching = false;
+            setTimeout( () => {
+                this.sidebarService.active = true;
+                this.sidebarService.collapsed = false;
+            }, 50 );
             Observable
                 .interval(60000)
                 .do(() => this.queryProjectInfo() )
@@ -125,6 +137,7 @@ export class ProjectViewerComponent implements OnInit {
         })
     }
     ngOnDestroy() {
+        this.sidebarService.active = false;
         this.onDestroy$.emit();
     }
     protected queryProjectInfo(successCb = () => {}) {

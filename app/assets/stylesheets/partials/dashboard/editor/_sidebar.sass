@@ -1,11 +1,27 @@
-#sidebar
+&.idle.sidebar-active
+    .main .content #sidebar
+        -webkit-transform: translateX(0)
+        -ms-transform: translateX(0)
+        -o-transform: translateX(0)
+        transform: translateX(0)
+        opacity: 1
+.main .content #sidebar
     position: fixed
     top: 0
     left: 0
     bottom: 0
+    display: block
     width: 220px
     background: #3a3a3a
     border-right: solid 2px #212121
+    -webkit-transform: translateX(-50%)
+    -ms-transform: translateX(-50%)
+    -o-transform: translateX(-50%)
+    transform: translateX(-50%)
+    opacity: 0
+    -webkit-transition: transform 150ms ease, opacity 150ms ease
+    -o-transition: transform 150ms ease, opacity 150ms ease
+    transition: transform 150ms ease, opacity 150ms ease
     .wrapper
         .title
             color: #eeeeee

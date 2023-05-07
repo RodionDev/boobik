@@ -29,3 +29,7 @@ export interface ProjectMetadataList {
     project_count: number,
     projects: ProjectMetadata[]
 }
+export interface SidebarStatus {
+    active: boolean,
+    collapsed: boolean
+}

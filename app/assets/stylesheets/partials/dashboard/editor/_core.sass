@@ -1,2 +1,10 @@
-.main .content
-    @import 'partials/dashboard/editor/sidebar'
+$sidebar-width: 220px
+$collapsed-sidebar-width: 50px
+/* On `bikboo-shell` */
+&.sidebar-active.idle
+    app-document-viewer .document
+        padding-left: $sidebar-width
+    &.sidebar-collapsed
+        app-document-viewer .document
+            padding-left: $collapsed-sidebar-width !important
+@import 'partials/dashboard/editor/sidebar'

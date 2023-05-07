@@ -10,7 +10,8 @@ import { LoggerService } from './services/logger.service';
 import { UserService } from './services/user.service';
 import { LocationService } from './services/location.service';
 import { SocketService } from './services/socket.service';
-import { DocumentContents, UserInformation } from './interfaces';
+import { SidebarService } from './services/sidebar.service';
+import { DocumentContents, UserInformation, SidebarStatus } from './interfaces';
 import $ from 'jquery';
 import templateString from './template.html';
 @Component({
@@ -54,11 +55,14 @@ export class AppComponent implements OnInit {
         banner: false as boolean,
         subBanner: '' as string,
         bannerLink: false as any,
-        breadcrumbs: []
+        breadcrumbs: [] as any[],
+        sidebarActive: false as boolean,
+        sidebarCollapsed: false as boolean
     };
     isStarting:boolean = true;
     isFetching:boolean = true;
     fetchProgress:number = 0;
+    protected isSwapping:boolean = false;
     protected requestContentLength:number = 0;
     private progressBarTimeout:any;
     loggedInUser:UserInformation;
@@ -78,6 +82,7 @@ export class AppComponent implements OnInit {
         private locationService: LocationService,
         private logger: LoggerService,
         private hostElement: ElementRef,
+        private sidebarService: SidebarService
     ) {}
     ngOnInit() {
         this.locationService.currentUrl.subscribe(url => {
@@ -86,6 +91,11 @@ export class AppComponent implements OnInit {
                 this.currentUrl = url;
             }
         });
+        this.sidebarService.status.subscribe( ( status:SidebarStatus ) => {
+            this.DOMConfig.sidebarActive = status.active;
+            this.DOMConfig.sidebarCollapsed = status.collapsed;
+            this.updateHost();
+        } );
         this.documentService.currentDocument.subscribe( ( event:HttpEvent<any> ) => {
             this.logger.log( event )
             switch( event.type ) {
@@ -116,16 +126,19 @@ export class AppComponent implements OnInit {
             this.loggedInUser = user;
         } );
     }
-    onDocumentReceived(){}
+    onDocumentReceived(){
+        this.isSwapping = true;
+    }
     onDocumentPrepared(){
         clearTimeout( this.progressBarTimeout );
     }
     onDocumentRemoved(){}
     onDocumentInserted() {
-        setTimeout(() => this.updateHost(), 0);
+        this.updateHost();
     }
     onDocumentSwapComplete(){
         this.fetchProgress = 1;
+        this.isSwapping = false;
         setTimeout(() => {
             this.isStarting = false
             this.updateHost()
@@ -135,18 +148,23 @@ export class AppComponent implements OnInit {
         }, 500);
     }
     updateHost() {
-        const urlWithoutSearch = this.currentUrl.match(/[^?]*/)[0];
-        const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
-        this.DOMConfig.banner = pageSlug != "index" && !this.currentDocument.no_banner
-        this.DOMConfig.subBanner = this.currentDocument.sub_title;
-        this.DOMConfig.bannerLink = this.currentDocument.banner_link;
-        this.DOMConfig.breadcrumbs = this.currentDocument.breadcrumbs || [];
-        this.hostClasses = [
-            `page-${pageSlug}`,
-            `tree-${pageSlug.match(/[^-]+/)[0]}`,
-            `${this.isStarting ? "not-" : ""}ready`
-        ].join(' ')
-        this.onResize();
+        setTimeout( () => {
+            const urlWithoutSearch = this.currentUrl.match(/[^?]*/)[0];
+            const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
+            this.DOMConfig.banner = pageSlug != "index" && !this.currentDocument.no_banner
+            this.DOMConfig.subBanner = this.currentDocument.sub_title;
+            this.DOMConfig.bannerLink = this.currentDocument.banner_link;
+            this.DOMConfig.breadcrumbs = this.currentDocument.breadcrumbs || [];
+            this.hostClasses = [
+                `page-${pageSlug}`,
+                `tree-${pageSlug.match(/[^-]+/)[0]}`,
+                `${this.isStarting ? "not-" : ""}ready`,
+                this.isSwapping ? 'swapping' : 'idle',
+                `sidebar-${this.DOMConfig.sidebarActive ? 'active' : 'inactive'}`,
+                ( this.DOMConfig.sidebarCollapsed && this.DOMConfig.sidebarActive ) ? `sidebar-collapsed` : null,
+            ].join(' ')
+            this.onResize();
+        }, 0 );
     }
     toggleProfileModal() {
         this.profileModal.toggle();
