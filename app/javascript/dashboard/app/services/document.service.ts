@@ -39,13 +39,12 @@ export class DocumentService {
             next: (user) => { this.currentUser = user }
         });
         this.locationService.currentUrl
-            .switchMap( url => of( url.replace( /#.*$/, "" ) ) )
-            .switchMap( url => {
+            .switchMap(url => {
                 const splitRegex = /^([^?]*)(\?[^?]+)$/
                 if( url.match( splitRegex ) )
                     return of( url.replace( splitRegex, ( input, pre, post ) => ( pre || '/index' ) + ".json" + post ) )
                 return of( ( url || "/index" ) + ".json" );
-            } )
+            })
             .do( url => {
                 if( url != this.lastUrl )
                     this.onUrlUpdate$.next( url )
@@ -72,8 +71,6 @@ export class DocumentService {
                 this.lastUrl = url
             })
             .catch(error => {
-                console.error("DocumentService received error while trying to fetch document contents for", url);
-                console.debug(error);
                 let doc_response:DocumentContents = {
                     content: ERROR_CONTENT.replace(/STATUSTEXT/g, error.statusText)
                                           .replace(/STATUSCODE/g, error.status),

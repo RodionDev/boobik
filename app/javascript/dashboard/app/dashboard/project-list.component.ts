@@ -18,7 +18,7 @@ import { ProjectService } from '../services/project.service';
         <p>Error message received: <code>{{fetchError}}</code></p>
     </section>
     <section id="projects" class="main" *ngIf="!fetchError">
-        <h2 class="section-title" *ngIf="projectMetadata.projects?.length">{{sectionTitle}}</h2>
+        <h2 class="section-title" *ngIf="projectMetadata.projects?.length || isFetching">{{sectionTitle}}</h2>
         <div class="content">
             <div class="loading" *ngIf="isFetching" [@loadingPlaceholders]>
                 <div class="project placeholder">
@@ -60,7 +60,7 @@ import { ProjectService } from '../services/project.service';
                 query(':enter', [
                     style({ opacity: 0, marginTop: '50px' }),
                     stagger(75, [
-                        animate('200ms 100ms ease-out', style({ opacity: 1, marginTop: '0' }))
+                        animate('200ms 200ms ease-out', style({ opacity: 1, marginTop: '0' }))
                     ])
                 ], {optional: true}),
                 query(':leave', [
@@ -77,7 +77,7 @@ import { ProjectService } from '../services/project.service';
             ]),
             transition(':leave', [
                 style({opacity: 1}),
-                animate('100ms ease-in', style({opacity: 0}))
+                animate('200ms ease-in', style({opacity: 0}))
             ])
         ])
     ]
@@ -95,9 +95,9 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     constructor(private logger: LoggerService, private projectService: ProjectService) {}
     ngOnInit() {
         setTimeout( () => {
-            this.isFetching = true;
+            const fetchingTimeout = setTimeout( () => this.isFetching = true, 200 );
             this.queryProjectMetadata(() => {
-                this.isFetching = false;
+                clearTimeout( fetchingTimeout );
                 Observable
                     .interval(60000)
                     .do(() => this.queryProjectMetadata() )
@@ -112,7 +112,16 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     protected queryProjectMetadata(successCb = () => {}) {
         return this.void$
             .switchMap(() => this.projectService.getProjectMetadata() )
-            .do(meta => this.projectMetadata = meta)
+            .do(meta => {
+                if( this.isFetching ) {
+                    setTimeout( () => {
+                        this.isFetching = false
+                        this.projectMetadata = meta
+                    }, 500 );
+                } else {
+                    this.projectMetadata = meta;
+                }
+            })
             .catch(err => {
                 this.fetchError = `${err.name} - ${err.status}: ${err.message}`;
                 throw `Failed to fetch ${err.message}`;

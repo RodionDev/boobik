@@ -1,6 +1,5 @@
 bikboo-shell.tree-dashboard
     @import 'partials/form'
-    @import 'partials/dashboard/editor/core'
     .min-container
         min-width: 600px !important
     background: #eeeeee
@@ -71,12 +70,13 @@ bikboo-shell.tree-dashboard
                             color: grey
             .project
                 background: #ffffff
+                box-shadow: 0px 0px 6px -3px black
                 margin-bottom: 2rem
-                border-radius: 3px
-                border: solid 1px #d0d0d0
-                box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3)
                 min-height: 120px
                 display: flex
+                border: solid 1px #dedddd
+                border-radius: 3px
+                overflow: hidden
                 .details
                     flex: auto
                     .empty
@@ -155,12 +155,7 @@ bikboo-shell.tree-dashboard
                         &:active
                             background: #eeeeee
             .project.placeholder
-                background: #ffffff
-                overflow: hidden
-                margin-bottom: 2rem
-                border-radius: 3px
-                box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3)
-                min-height: 120px
+                display: block
                 .line
                     max-width: 90%
                     height: 1rem
@@ -171,7 +166,7 @@ bikboo-shell.tree-dashboard
                     animation-name: placeholderWave
                     background: linear-gradient(to right, #0f9df1 40%, #7b37ff 48%, #0f9df1 60%)
                     background-size: 2000px
-    @import 'partials/dashboard/create.sass'
+    @import 'partials/dashboard/_create.sass'
 footer
     position: absolute
     bottom: 0

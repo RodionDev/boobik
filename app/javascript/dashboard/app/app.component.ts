@@ -10,8 +10,7 @@ import { LoggerService } from './services/logger.service';
 import { UserService } from './services/user.service';
 import { LocationService } from './services/location.service';
 import { SocketService } from './services/socket.service';
-import { SidebarService } from './services/sidebar.service';
-import { DocumentContents, UserInformation, SidebarStatus } from './interfaces';
+import { DocumentContents, UserInformation } from './interfaces';
 import $ from 'jquery';
 import templateString from './template.html';
 @Component({
@@ -55,14 +54,11 @@ export class AppComponent implements OnInit {
         banner: false as boolean,
         subBanner: '' as string,
         bannerLink: false as any,
-        breadcrumbs: [] as any[],
-        sidebarActive: false as boolean,
-        sidebarCollapsed: false as boolean
+        breadcrumbs: []
     };
     isStarting:boolean = true;
     isFetching:boolean = true;
     fetchProgress:number = 0;
-    protected isSwapping:boolean = false;
     protected requestContentLength:number = 0;
     private progressBarTimeout:any;
     loggedInUser:UserInformation;
@@ -82,26 +78,23 @@ export class AppComponent implements OnInit {
         private locationService: LocationService,
         private logger: LoggerService,
         private hostElement: ElementRef,
-        private sidebarService: SidebarService
     ) {}
     ngOnInit() {
         this.locationService.currentUrl.subscribe(url => {
             if( url == this.currentUrl ) {
             } else {
                 this.currentUrl = url;
+                clearTimeout( this.progressBarTimeout )
+                this.progressBarTimeout = setTimeout( () => {
+                    this.isFetching = true;
+                }, 300 )
             }
         });
-        this.sidebarService.status.subscribe( ( status:SidebarStatus ) => {
-            this.DOMConfig.sidebarActive = status.active;
-            this.DOMConfig.sidebarCollapsed = status.collapsed;
-            this.updateHost();
-        } );
         this.documentService.currentDocument.subscribe( ( event:HttpEvent<any> ) => {
             this.logger.log( event )
             switch( event.type ) {
                 case HttpEventType.Sent:
                     this.logger.log("Request sent")
-                    this.isFetching = true
                     this.fetchProgress = 0.2;
                     break;
                 case HttpEventType.ResponseHeader:
@@ -126,19 +119,16 @@ export class AppComponent implements OnInit {
             this.loggedInUser = user;
         } );
     }
-    onDocumentReceived(){
-        this.isSwapping = true;
-    }
+    onDocumentReceived(){}
     onDocumentPrepared(){
         clearTimeout( this.progressBarTimeout );
     }
     onDocumentRemoved(){}
     onDocumentInserted() {
-        this.updateHost();
+        setTimeout(() => this.updateHost(), 0);
     }
     onDocumentSwapComplete(){
         this.fetchProgress = 1;
-        this.isSwapping = false;
         setTimeout(() => {
             this.isStarting = false
             this.updateHost()
@@ -148,23 +138,18 @@ export class AppComponent implements OnInit {
         }, 500);
     }
     updateHost() {
-        setTimeout( () => {
-            const urlWithoutSearch = this.currentUrl.match(/[^?]*/)[0];
-            const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
-            this.DOMConfig.banner = pageSlug != "index" && !this.currentDocument.no_banner
-            this.DOMConfig.subBanner = this.currentDocument.sub_title;
-            this.DOMConfig.bannerLink = this.currentDocument.banner_link;
-            this.DOMConfig.breadcrumbs = this.currentDocument.breadcrumbs || [];
-            this.hostClasses = [
-                `page-${pageSlug}`,
-                `tree-${pageSlug.match(/[^-]+/)[0]}`,
-                `${this.isStarting ? "not-" : ""}ready`,
-                this.isSwapping ? 'swapping' : 'idle',
-                `sidebar-${this.DOMConfig.sidebarActive ? 'active' : 'inactive'}`,
-                ( this.DOMConfig.sidebarCollapsed && this.DOMConfig.sidebarActive ) ? `sidebar-collapsed` : null,
-            ].join(' ')
-            this.onResize();
-        }, 0 );
+        const urlWithoutSearch = this.currentUrl.match(/[^?]*/)[0];
+        const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
+        this.DOMConfig.banner = pageSlug != "index" && !this.currentDocument.no_banner
+        this.DOMConfig.subBanner = this.currentDocument.sub_title;
+        this.DOMConfig.bannerLink = this.currentDocument.banner_link;
+        this.DOMConfig.breadcrumbs = this.currentDocument.breadcrumbs || [];
+        this.hostClasses = [
+            `page-${pageSlug}`,
+            `tree-${pageSlug.match(/[^-]+/)[0]}`,
+            `${this.isStarting ? "not-" : ""}ready`
+        ].join(' ')
+        this.onResize();
     }
     toggleProfileModal() {
         this.profileModal.toggle();
@@ -197,7 +182,7 @@ export class AppComponent implements OnInit {
     onResize() {
         clearTimeout( this.resizeTimeout );
         this.resizeTimeout = setTimeout( () => {
-            const activeDiv = $( this.docViewer.hostElement ).find("div.dynamic-nav-padding");
+            const activeDiv = $( this.docViewer.hostElement ).find("div.dynamic");
             activeDiv.css("padding-top", this.DOMConfig.banner && $("nav").outerHeight() || 0);
         }, 50 );
     }
