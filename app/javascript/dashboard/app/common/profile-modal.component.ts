@@ -27,12 +27,12 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
     animations: [
         trigger("modalState", [
             transition(':enter', [
-                style({ opacity: 0, top: "45px"}),
-                animate('100ms ease-out', style({opacity: 1, top: "55px"}))
+                style({ opacity: 0, top: "40px"}),
+                animate('100ms ease-out', style({opacity: 1, top: "50px"}))
             ]),
             transition(':leave', [
-                style({opacity: 1, top: "55px"}),
-                animate('100ms ease-in', style({opacity: 0, top: "45px"}))
+                style({opacity: 1, top: "50px"}),
+                animate('100ms ease-in', style({opacity: 0, top: "40px"}))
             ])
         ])
     ]

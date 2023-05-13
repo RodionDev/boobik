@@ -49,8 +49,8 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
         private embeddedService: EmbeddedComponentsService
     ) {
         this.hostElement = elementRef.nativeElement;
-        $( this.currentView ).addClass("dynamic");
-        $( this.pendingView ).addClass("dynamic");
+        $( this.currentView ).addClass("dynamic-nav-padding document");
+        $( this.pendingView ).addClass("dynamic-nav-padding document");
         this.docContents$
             .switchMap( doc => this.loadNextView( doc ) )
             .takeUntil( this.onDestroy$ ) 
@@ -69,15 +69,11 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
     protected rotateViews() {
         const animationsEnabled = ANIMATIONS && !this.hostElement.classList.contains( ANIMATION_EXCLUDE )
         function runAnimation(target:HTMLElement, animatingIn:boolean, duration:number = 200) {
-            if( animationsEnabled ) {
-                return of(target)
-                    .do(() => {
-                        $( target )[ animatingIn ? "addClass" : "removeClass" ]( "active" )
-                    })
-                    .delay(duration);
-            } else {
-                return of(target)
-            }
+            return of(target)
+                .do(() => {
+                    $( target )[ animatingIn ? "addClass" : "removeClass" ]( "active" )
+                })
+                .delay(duration);
         }
         return of(this.currentView)
             .switchMap(view => {

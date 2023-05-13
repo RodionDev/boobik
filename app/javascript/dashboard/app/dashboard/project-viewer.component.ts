@@ -6,9 +6,10 @@ import { interval } from 'rxjs/observable/interval';
 import { switchMap } from 'rxjs/operators';
 import 'rxjs/add/observable/interval';
 import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
-import { ProjectMetadata } from '../interfaces';
+import { ProjectMetadata, SidebarStatus } from '../interfaces';
 import { LoggerService } from '../services/logger.service';
 import { ProjectService } from '../services/project.service';
+import { SidebarService } from '../services/sidebar.service';
 @Component({
     selector: 'app-project-viewer',
     template: `
@@ -33,15 +34,34 @@ import { ProjectService } from '../services/project.service';
                 <p>Loading...</p>
             </div>
             <div *ngIf="projectMetadata && !isFetching">
-                <section id="header-notice" *ngIf="!projectMetadata.project.status">
+                <!--<section id="header-notice" *ngIf="!projectMetadata.project.status">
                     <div class="wrapper warning" *ngIf="projectMetadata.slides.length > 1 && projectMetadata.slides.length < 10">
                         <p>Unable to submit project for creation because you haven't got enough slides; you need at least 10 slides to submit</p>
                     </div>
                     <div class="wrapper info" *ngIf="projectMetadata.slides.length >= 10">
                         <p>All done creating slides? Submit your project for creation!</p>
                     </div>
-                </section>
-                <div id="slide-container" [ngSwitch]="projectMetadata.slides.length">
+                </section>-->
+                <div id="sidebar" class="dynamic-nav-padding">
+                    <div class="wrapper">
+                        <div class="title">
+                            <h2>Project Editor</h2>
+                            <span class="sub">{{projectMetadata?.project.title}}</span>
+                        </div>
+                        <div class="options">
+                            <ul id="top-level">
+                                <li><a href="#">Overview</a></li>
+                                <li><a href="#">Slide Editor</a></li>
+                                <li><a href="#">Help</a></li>
+                                <li><a href="#">Settings</a></li>
+                                <li id="bottom">
+                                    <a href="#">Collapse</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="dynamic-container" [ngSwitch]="projectMetadata.slides.length">
                     <div id="slide-notice" class="empty-notice" *ngSwitchCase="0">
                         <div class="wrapper clearfix">
                             <div id="left">
@@ -82,6 +102,8 @@ export class ProjectViewerComponent implements OnInit {
     isFetching:boolean = false;
     questionMarkSrc = require("images/question-mark.png");
     fetchError:Error;
+    protected sidebarActive:boolean = false;
+    protected sidebarCollapsed:boolean = false;
     protected onDestroy$ = new EventEmitter<void>();
     protected void$ = of<void>(undefined);
     get sectionTitle() : string {
@@ -90,14 +112,23 @@ export class ProjectViewerComponent implements OnInit {
     constructor(
         private el: ElementRef,
         private logger: LoggerService,
-        private projectService: ProjectService
+        private projectService: ProjectService,
+        private sidebarService: SidebarService
     ) {
         this.projectID = el.nativeElement.attributes.project.value;
+        this.sidebarService.status.subscribe( ( status:SidebarStatus ) => {
+            this.sidebarActive = status.active;
+            this.sidebarCollapsed = status.collapsed;
+        } );
     }
     ngOnInit() {
         this.isFetching = true
         this.queryProjectInfo(() => {
             this.isFetching = false;
+            setTimeout( () => {
+                this.sidebarService.active = true;
+                this.sidebarService.collapsed = false;
+            }, 50 );
             Observable
                 .interval(60000)
                 .do(() => this.queryProjectInfo() )
@@ -106,6 +137,7 @@ export class ProjectViewerComponent implements OnInit {
         })
     }
     ngOnDestroy() {
+        this.sidebarService.active = false;
         this.onDestroy$.emit();
     }
     protected queryProjectInfo(successCb = () => {}) {
