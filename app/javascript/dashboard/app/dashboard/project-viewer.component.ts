@@ -50,12 +50,12 @@ import { SidebarService } from '../services/sidebar.service';
                         </div>
                         <div class="options">
                             <ul id="top-level">
-                                <li><a href="#">Overview</a></li>
-                                <li><a href="#">Slide Editor</a></li>
-                                <li><a href="#">Help</a></li>
-                                <li><a href="#">Settings</a></li>
+                                <li><a>Overview</a></li>
+                                <li><a>Slide Editor</a></li>
+                                <li><a>Help</a></li>
+                                <li><a>Settings</a></li>
                                 <li id="bottom">
-                                    <a href="#">Collapse</a>
+                                    <a (click)="toggleSidebar()">{{sidebarCollapsed && '' || 'Collapse'}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -139,6 +139,9 @@ export class ProjectViewerComponent implements OnInit {
     ngOnDestroy() {
         this.sidebarService.active = false;
         this.onDestroy$.emit();
+    }
+    toggleSidebar() {
+        this.sidebarService.collapsed = !this.sidebarCollapsed;
     }
     protected queryProjectInfo(successCb = () => {}) {
         return this.void$
