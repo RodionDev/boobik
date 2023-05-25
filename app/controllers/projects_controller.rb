@@ -25,7 +25,6 @@ class ProjectsController < ApplicationController
                         content: render_to_string( :layout => false, :formats => [:html] ),
                         title: 'Project Information',
                         sub_title: auth ? ( ( @project && @project.title ) || 'Unnamed Project' ) : false,
-                        banner_link: @project ? "<a href=\"/dashboard/project/#{@project.id}/edit\" class=\"edit_project\" title=\"Edit project details\"><span>Edit</span></a>" : "",
                         breadcrumbs: [
                             [ "Dashboard", "/dashboard" ]
                         ]
