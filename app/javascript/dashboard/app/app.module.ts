@@ -11,7 +11,7 @@ import { ProjectListComponent } from './dashboard/project-list.component.ts';
 import { ProjectTileComponent } from './dashboard/project-tile.component.ts';
 import { ProjectViewerComponent } from './dashboard/project-viewer.component.ts';
 import { ProjectCreateComponent } from './dashboard/project-create.component.ts';
-import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { Location, LocationStrategy, PathLocationStrategy, APP_BASE_HREF } from '@angular/common';
 import { LoggerService } from './services/logger.service';
 import { DocumentService } from './services/document.service';
 import { UserService } from './services/user.service';
@@ -52,6 +52,7 @@ if( process.env.NODE_ENV == 'production' )
         Location,
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         { provide: EMBEDDED_COMPONENTS, useValue: embeddableComponents },
+        { provide: APP_BASE_HREF, useValue: '/' },
         Title
     ],
     entryComponents: embeddableComponents,
