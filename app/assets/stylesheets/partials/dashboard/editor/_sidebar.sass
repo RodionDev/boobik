@@ -7,8 +7,24 @@
         opacity: 1
     &.sidebar-collapsed
         .main .content #sidebar
-            width: 65px
+            width: $collapsed-sidebar-width
             overflow: hidden
+        .wrapper
+            .title
+                h2, .sub
+                    display: none
+            .options ul li a
+                border-left: none !important
+                svg
+                    margin-right: 0
+                span
+                    display: none
+                &:hover
+                    padding-left: 1rem !important
+                    svg
+                        transform: scale(1.1)
+            .options ul li#bottom a svg
+                transform: rotate(180deg)
 .main .content #sidebar
     position: fixed
     top: 0
@@ -22,6 +38,7 @@
     -o-transform: translateX(-50%)
     transform: translateX(-50%)
     opacity: 0
+    overflow: hidden
     -webkit-transition: transform 150ms ease, opacity 150ms ease, width 150ms ease
     -o-transition: transform 150ms ease, opacity 150ms ease, width 150ms ease
     transition: transform 150ms ease, opacity 150ms ease, width 150ms ease
@@ -35,6 +52,7 @@
             border-bottom: 2px solid transparent
             border-image: linear-gradient(to right, #0f9df1 0%, #7b37ff 100%)
             border-image-slice: 1
+            min-height: 60px
             h2
                 font-weight: 100
             .sub
@@ -46,7 +64,9 @@
                 margin: 0
                 li a
                     padding: 1rem
+                    line-height: 20px
                     display: block
+                    width: $sidebar-width
                     text-decoration: none
                     color: #eeeeee
                     border-bottom: solid 1px #2d2d2d
@@ -62,6 +82,17 @@
                         border-left-width: 6px
                         &:hover
                             border-left-width: 8px
+                    svg
+                        width: 20px
+                        height: 20px
+                        float: left
+                        margin-right: 8px
+                        fill: white
+                        stroke-width: 15px
+                        stroke: white
+                        -webkit-transition: transform 150ms ease
+                        -o-transition: transform 150ms ease
+                        transition: transform 150ms ease
                 li#bottom a
                     position: fixed
                     bottom: 0
