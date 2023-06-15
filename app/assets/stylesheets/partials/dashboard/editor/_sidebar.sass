@@ -12,13 +12,13 @@
         .wrapper
             .title
                 h2, .sub
-                    display: none
+                    opacity: 0
             .options ul li a
-                border-left: none !important
+                border-left-width: 0px !important
                 svg
                     margin-right: 0
                 span
-                    display: none
+                    opacity: 0
                 &:hover
                     padding-left: 1rem !important
                     svg
@@ -47,18 +47,22 @@
         .title
             color: #eeeeee
             padding: 1rem
-            box-shadow: 0px 3px 4px -4px #313131
+            box-shadow: 0px 3px 4px 1px #313131
             background-color: #2d2d2d
-            border-bottom: 2px solid transparent
-            border-image: linear-gradient(to right, #0f9df1 0%, #7b37ff 100%)
-            border-image-slice: 1
             min-height: 60px
             width: 220px
             h2
                 font-weight: 100
             .sub
                 color: #888888
+            h2, .sub
+                -webkit-transition: opacity 200ms ease
+                -o-transition: opacity 200ms ease
+                transition: opacity 200ms ease
         .options
+            border-top: 2px solid transparent
+            border-image: linear-gradient(to right, #0f9df1 0%, #7b37ff 100%)
+            border-image-slice: 1
             ul
                 list-style-type: none
                 padding: 0
@@ -94,9 +98,12 @@
                         -webkit-transition: transform 150ms ease
                         -o-transition: transform 150ms ease
                         transition: transform 150ms ease
+                    span
+                        -webkit-transition: opacity 200ms ease
+                        -o-transition: opacity 200ms ease
+                        transition: opacity 200ms ease
                 li#bottom a
                     position: fixed
                     bottom: 0
-                    width: 100%
                     border-top: solid 1px #2d2d2d
                     border-bottom: none
