@@ -23,8 +23,11 @@
                     padding-left: 1rem !important
                     svg
                         transform: scale(1.1)
-            .options ul li#bottom a svg
-                transform: rotate(180deg)
+            .options ul li#bottom a
+                svg
+                    transform: rotate(180deg)
+                &:hover svg
+                    transform: scale(1.1) rotate(180deg)
 .main .content #sidebar
     position: fixed
     top: 0
