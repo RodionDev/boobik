@@ -13,6 +13,7 @@
             .title
                 h2, .sub
                     opacity: 0
+                    visibility: hidden
             .options ul li a
                 border-left-width: 0px !important
                 svg
@@ -62,9 +63,9 @@
             .sub
                 color: #888888
             h2, .sub
-                -webkit-transition: opacity 200ms ease
-                -o-transition: opacity 200ms ease
-                transition: opacity 200ms ease
+                -webkit-transition: opacity 200ms ease, visibility 200ms
+                -o-transition: opacity 200ms ease, visibility 200ms
+                transition: opacity 200ms ease, visibility 200ms
         .options
             border-top: 2px solid transparent
             border-image: linear-gradient(to right, #0f9df1 0%, #7b37ff 100%)
