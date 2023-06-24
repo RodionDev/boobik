@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
             begin
                 user = User.find @auth.user_id
                 signin_user user
-                flash.notice = "Signed in!"
+                flash.notice = "Welcome back, #{user.first_name}!"
             rescue ActiveRecord::RecordNotFound
                 @auth.destroy!
                 flash.alert = "Unable to sign in. Authorization points to missing user account. Please try again now that dwindling authentications have been destroyed."
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
                     new_auth = Authorization.create( uid: uid, provider: provider, user_id: user.id )
                     if new_auth and not new_auth.new_record?
                         signin_user user
-                        flash.notice = "Signed up and logged in. Welcome!"
+                        flash.notice = "Welcome to Bikboo, #{user.first_name}!"
                     else
                         flash.alert = "Failed to signup, server error. Please try again later"
                     end
