@@ -73,6 +73,7 @@ export class AppComponent implements OnInit {
     docViewer:DocumentViewerComponent;
     currentUrl:string;
     currentDocument:DocumentContents;
+    protected newUrl:string|boolean;
     private resizeTimeout:any;
     @HostBinding('class')
     protected hostClasses:string = '';
@@ -85,12 +86,9 @@ export class AppComponent implements OnInit {
         private sidebarService: SidebarService
     ) {}
     ngOnInit() {
-        this.locationService.currentUrl.subscribe(url => {
-            if( url == this.currentUrl ) {
-            } else {
-                this.currentUrl = url;
-            }
-        });
+        this.documentService.onUrlUpdate$.subscribe( url => {
+            this.newUrl = window.location.pathname;
+        } );
         this.sidebarService.status.subscribe( ( status:SidebarStatus ) => {
             this.DOMConfig.sidebarActive = status.active;
             this.DOMConfig.sidebarCollapsed = status.collapsed;
@@ -134,6 +132,10 @@ export class AppComponent implements OnInit {
     }
     onDocumentRemoved(){}
     onDocumentInserted() {
+        if( this.newUrl ) {
+            this.currentUrl = <string>this.newUrl;
+            this.newUrl = false;
+        }
         this.updateHost();
     }
     onDocumentSwapComplete(){
@@ -149,7 +151,7 @@ export class AppComponent implements OnInit {
     }
     updateHost() {
         setTimeout( () => {
-            const urlWithoutSearch = this.currentUrl.match(/[^?]*/)[0];
+            const urlWithoutSearch = (this.currentUrl || '').match(/[^?]*/)[0];
             const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
             this.DOMConfig.banner = pageSlug != "index" && !this.currentDocument.no_banner
             this.DOMConfig.subBanner = this.currentDocument.sub_title;
