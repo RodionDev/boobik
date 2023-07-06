@@ -151,7 +151,7 @@ export class AppComponent implements OnInit {
     }
     updateHost() {
         setTimeout( () => {
-            const urlWithoutSearch = (this.currentUrl || '').match(/\/?[^?]*/)[0].replace(/\/*$/, "");
+            const urlWithoutSearch = (this.currentUrl || '').match(/[^?]*/)[0].replace(/\/*$/, "");
             const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
             this.DOMConfig.banner = pageSlug != "index" && !this.currentDocument.no_banner
             this.DOMConfig.subBanner = this.currentDocument.sub_title;
