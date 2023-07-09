@@ -36,14 +36,6 @@ const DEFAULT_PAGE:string = "overview";
                 <p>Loading...</p>
             </div>
             <div *ngIf="projectMetadata && !isFetching">
-                <!--<section id="header-notice" *ngIf="!projectMetadata.project.status">
-                    <div class="wrapper warning" *ngIf="projectMetadata.slides.length > 1 && projectMetadata.slides.length < 10">
-                        <p>Unable to submit project for creation because you haven't got enough slides; you need at least 10 slides to submit</p>
-                    </div>
-                    <div class="wrapper info" *ngIf="projectMetadata.slides.length >= 10">
-                        <p>All done creating slides? Submit your project for creation!</p>
-                    </div>
-                </section>-->
                 <div id="sidebar" class="dynamic-nav-padding">
                     <div class="wrapper">
                         <div class="title">
@@ -66,23 +58,33 @@ const DEFAULT_PAGE:string = "overview";
                         </div>
                     </div>
                 </div>
-                <div id="dynamic-container" [ngSwitch]="projectMetadata.slides.length">
-                    <h2 id="section-title">{{currentPage}}</h2>
-                    <div id="slide-notice" class="empty-notice" *ngSwitchCase="0">
+                <div id="dynamic-container" [ngSwitch]="currentPage">
+                    <app-project-overview *ngSwitchCase="'overview'"></app-project-overview>
+                    <app-project-slide-editor *ngSwitchCase="'slides'"></app-project-slide-editor>
+                    <app-project-settings *ngSwitchCase="'settings'"></app-project-settings>
+                    <div class="empty-notice" id="no-projects" *ngSwitchCase="'help'">
                         <div class="wrapper clearfix">
                             <div id="left">
                                 <img src="{{questionMarkSrc}}" alt="Question mark image"/>
                             </div>
                             <div id="right">
-                                <h2>No Slides</h2>
-                                <p>This project doesn't have any slides yet, create some now in our slide editor</p>
-                                <a href="/editor/project/{{projectID}}" id="edit" class="button">Open Editor</a>
+                                <h2>Under Construction</h2>
+                                <p>Sorry! We're still working on the editors help content.</p>
+                                <a href="#overview" class="button">Project Overview</a>
                             </div>
                         </div>
                     </div>
-                    <div id="slides" *ngSwitchDefault>
-                        <h2 class="section-title">Project Slides</h2>
-                        <p>Test</p>
+                    <div class="empty-notice" id="no-projects" *ngSwitchDefault>
+                        <div class="wrapper clearfix">
+                            <div id="left">
+                                <img src="{{questionMarkSrc}}" alt="Question mark image"/>
+                            </div>
+                            <div id="right">
+                                <h2>Unknown page</h2>
+                                <p>The page <b>{{currentPage}}</b> couldn't be found. It may be an error in the URL used to access this page.</p>
+                                <a href="#overview" class="button">Project Overview</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,7 +104,7 @@ const DEFAULT_PAGE:string = "overview";
         ])
     ]
 })
-export class ProjectViewerComponent implements OnInit {
+export class ProjectViewerComponent implements OnInit, OnDestroy {
     projectID:string = '';
     questionMarkSrc = require("images/question-mark.png");
     overviewImageSrc = require("images/house-outline.svg");
