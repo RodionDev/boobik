@@ -31,8 +31,9 @@ bikboo-shell.tree-dashboard
                     color: $darkb-accent
         section.main .content
             padding: 1rem
-            .empty-notice
-                @extend .abs-center
+            .modal-notice
+                &:not(.inplace)
+                    @extend .abs-center
                 text-align: center
                 background: white
                 width: 485px

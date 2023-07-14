@@ -6,7 +6,7 @@ import { interval } from 'rxjs/observable/interval';
 import { switchMap } from 'rxjs/operators';
 import 'rxjs/add/observable/interval';
 import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
-import { ProjectMetadata, SidebarStatus } from '../interfaces';
+import { ProjectData, SidebarStatus } from '../interfaces';
 import { LoggerService } from '../services/logger.service';
 import { ProjectService } from '../services/project.service';
 import { SidebarService } from '../services/sidebar.service';
@@ -35,12 +35,12 @@ const DEFAULT_PAGE:string = "overview";
             <div class="loading" *ngIf="isFetching" [@loadingPlaceholders]>
                 <p>Loading...</p>
             </div>
-            <div *ngIf="projectMetadata && !isFetching">
+            <div *ngIf="projectData && !isFetching">
                 <div id="sidebar" class="dynamic-nav-padding">
                     <div class="wrapper">
                         <div class="title">
                             <h2>Project Editor</h2>
-                            <span class="sub">{{projectMetadata?.project.title}}</span>
+                            <span class="sub">{{projectData.title}}</span>
                         </div>
                         <div class="options">
                             <ul id="top-level">
@@ -59,10 +59,10 @@ const DEFAULT_PAGE:string = "overview";
                     </div>
                 </div>
                 <div id="dynamic-container" [ngSwitch]="currentPage">
-                    <app-project-overview *ngSwitchCase="'overview'"></app-project-overview>
-                    <app-project-slide-editor *ngSwitchCase="'slides'"></app-project-slide-editor>
-                    <app-project-settings *ngSwitchCase="'settings'"></app-project-settings>
-                    <div class="empty-notice" id="no-projects" *ngSwitchCase="'help'">
+                    <app-project-overview [projectData]="projectData" *ngSwitchCase="'overview'"></app-project-overview>
+                    <app-project-slide-editor [projectData]="projectData" *ngSwitchCase="'slides'"></app-project-slide-editor>
+                    <app-project-settings [projectData]="projectData" *ngSwitchCase="'settings'"></app-project-settings>
+                    <div class="modal-notice" id="help-missing" *ngSwitchCase="'help'">
                         <div class="wrapper clearfix">
                             <div id="left">
                                 <img src="{{questionMarkSrc}}" alt="Question mark image"/>
@@ -74,7 +74,7 @@ const DEFAULT_PAGE:string = "overview";
                             </div>
                         </div>
                     </div>
-                    <div class="empty-notice" id="no-projects" *ngSwitchDefault>
+                    <div class="modal-notice" id="unknown-page" *ngSwitchDefault>
                         <div class="wrapper clearfix">
                             <div id="left">
                                 <img src="{{questionMarkSrc}}" alt="Question mark image"/>
@@ -113,7 +113,7 @@ export class ProjectViewerComponent implements OnInit, OnDestroy {
     settingsImageSrc = require("images/settings.svg");
     arrowImageSrc = require("images/left-arrow.svg");
     private baseUrl:string;
-    protected projectMetadata:ProjectMetadata;
+    protected projectData:ProjectData;
     protected isFetching:boolean = false;
     protected fetchError:Error;
     protected sidebarActive:boolean = false;
@@ -180,8 +180,8 @@ export class ProjectViewerComponent implements OnInit, OnDestroy {
     }
     protected queryProjectInfo(successCb = () => {}) {
         return this.projectService.getProjectInformation( this.projectID )
-            .do(meta => this.projectMetadata = meta)
-            .do(() => console.log( this.projectMetadata ))
+            .do(meta => this.projectData = meta)
+            .do(() => console.log( this.projectData ))
             .catch(err => {
                 this.fetchError = err;
                 throw `Failed to fetch ${err.message}`;

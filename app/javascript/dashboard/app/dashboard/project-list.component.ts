@@ -38,7 +38,7 @@ import { ProjectService } from '../services/project.service';
                 <app-project-tile *ngFor="let project of projectMetadata.projects" [project]="project"></app-project-tile>
             </div>
             <div class="projects" *ngIf="projectMetadata.projects?.length == 0 && !isFetching">
-                <div class="empty-notice" id="no-projects">
+                <div class="modal-notice" id="no-projects">
                     <div class="wrapper clearfix">
                         <div id="left">
                             <img src="{{questionMarkSrc}}" alt="Question mark image"/>
