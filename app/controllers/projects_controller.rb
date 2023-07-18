@@ -84,10 +84,7 @@ class ProjectsController < ApplicationController
     def get_project_information()
         project = Project.find params[:id]
         if( ( project && project.user_id ) == current_user.id ) then
-            render :json => {
-                :project => project.as_json,
-                :slides => project.project_slides.as_json
-            }
+            render :json => project.as_json.merge({:slides => project.project_slides, :statusInfo => ""})
         else
             render :json => {
                 :message => "Unable to retrieve project information; user not authorized"
