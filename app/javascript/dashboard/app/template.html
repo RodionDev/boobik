@@ -3,8 +3,8 @@
     <div id="primary-banner">
         <div class="min-container" id="navigation">
             <a class="title" href="/dashboard">Bikboo</a>
-            <a class="link" href="#">About</a>
-            <a class="link" href="#">Pricing</a>
+            <a class="link" href="/">About</a>
+            <a class="link" href="/">Pricing</a>
             <a id="profile" class="right no-follow" *ngIf="loggedInUser" (click)="toggleProfileModal()" #profileToggle>
                 <img src="{{loggedInUser.image_url}}?size=40">
             </a>
