@@ -153,7 +153,7 @@ export class AppComponent implements OnInit {
         setTimeout( () => {
             const urlWithoutSearch = (this.currentUrl || '').match(/[^?]*/)[0].replace(/\/*$/, "");
             const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
-            this.DOMConfig.banner = pageSlug != "index" && !this.currentDocument.no_banner
+            this.DOMConfig.banner = !this.currentDocument.no_banner
             this.DOMConfig.subBanner = this.currentDocument.sub_title;
             this.DOMConfig.bannerLink = this.currentDocument.banner_link;
             this.DOMConfig.breadcrumbs = this.currentDocument.breadcrumbs || [];
@@ -200,7 +200,7 @@ export class AppComponent implements OnInit {
         clearTimeout( this.resizeTimeout );
         this.resizeTimeout = setTimeout( () => {
             const activeDiv = $( this.docViewer.hostElement ).find("div.dynamic-nav-padding");
-            activeDiv.css("padding-top", this.DOMConfig.banner && $("nav").outerHeight() || 0);
+            activeDiv.css("padding-top", this.DOMConfig.banner && $(`nav ${!this.DOMConfig.subBanner ? '#primary-banner' : ''}`).outerHeight() || 0);
         }, 50 );
     }
 }
