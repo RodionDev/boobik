@@ -20,7 +20,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
                     <a href="/account">Settings</a>
                     <a href="/help">Help</a>
                 </div>
-                <a href="/signout" class="button inplace no-follow" id="signout" #signout>Sign out</a>
+                <a href="/signout" class="button inplace no-follow" (click)="userService.signOut(); $event.preventDefault();" id="signout">Sign out</a>
             </div>
         </div>
     `,
@@ -40,7 +40,6 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 export class ProfileModalComponent implements OnInit {
     @Input("user") loggedInUser: UserInformation;
     @Output() isOpen:boolean = false;
-    @ViewChild("signout") signOutButton:ElementRef;
     nativeElement:HTMLElement;
     constructor(elementRef: ElementRef, private userService: UserService) {
         this.nativeElement = elementRef.nativeElement;
@@ -48,13 +47,5 @@ export class ProfileModalComponent implements OnInit {
     ngOnInit() {}
     toggle() {
         this.isOpen = !this.isOpen
-    }
-    @HostListener('click', ['$event.target', '$event.button', '$event.ctrlKey', '$event.metaKey'])
-    onClick( eventTarget: HTMLElement, button: number, ctrlKey: boolean, metaKey: boolean ) {
-        if( button !== 0 || ctrlKey || metaKey || !this.signOutButton.nativeElement.contains( eventTarget ) ) {
-            return true;
-        }
-        this.userService.signOut();
-        return false;
     }
 }
