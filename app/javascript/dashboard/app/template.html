@@ -2,7 +2,7 @@
 <nav *ngIf="!isStarting && DOMConfig.banner" [@navState]>
     <div id="primary-banner" [class.drop-shadow]="!DOMConfig.subBanner">
         <div class="min-container" id="navigation">
-            <a class="title" href="/dashboard">Bikboo</a>
+            <a class="title" [href]="homePath">Bikboo</a>
             <a class="link" href="/">About</a>
             <a class="link" href="/">Pricing</a>
             <a id="profile" class="right no-follow" *ngIf="loggedInUser" (click)="toggleProfileModal()" #profileToggle>

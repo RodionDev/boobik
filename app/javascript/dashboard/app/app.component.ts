@@ -203,4 +203,7 @@ export class AppComponent implements OnInit {
             activeDiv.css("padding-top", this.DOMConfig.banner && $(`nav ${!this.DOMConfig.subBanner ? '#primary-banner' : ''}`).outerHeight() || 0);
         }, 50 );
     }
+    get homePath() : string {
+        return window.location.pathname.match(/^\/dashboard.*$/) ? "/dashboard" : "/";
+    }
 }
