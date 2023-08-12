@@ -22,9 +22,11 @@ import { UserService } from '../../services/user.service';
         </section>
         <section class="submission modal-notice inplace">
             <div class="wrapper clearfix">
-                <div id="right">
-                    <h2>Ready to submit?</h2>
+                <div id="left">
                     <img src="{{questionMarkSrc}}" alt="Question mark image"/>
+                </div>
+                <div id="right">
+                    <h2>Get Sliding!</h2>
                     <p>Unfortunately, you need to have at least 10 slides in your project. Head over to the slide editor to add some more.</p>
                     <a href="#!slides" class="button">Slide Editor</a>
                 </div>
