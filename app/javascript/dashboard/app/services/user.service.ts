@@ -33,8 +33,7 @@ export class UserService {
         this.http.get<any>('/signout.json', { responseType: 'json' } )
             .subscribe({
                 error: (error) => {
-                    console.log( error );
-                    throw Error(`Unable to sign out user, error: ${error.message}. Not able to continue de-auth process`);
+                    this.logger.dump("error", "Failure while trying to sign out current user. Not able to continue de-auth process.", error);
                 }
             });
     }
@@ -48,7 +47,7 @@ export class UserService {
                     this.user = data.user;
                 },
                 (error) => {
-                    throw Error( `Unable to fetch authentication details, error: ${error.message}` );
+                    this.logger.dump("error", "Failure while trying to fetch authentication details from server.", error);
                 }
             );
     }

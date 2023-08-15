@@ -48,7 +48,7 @@ export class DocumentService {
     }
     reload() {
         if( !this.lastUrl )
-            throw Error('Unable to reload document @ DocumentService; there is no URL on record to reload, wait until after initial load before attempting to reload');
+            this.logger.warn('Unable to reload document @ DocumentService; there is no URL on record to reload, wait until after initial load before attempting to reload');
         this.onUrlUpdate$.next( this.lastUrl );
     }
     formatUrl( url:string ) : string {
@@ -60,7 +60,7 @@ export class DocumentService {
     }
     private fetchDocumentContents(url: string): Observable<HttpEvent<any>> {
         if( !url )
-            throw Error(`No URL provided to fetchDocumentContents, unable to continue with fetch`)
+            this.logger.warn(`No URL provided to fetchDocumentContents, unable to continue with fetch`)
         const req = new HttpRequest('GET', `${DOCUMENT_BASE_URL}${url}`, {
             reportProgress: true,
             observe: 'response'
@@ -68,13 +68,12 @@ export class DocumentService {
         return this.http.request( req )
             .do(data => {
                 if( !data || typeof data !== 'object' ) {
-                    throw Error('Invalid JSON data received from ' + url);
+                    this.logger.dump("error", 'Invalid JSON data received from ' + url, data);
                 }
                 this.lastUrl = url
             })
             .catch(error => {
-                console.error("DocumentService received error while trying to fetch document contents for", url);
-                console.debug(error);
+                this.logger.dump("error", `DocumentService received error while trying to fetch document content for url ${url}`, error)
                 let doc_response:DocumentContents = {
                     content: ERROR_CONTENT.replace(/STATUSTEXT/g, error.statusText)
                                           .replace(/STATUSCODE/g, error.status),

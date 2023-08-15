@@ -100,7 +100,7 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
                     .do(() => this.viewSwapped.emit())
             })
             .catch(err => {
-                this.logger.error( `[Document viewer] Unable to rotate views, error: ${ err.message || err.stack || err }` )
+                this.logger.dump( "error", "Unable to rotate views, fatal error", err );
                 return of( err )
             });
     }
@@ -117,7 +117,7 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
             .do(() => this.titleService.setTitle( "Bikboo \u2014 " + doc.title || 'No Title' ) )
             .switchMap(() => this.rotateViews())
             .catch(err => {
-                this.logger.error(`Failed to load next view for document titled "${doc.title}", error: "${err.stack || err}".`);
+                this.logger.dump("error", `Failed to load next view for document titled "${doc.title}"`, err);
                 return of( err );
             });
     }

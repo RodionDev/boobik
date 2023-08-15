@@ -124,7 +124,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
             })
             .catch(err => {
                 this.fetchError = `${err.name} - ${err.status}: ${err.message}`;
-                throw `Failed to fetch ${err.message}`;
+                this.logger.dump("error", "Failed to fetch project metadata", err);
+                return of(err);
             })
             .do(data => successCb())
             .subscribe();

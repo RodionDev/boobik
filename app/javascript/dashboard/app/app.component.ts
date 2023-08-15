@@ -95,24 +95,23 @@ export class AppComponent implements OnInit {
             this.updateHost();
         } );
         this.documentService.currentDocument.subscribe( ( event:HttpEvent<any> ) => {
-            this.logger.log( event )
             switch( event.type ) {
                 case HttpEventType.Sent:
-                    this.logger.log("Request sent")
+                    this.logger.debug("Request for next document sent to server", event);
                     this.isFetching = true
                     this.fetchProgress = 0.2;
                     break;
                 case HttpEventType.ResponseHeader:
-                    this.logger.log("Request response headers received")
+                    this.logger.debug("Request response headers received from server", event);
                     this.fetchProgress = 0.4;
                     this.requestContentLength = parseInt( event.headers.get('content-length') ) || 1;
                     break;
                 case HttpEventType.DownloadProgress:
-                    this.logger.log("Request download progress report")
+                    this.logger.debug("Request progress data received; progress updated", event);
                     this.fetchProgress = Math.max( this.fetchProgress, Math.min( event.loaded / this.requestContentLength, 0.8 ) );
                     break;
                 case HttpEventType.Response:
-                    this.logger.log("Request response")
+                    this.logger.debug("Request complete, document received, progress complete", event);
                     this.fetchProgress = 0.9;
                     this.requestContentLength = 0;
                     this.currentDocument = event.body;

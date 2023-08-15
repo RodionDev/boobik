@@ -181,10 +181,11 @@ export class ProjectViewerComponent implements OnInit, OnDestroy {
     protected queryProjectInfo(successCb = () => {}) {
         return this.projectService.getProjectInformation( this.projectID )
             .do(meta => this.projectData = meta)
-            .do(() => console.log( this.projectData ))
+            .do(() => this.logger.debug( "Project data loaded", this.projectData ))
             .catch(err => {
                 this.fetchError = err;
-                throw `Failed to fetch ${err.message}`;
+                this.logger.dump("error", "Failed to fetch project information", err);
+                return of( err );
             })
             .do(data => successCb())
             .subscribe();
