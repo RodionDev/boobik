@@ -12,7 +12,6 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/takeUntil';
-import $ from 'jquery';
 import { DocumentContents } from '../interfaces';
 const ANIMATIONS:boolean = true;
 const ANIMATION_EXCLUDE:string = 'no-animations';
@@ -49,8 +48,8 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
         private embeddedService: EmbeddedComponentsService
     ) {
         this.hostElement = elementRef.nativeElement;
-        $( this.currentView ).addClass("dynamic-nav-padding document");
-        $( this.pendingView ).addClass("dynamic-nav-padding document");
+        this.currentView.classList.add('dynamic-nav-padding', 'document');
+        this.pendingView.classList.add('dynamic-nav-padding', 'document');
         this.docContents$
             .switchMap( doc => this.loadNextView( doc ) )
             .takeUntil( this.onDestroy$ ) 
@@ -70,9 +69,7 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
         const animationsEnabled = ANIMATIONS && !this.hostElement.classList.contains( ANIMATION_EXCLUDE )
         function runAnimation(target:HTMLElement, animatingIn:boolean, duration:number = 200) {
             return of(target)
-                .do(() => {
-                    $( target )[ animatingIn ? "addClass" : "removeClass" ]( "active" )
-                })
+                .do( elem => elem.classList[ animatingIn ? 'add' : 'remove' ]( 'active' ) )
                 .delay(duration);
         }
         return of(this.currentView)
