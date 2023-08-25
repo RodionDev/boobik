@@ -1,37 +1,36 @@
-&.idle
-    &.sidebar-active .main .content #sidebar
-        -webkit-transform: translateX(0)
-        -ms-transform: translateX(0)
-        -o-transform: translateX(0)
-        transform: translateX(0)
-        opacity: 1
-    &.sidebar-collapsed
-        .main .content #sidebar
-            width: $collapsed-sidebar-width
-            overflow: hidden
-        .wrapper
-            .title
-                h2, .sub
-                    opacity: 0
-                    visibility: hidden
-            .options ul li a
-                border-left-width: 0px !important
+&.idle.sidebar-active .main .content #sidebar
+    -webkit-transform: translateX(0)
+    -ms-transform: translateX(0)
+    -o-transform: translateX(0)
+    transform: translateX(0)
+    opacity: 1
+&.sidebar-collapsed
+    .main .content #sidebar
+        width: $collapsed-sidebar-width
+        overflow: hidden
+    .wrapper
+        .title
+            h2, .sub
+                opacity: 0
+                visibility: hidden
+        .options ul li a
+            border-left-width: 0px !important
+            svg
+                margin-right: 0
+            span
+                opacity: 0
+            &:hover
+                padding-left: 1rem !important
                 svg
-                    margin-right: 0
-                span
-                    opacity: 0
-                &:hover
-                    padding-left: 1rem !important
-                    svg
-                        transform: scale(1.1)
-                &.active
-                    border-left-width: 4px !important
-                    padding-left: calc(1rem - 4px) !important
-            .options ul li#bottom a
-                svg
-                    transform: rotate(180deg)
-                &:hover svg
-                    transform: scale(1.1) rotate(180deg)
+                    transform: scale(1.1)
+            &.active
+                border-left-width: 4px !important
+                padding-left: calc(1rem - 4px) !important
+        .options ul li#bottom a
+            svg
+                transform: rotate(180deg)
+            &:hover svg
+                transform: scale(1.1) rotate(180deg)
 .main .content #sidebar
     position: fixed
     top: 0

@@ -162,7 +162,7 @@ export class AppComponent implements OnInit {
                 `${this.isStarting ? "not-" : ""}ready`,
                 this.isSwapping ? 'swapping' : 'idle',
                 `sidebar-${this.DOMConfig.sidebarActive ? 'active' : 'inactive'}`,
-                ( this.DOMConfig.sidebarCollapsed && this.DOMConfig.sidebarActive ) ? `sidebar-collapsed` : null,
+                this.DOMConfig.sidebarCollapsed ? `sidebar-collapsed` : null
             ].join(' ')
             this.onResize();
         }, 0 );
