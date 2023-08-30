@@ -14,7 +14,6 @@ export class SocketService {
         this.actionCable.connect();
     }
     disconnectCable() {
-        if( !this.actionCable.connection.disconnected )
-            this.actionCable.disconnect();
+        this.actionCable.disconnect();
     }
 }
