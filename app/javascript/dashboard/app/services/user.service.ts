@@ -32,6 +32,18 @@ export class UserService {
         this.signingOut = true;
         this.http.get<any>('/signout.json', { responseType: 'json' } )
             .subscribe({
+                next: (data) => {
+                    this.getAuthenticationDetails( (userData) => {
+                        if( userData ) {
+                            this.logger.error("De-authentication flow has FAILED. Server still reports signed in user. Sending user to root via reload.");
+                            return this.locationService.replace("/");
+                        }
+                        this.logger.debug("User signed out successfully. Resetting flow indicator to 'false'");
+                        (window as any).notices.queue("Signed out!");
+                        this.locationService.go("/");
+                        this.signingOut = false;
+                    } );
+                },
                 error: (error) => {
                     this.logger.dump("error", "Failure while trying to sign out current user. Not able to continue de-auth process.", error);
                 }
@@ -59,51 +71,46 @@ export class UserService {
     }
     protected establishSocketConnection() {
         if( this.socket ) return
+        this.logger.debug("Attempting to open socket connection");
         this.socket = this.socketService.actionCable.subscriptions.create( "UserChannel", {
             received: (data) => {
-                setTimeout( () => {
-                    switch( data.action ) {
-                        case 'destroy_session': {
-                            return this.getAuthenticationDetails((user) => {
-                                if( !user ) {
-                                    if( this.signingOut ) {
-                                        (window as any).notices.queue("Signed out!");
-                                        this.signingOut = false;
-                                        this.locationService.go("/");
-                                    } else {
-                                        (window as any).notices.queue("Signed out in another tab!");
-                                    }
-                                }
-                            });
-                        }
-                        case 'revoke_auth_token': {
-                            return this.getAuthenticationDetails((user) => {
-                                if( !user ) {
-                                    if( this.signingOut ){
-                                        (window as any).notices.queue("Signed out of all devices");
-                                        this.signingOut = false;
-                                        this.locationService.go("/");
-                                    } else {
-                                        (window as any).notices.queue("Account authentication token has been revoked. Please sign in again to issue a new token.", true);
-                                    }
-                                }
-                            })
-                        }
+                this.logger.debug("Socket ping:", data);
+                if( this.signingOut ) {
+                    this.logger.debug("Incoming web-socket ping is being ignored because the deauthentication flow is running");
+                    return;
+                }
+                switch( data.action ) {
+                    case 'destroy_session': {
+                        return this.getAuthenticationDetails((user) => {
+                            if( !user )
+                                (window as any).notices.queue("Signed out in another tab!");
+                        });
                     }
-                }, 250 );
+                    case 'revoke_auth_token': {
+                        return this.getAuthenticationDetails((user) => {
+                            if( !user )
+                                (window as any).notices.queue("Account authentication token has been revoked. Please sign in again to issue a new token.", true);
+                        })
+                    }
+                }
             },
             disconnected: ({willAttemptReconnect}) => {
                 if( !willAttemptReconnect )
                     this.destroySocketConnection();
             }
         });
+        (window as any).socket = this.socket;
+        (window as any).service = this.socketService;
     }
     protected destroySocketConnection( uninstall = false ) {
         if( this.socket ) {
+            this.logger.debug("Unsubscribing from socket");
             this.socket.unsubscribe()
             this.socket = undefined;
         }
-        if( uninstall )
+        if( uninstall ) {
+            this.logger.debug("Uninstalling action cable");
             this.socketService.disconnectCable();
+        }
     }
 }
