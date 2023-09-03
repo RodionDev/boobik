@@ -9,10 +9,10 @@ auth: &auth
   password: <%= ENV['DATABASE_PASSWORD'] or "admin" %>
 development:
   <<: *auth
-  database: HerokuApp_development
+  database: Bikboo_development
 test:
   <<: *auth
-  database: HerokuApp_test
+  database: Bikboo_test
 production:
   <<: *default
   url: <%= ENV['DATABASE_URL'] %>
