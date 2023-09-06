@@ -26,6 +26,28 @@
         </div>
     </div>
 </nav>
+<div id="sidebar" class="dynamic-nav-margin">
+    <div class="wrapper">
+        <div class="title">
+            <h2>Project Editor</h2>
+            <span class="sub">{{sidebarService.data?.title}}</span>
+        </div>
+        <div class="options">
+            <ul id="top-level">
+                <li><a href="#!overview" [class.active]="sidebarService.data?.currentPage == 'overview'" class="clearfix"><div [inlineSVG]="overviewImageSrc"></div><span>Overview</span></a></li>
+                <li><a href="#!slides" [class.active]="sidebarService.data?.currentPage == 'slides'" class="clearfix"><div [inlineSVG]="editorImageSrc"></div><span>Slide Editor</span></a></li>
+                <li><a href="#!help" [class.active]="sidebarService.data?.currentPage == 'help'" class="clearfix"><div [inlineSVG]="helpImageSrc"></div><span>Help</span></a></li>
+                <li><a href="#!settings" [class.active]="sidebarService.data?.currentPage == 'settings'" class="clearfix"><div [inlineSVG]="settingsImageSrc"></div><span>Settings</span></a></li>
+                <li id="bottom">
+                    <a (click)="sidebarService.toggle()">
+                        <div [inlineSVG]="arrowImageSrc"></div>
+                        <span>{{sidebarService.collapsed && '' || 'Collapse'}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 <app-document-viewer
     [doc]="currentDocument"
     (docReceived)="onDocumentReceived()"
@@ -34,7 +56,8 @@
     (docInserted)="onDocumentInserted()"
     (viewSwapped)="onDocumentSwapComplete()"
     [hidden]="isStarting"
-    [hasBanner]="DOMConfig.banner">
+    [hasBanner]="DOMConfig.banner"
+    class="dynamic-nav-padding">
 </app-document-viewer>
 <div id="flash-notices">
     <div class="notice">

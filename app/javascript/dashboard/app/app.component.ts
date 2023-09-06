@@ -59,6 +59,11 @@ export class AppComponent implements OnInit {
         sidebarActive: false as boolean,
         sidebarCollapsed: false as boolean
     };
+    overviewImageSrc = require("images/house-outline.svg");
+    editorImageSrc = require("images/editor.svg");
+    helpImageSrc = require("images/help.svg");
+    settingsImageSrc = require("images/settings.svg");
+    arrowImageSrc = require("images/left-arrow.svg");
     isStarting:boolean = true;
     isFetching:boolean = true;
     fetchProgress:number = 0;
@@ -198,8 +203,9 @@ export class AppComponent implements OnInit {
     onResize() {
         clearTimeout( this.resizeTimeout );
         this.resizeTimeout = setTimeout( () => {
-            const activeDiv = $( this.docViewer.hostElement ).find("div.dynamic-nav-padding");
-            activeDiv.css("padding-top", this.DOMConfig.banner && $(`nav ${!this.DOMConfig.subBanner ? '#primary-banner' : ''}`).outerHeight() || 0);
+            const navHeight = this.DOMConfig.banner && $(`nav ${!this.DOMConfig.subBanner ? '#primary-banner' : ''}`).outerHeight() || 0;
+            $( document ).find(".dynamic-nav-padding").css("padding-top", navHeight);
+            $( document ).find(".dynamic-nav-margin").css("margin-top", navHeight);
         }, 50 );
     }
     get homePath() : string {

@@ -36,28 +36,6 @@ const DEFAULT_PAGE:string = "overview";
                 <p>Loading...</p>
             </div>
             <div *ngIf="projectData && !isFetching">
-                <div id="sidebar" class="dynamic-nav-padding">
-                    <div class="wrapper">
-                        <div class="title">
-                            <h2>Project Editor</h2>
-                            <span class="sub">{{projectData.title}}</span>
-                        </div>
-                        <div class="options">
-                            <ul id="top-level">
-                                <li><a href="#!overview" [class.active]="currentPage == 'overview'" class="clearfix"><div [inlineSVG]="overviewImageSrc"></div><span>Overview</span></a></li>
-                                <li><a href="#!slides" [class.active]="currentPage == 'slides'" class="clearfix"><div [inlineSVG]="editorImageSrc"></div><span>Slide Editor</span></a></li>
-                                <li><a href="#!help" [class.active]="currentPage == 'help'" class="clearfix"><div [inlineSVG]="helpImageSrc"></div><span>Help</span></a></li>
-                                <li><a href="#!settings" [class.active]="currentPage == 'settings'" class="clearfix"><div [inlineSVG]="settingsImageSrc"></div><span>Settings</span></a></li>
-                                <li id="bottom">
-                                    <a (click)="toggleSidebar()">
-                                        <div [inlineSVG]="arrowImageSrc"></div>
-                                        <span>{{sidebarCollapsed && '' || 'Collapse'}}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
                 <div id="dynamic-container" [ngSwitch]="currentPage">
                     <app-project-overview [projectData]="projectData" *ngSwitchCase="'overview'"></app-project-overview>
                     <app-project-slide-editor [projectData]="projectData" *ngSwitchCase="'slides'"></app-project-slide-editor>
@@ -128,6 +106,7 @@ export class ProjectViewerComponent implements OnInit, OnDestroy {
             this._currentPage = page;
         else
             window.location.hash = `#!${DEFAULT_PAGE}`;
+        this.exportSidebarData();
     }
     get currentPage() : string {
         return this._currentPage;
@@ -175,12 +154,10 @@ export class ProjectViewerComponent implements OnInit, OnDestroy {
         this.sidebarService.active = false;
         this.onDestroy$.emit();
     }
-    toggleSidebar() {
-        this.sidebarService.collapsed = !this.sidebarCollapsed;
-    }
     protected queryProjectInfo(successCb = () => {}) {
         return this.projectService.getProjectInformation( this.projectID )
             .do(meta => this.projectData = meta)
+            .do(() => this.exportSidebarData())
             .do(() => this.logger.debug( "Project data loaded", this.projectData ))
             .catch(err => {
                 this.fetchError = err;
@@ -189,5 +166,11 @@ export class ProjectViewerComponent implements OnInit, OnDestroy {
             })
             .do(data => successCb())
             .subscribe();
+    }
+    protected exportSidebarData() {
+        this.sidebarService.data = {
+            title: this.projectData ? this.projectData.title : '',
+            currentPage: this.currentPage
+        }
     }
 }

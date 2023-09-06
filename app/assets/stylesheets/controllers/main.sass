@@ -1,9 +1,6 @@
 @import 'core'
 html
-    overflow: hidden
     body
-        overflow: auto
-        height: 100vh
         > div.loading
             @extend .abs-center
             text-align: center
@@ -20,13 +17,14 @@ html
                     stroke: $lightb-accent
         bikboo-shell
             @import 'partials/navigation'
+            @import 'partials/sidebar'
             app-document-viewer, app-project-list, app-project-tile, app-project-viewer
                 display: block
             display: block
             opacity: 0
             background: #eeeeee
             position: relative
-            height: 100%
+            height: 100vh
             min-width: min-content
             -webkit-transform: scale(0.97)
             -ms-transform: scale(0.97)
@@ -63,6 +61,7 @@ html
                     transition: opacity 200ms ease, transform 200ms ease, padding-left 200ms ease
                     position: relative
                     height: 100%
+                    overflow: auto
                     main.min-container
                         height: 100%
                         position: relative

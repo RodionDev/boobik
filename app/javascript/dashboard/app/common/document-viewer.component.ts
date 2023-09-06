@@ -4,6 +4,7 @@ import { Component, ViewContainerRef, ElementRef,
 import { Title } from '@angular/platform-browser';
 import { LoggerService } from '../services/logger.service';
 import { DocumentService } from '../services/document.service';
+import { SidebarService } from '../services/sidebar.service';
 import { EmbeddedComponentsService } from '../services/embeddedComponents.service';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
@@ -48,8 +49,8 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
         private embeddedService: EmbeddedComponentsService
     ) {
         this.hostElement = elementRef.nativeElement;
-        this.currentView.classList.add('dynamic-nav-padding', 'document');
-        this.pendingView.classList.add('dynamic-nav-padding', 'document');
+        this.currentView.classList.add('document');
+        this.pendingView.classList.add('document');
         this.docContents$
             .switchMap( doc => this.loadNextView( doc ) )
             .takeUntil( this.onDestroy$ ) 
