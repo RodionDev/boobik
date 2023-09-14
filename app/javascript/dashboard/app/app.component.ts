@@ -97,7 +97,7 @@ export class AppComponent implements OnInit {
         this.sidebarService.status.subscribe( ( status:SidebarStatus ) => {
             this.DOMConfig.sidebarActive = status.active;
             this.DOMConfig.sidebarCollapsed = status.collapsed;
-            this.updateHost();
+            this.updateHost( true );
         } );
         this.documentService.currentDocument.subscribe( ( event:HttpEvent<any> ) => {
             switch( event.type ) {
@@ -153,14 +153,16 @@ export class AppComponent implements OnInit {
             this.isFetching = false
         }, 500);
     }
-    updateHost() {
+    updateHost( skipDomConfig?:boolean ) {
         setTimeout( () => {
             const urlWithoutSearch = (this.currentUrl || '').match(/[^?]*/)[0].replace(/\/*$/, "");
             const pageSlug = urlWithoutSearch ? /^\/*(.+?)\/*$/g.exec( urlWithoutSearch )[1].replace(/\
-            this.DOMConfig.banner = !this.currentDocument.no_banner
-            this.DOMConfig.subBanner = this.currentDocument.sub_title;
-            this.DOMConfig.bannerLink = this.currentDocument.banner_link;
-            this.DOMConfig.breadcrumbs = this.currentDocument.breadcrumbs || [];
+            if( !skipDomConfig ) {
+                this.DOMConfig.banner = !this.currentDocument.no_banner
+                this.DOMConfig.subBanner = this.currentDocument.sub_title;
+                this.DOMConfig.bannerLink = this.currentDocument.banner_link;
+                this.DOMConfig.breadcrumbs = this.currentDocument.breadcrumbs || [];
+            }
             this.hostClasses = [
                 `page-${pageSlug}`,
                 `tree-${pageSlug.match(/[^-]+/)[0]}`,
