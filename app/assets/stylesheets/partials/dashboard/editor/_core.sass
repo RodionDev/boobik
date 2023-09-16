@@ -1,1 +1,15 @@
-@import 'partials/dashboard/editor/overview'
+app-document-viewer .document main.min-container#editor
+    width: 95%
+    max-width: 1500px
+    padding: 0
+    app-project-viewer
+        @import 'partials/dashboard/editor/overview'
+        height: inherit
+        section.main
+            display: flex
+            height: 100%
+            @import 'partials/dashboard/editor/sidebar'
+            .content
+                padding: 2rem
+                flex: 1
+                position: relative

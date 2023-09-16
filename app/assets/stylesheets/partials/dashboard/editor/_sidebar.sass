@@ -1,0 +1,62 @@
+$sidebar-width: 220px
+$collapsed-sidebar-width: 55px
+/* On `bikboo-shell` */
+#sidebar
+    width: 190px
+    border-right: solid 2px #c7c7c7
+    overflow: hidden
+    padding-top: 2rem
+    -webkit-transition: transform 150ms ease, opacity 150ms ease, width 150ms ease
+    -o-transition: transform 150ms ease, opacity 150ms ease, width 150ms ease
+    transition: transform 150ms ease, opacity 150ms ease, width 150ms ease
+    .options
+        flex: 1
+        margin-bottom: 53px
+        overflow-x: hidden
+        ul
+            list-style-type: none
+            padding: 0
+            margin: 0
+            li a
+                padding: 1rem
+                margin: 4px 0
+                line-height: 20px
+                display: block
+                text-decoration: none
+                color: #585858
+                -webkit-transition: padding 100ms ease, color 100ms ease, border-right 100ms ease, background 100ms ease
+                -o-transition: padding 100ms ease, color 100ms ease, border-right 100ms ease, background 100ms ease
+                transition: padding 100ms ease, color 100ms ease, border-right 100ms ease, background 100ms ease
+                height: 53px
+                cursor: pointer
+                border-right: solid 0px #5765d8
+                &:hover:not(.active)
+                    padding-left: 1.1rem
+                    color: #3c3c3c
+                    background: #d6d4d4
+                &.active
+                    border-right-width: 4px
+                    background: #e4e4e4
+                    &:hover
+                        border-right-width: 6px
+                svg
+                    width: 20px
+                    height: 20px
+                    float: left
+                    margin-right: 8px
+                    fill: #2d2d2d
+                    stroke-width: 15px
+                    stroke: #2d2d2d
+                    -webkit-transition: transform 350ms ease
+                    -o-transition: transform 350ms ease
+                    transition: transform 350ms ease
+                span
+                    -webkit-transition: opacity 200ms ease
+                    -o-transition: opacity 200ms ease
+                    transition: opacity 200ms ease
+            li#bottom a
+                position: fixed
+                bottom: 0
+                border-top: solid 1px #adadad
+                border-bottom: none
+                background: #d4d4d4

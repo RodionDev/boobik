@@ -31,6 +31,16 @@ const DEFAULT_PAGE:string = "overview";
         </section>
     </div>
     <section class="main" *ngIf="!fetchError">
+        <div id="sidebar">
+            <div class="options">
+                <ul id="top-level">
+                    <li><a href="#!overview" [class.active]="sidebarService.data?.currentPage == 'overview'" class="clearfix"><div [inlineSVG]="overviewImageSrc"></div><span>Overview</span></a></li>
+                    <li><a href="#!slides" [class.active]="sidebarService.data?.currentPage == 'slides'" class="clearfix"><div [inlineSVG]="editorImageSrc"></div><span>Slide Editor</span></a></li>
+                    <li><a href="#!help" [class.active]="sidebarService.data?.currentPage == 'help'" class="clearfix"><div [inlineSVG]="helpImageSrc"></div><span>Help</span></a></li>
+                    <li><a href="#!settings" [class.active]="sidebarService.data?.currentPage == 'settings'" class="clearfix"><div [inlineSVG]="settingsImageSrc"></div><span>Settings</span></a></li>
+                </ul>
+            </div>
+        </div>
         <div class="content">
             <div class="loading" *ngIf="isFetching" [@loadingPlaceholders]>
                 <p>Loading...</p>
@@ -140,8 +150,6 @@ export class ProjectViewerComponent implements OnInit, OnDestroy {
         this.queryProjectInfo(() => {
             this.isFetching = false;
             setTimeout( () => {
-                this.sidebarService.active = true;
-                this.sidebarService.collapsed = false;
             }, 50 );
             Observable
                 .interval(60000)
