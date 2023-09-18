@@ -10,7 +10,6 @@ import { LoggerService } from './services/logger.service';
 import { UserService } from './services/user.service';
 import { LocationService } from './services/location.service';
 import { SocketService } from './services/socket.service';
-import { SidebarService } from './services/sidebar.service';
 import { DocumentContents, UserInformation, SidebarStatus } from './interfaces';
 import $ from 'jquery';
 import templateString from './template.html';
@@ -55,9 +54,7 @@ export class AppComponent implements OnInit {
         banner: false as boolean,
         subBanner: '' as string,
         bannerLink: false as any,
-        breadcrumbs: [] as any[],
-        sidebarActive: false as boolean,
-        sidebarCollapsed: false as boolean
+        breadcrumbs: [] as any[]
     };
     overviewImageSrc = require("images/house-outline.svg");
     editorImageSrc = require("images/editor.svg");
@@ -87,17 +84,11 @@ export class AppComponent implements OnInit {
         private userService: UserService,
         private locationService: LocationService,
         private logger: LoggerService,
-        private hostElement: ElementRef,
-        private sidebarService: SidebarService
+        private hostElement: ElementRef
     ) {}
     ngOnInit() {
         this.documentService.onUrlUpdate$.subscribe( url => {
             this.newUrl = window.location.pathname;
-        } );
-        this.sidebarService.status.subscribe( ( status:SidebarStatus ) => {
-            this.DOMConfig.sidebarActive = status.active;
-            this.DOMConfig.sidebarCollapsed = status.collapsed;
-            this.updateHost( true );
         } );
         this.documentService.currentDocument.subscribe( ( event:HttpEvent<any> ) => {
             switch( event.type ) {
@@ -167,9 +158,7 @@ export class AppComponent implements OnInit {
                 `page-${pageSlug}`,
                 `tree-${pageSlug.match(/[^-]+/)[0]}`,
                 `${this.isStarting ? "not-" : ""}ready`,
-                this.isSwapping ? 'swapping' : 'idle',
-                `sidebar-${this.DOMConfig.sidebarActive ? 'active' : 'inactive'}`,
-                this.DOMConfig.sidebarCollapsed ? `sidebar-collapsed` : null
+                this.isSwapping ? 'swapping' : 'idle'
             ].join(' ')
             this.onResize();
         }, 0 );
