@@ -1,5 +1,5 @@
 app-document-viewer .document main.min-container#editor
-    width: 95%
+    width: 100%
     max-width: 1500px
     padding: 0
     app-project-viewer
@@ -10,6 +10,7 @@ app-document-viewer .document main.min-container#editor
             height: 100%
             @import 'partials/dashboard/editor/sidebar'
             .content
-                padding: 2rem
+                padding: 2rem 1rem 0 1rem
                 flex: 1
                 position: relative
+                overflow: auto
