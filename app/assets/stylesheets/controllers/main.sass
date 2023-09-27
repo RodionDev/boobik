@@ -2,34 +2,17 @@
 html
     overflow-y: hidden
     body
-        > div.loading
-            @extend .abs-center
-            text-align: center
-            h1
-                color: grey
-                font-weight: 100
-                font-style: italic
-                font-size: 2rem
-                margin-top: 0
-            svg
-                width: 150px
-                height: 150px
-                circle
-                    stroke: $lightb-accent
+        @import 'partials/splash'
+        @import 'partials/dashboard/core'
         bikboo-shell
             @import 'partials/navigation'
-            app-document-viewer, app-project-list, app-project-tile, app-project-viewer
+            app-document-viewer, app-project-list, app-project-tile, app-project-viewer, app-project-overview
                 display: block
-            display: block
-            opacity: 0
+            display: flex
+            flex-direction: column
             background: #eeeeee
-            position: relative
             height: 100vh
             min-width: min-content
-            -webkit-transform: scale(0.97)
-            -ms-transform: scale(0.97)
-            -o-transform: scale(0.97)
-            transform: scale(0.97)
             -webkit-transition: opacity 200ms ease, transform 200ms ease
             -o-transition: opacity 200ms ease, transform 200ms ease
             transition: opacity 200ms ease, transform 200ms ease
@@ -48,8 +31,8 @@ html
                 -o-transform: scale(1)
                 transform: scale(1)
             app-document-viewer
-                height: 100%
-                position: relative
+                flex: 1
+                overflow: auto
                 > div.document
                     opacity: 0
                     -webkit-transform: scale( 0.95 )
@@ -59,9 +42,7 @@ html
                     -webkit-transition: opacity 200ms ease, transform 200ms ease, padding-left 200ms ease
                     -o-transition: opacity 200ms ease, transform 200ms ease, padding-left 200ms ease
                     transition: opacity 200ms ease, transform 200ms ease, padding-left 200ms ease
-                    position: relative
                     height: 100%
-                    overflow: auto
                     main.min-container
                         height: 100%
                         position: relative
@@ -72,5 +53,3 @@ html
                         -o-transform: scale( 1 )
                         transform: scale( 1 )
                     @import 'partials/error'
-        @import 'partials/splash'
-        @import 'partials/dashboard/core'

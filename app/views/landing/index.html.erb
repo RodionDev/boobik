@@ -11,9 +11,6 @@
                 <span id="tagline">You choose the content, we create the video</span>
             </div>
             <div id="secondary">
-                <noscript>
-                    <strong>Your browsers Javascript is disabled. It must be enabled in order for this site to function correctly.</strong>
-                </noscript>
                 <h3 id="get-started"><%= current_user and "Welcome back, #{current_user.first_name}!" or "Ready to get started?" %></h3>
                 <% if current_user %>
                     <a href="dashboard" class="button" id="dashboard">Open Dashboard</a>

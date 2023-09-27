@@ -1,17 +1,19 @@
 $sidebar-width: 190px
-app-document-viewer .document main.min-container#editor
-    width: 100%
-    max-width: calc( 1100px + #{$sidebar-width} )
-    padding: 0
-    app-project-viewer
-        @import 'partials/dashboard/editor/overview'
-        height: inherit
-        section.main
-            display: flex
-            height: 100%
-            @import 'partials/dashboard/editor/sidebar'
-            .content
-                padding: 2rem 1rem 0 1rem
-                flex: 1
-                position: relative
-                overflow: auto
+app-document-viewer .document .wrapper#editor
+    height: 100%
+    overflow: auto
+    main.min-container
+        width: 90%
+        max-width: none
+        padding: 0
+        app-project-viewer
+            @import 'partials/dashboard/editor/overview'
+            height: inherit
+            section.main
+                height: 100%
+                @import 'partials/dashboard/editor/sidebar'
+                .content
+                    padding: 2rem 1rem 0 1rem
+                    position: relative
+                    height: 100%
+                    margin-left: $sidebar-width

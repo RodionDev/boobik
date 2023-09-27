@@ -1,5 +1,5 @@
 <div class="fetch-progress" [ngStyle]="{'width': ( fetchProgress * 100 ) + '%'}" *ngIf="isFetching" [@progressFade]></div>
-<nav *ngIf="!isStarting && DOMConfig.banner" [@navState]>
+<nav *ngIf="DOMConfig.banner" [@navState]>
     <div id="primary-banner" [class.drop-shadow]="!DOMConfig.subBanner">
         <div class="min-container" id="navigation">
             <a class="title" [href]="homePath">Bikboo</a>
@@ -34,8 +34,7 @@
     (docInserted)="onDocumentInserted()"
     (viewSwapped)="onDocumentSwapComplete()"
     [hidden]="isStarting"
-    [hasBanner]="DOMConfig.banner"
-    class="dynamic-nav-padding">
+    [hasBanner]="DOMConfig.banner">
 </app-document-viewer>
 <div id="flash-notices">
     <div class="notice">
