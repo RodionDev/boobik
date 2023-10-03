@@ -4,6 +4,24 @@ html
     body
         @import 'partials/splash'
         @import 'partials/dashboard/core'
+        noscript
+            @extend .abs-center
+            color: #272727
+            background: white
+            padding: 1rem 2rem
+            border-radius: 2px
+            border: solid 1px transparent
+            border-image: linear-gradient(to bottom right, #0f9df1 0%, #7b37ff 100%)
+            border-image-slice: 1
+            h1
+                color: #0b4592
+                font-family: Roboto
+                margin-top: 0.5rem
+            a
+                color: inherit
+                font-weight: 900
+                &:hover
+                    text-decoration: underline
         bikboo-shell
             @import 'partials/navigation'
             app-document-viewer, app-project-list, app-project-tile, app-project-viewer, app-project-overview
