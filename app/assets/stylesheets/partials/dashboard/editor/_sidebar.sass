@@ -1,4 +1,5 @@
 /* On `bikboo-shell` */
+$sidebar-pop-amount: 2px
 #sidebar
     width: $sidebar-width
     border-right: solid 2px #c7c7c7
@@ -7,7 +8,6 @@
     bottom: 0
     padding-top: 2rem
     .options
-        overflow-x: hidden
         ul
             list-style-type: none
             padding: 0
@@ -19,19 +19,22 @@
                 display: block
                 text-decoration: none
                 color: #585858
-                -webkit-transition: padding 100ms ease, color 100ms ease, border-right 100ms ease, background 100ms ease
-                -o-transition: padding 100ms ease, color 100ms ease, border-right 100ms ease, background 100ms ease
-                transition: padding 100ms ease, color 100ms ease, border-right 100ms ease, background 100ms ease
+                -webkit-transition: transform 100ms ease, color 100ms ease, border-right 100ms ease, background 100ms ease, width 100ms ease
+                -o-transition: transform 100ms ease, color 100ms ease, border-right 100ms ease, background 100ms ease, width 100ms ease
+                transition: transform 100ms ease, color 100ms ease, border-right 100ms ease, background 100ms ease, width 100ms ease
+                width: 100%
                 border-right: solid 0px #5765d8
-                &:hover:not(.active)
-                    padding-left: 1.1rem
-                    color: #3c3c3c
-                    background: #d6d4d4
                 &.active
                     border-right-width: 4px
                     background: #eaeaea
-                    &:hover
-                        border-right-width: 6px
+                &:hover
+                    -webkit-transform: translateX(-#{$sidebar-pop-amount})
+                    -ms-transform: translateX(-#{$sidebar-pop-amount})
+                    -o-transform: translateX(-#{$sidebar-pop-amount})
+                    transform: translateX(-#{$sidebar-pop-amount})
+                    width: calc( 100% + #{$sidebar-pop-amount} )
+                    color: #3c3c3c
+                    background: #d6d4d4
                 svg
                     width: 20px
                     height: 20px
