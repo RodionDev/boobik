@@ -11,7 +11,7 @@ Rails.application.routes.draw do
         get 'dashboard.json', to: 'projects#index'
         get 'user.json', to: 'users#get_current_user'
         get '/dashboard/create.json', to: 'projects#new'
-        get '/dashboard/project/:id', to: 'projects#show'
+        get '/dashboard/project/:id.json', to: 'projects#show'
         get '/projects/metadata.json', to: 'projects#get_metadata'
         get '/projects/:id.json', to: 'projects#get_project_information'
         resources :projects

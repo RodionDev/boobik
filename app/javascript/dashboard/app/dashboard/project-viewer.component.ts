@@ -9,27 +9,13 @@ import { trigger, style, animate, transition, query, stagger } from '@angular/an
 import { ProjectData, SidebarStatus } from '../interfaces';
 import { LoggerService } from '../services/logger.service';
 import { ProjectService } from '../services/project.service';
+import { DocumentService } from '../services/document.service';
 import { LocationService } from '../services/location.service';
 const DEFAULT_PAGE:string = "overview";
 @Component({
     selector: 'app-project-viewer',
     template: `
-    <div id="fetch-errors" [ngSwitch]="fetchError?.status" *ngIf="fetchError">
-        <section id="error" *ngSwitchCase="404">
-            <h2 class="section-title">Project Not Found</h2>
-            <p>The request for this projects details failed with 404 - not found. Please check that the URL for this project is correct, and that it hasn't moved or been removed.</p>
-        </section>
-        <section id="error" *ngSwitchCase="401">
-            <h2 class="section-title">Permission denied</h2>
-            <p>Unable to access project, request sender was deemed unauthorized by the server. Please check that the URL you accessed is correct.</p>
-        </section>
-        <section id="error" *ngSwitchDefault>
-            <h2 class="section-title">Fetch Failed</h2>
-            <p>We were unable to fetch project information from the remote server, please try again later.</p>
-            <p>Error message received: <code>{{fetchError}}</code></p>
-        </section>
-    </div>
-    <section class="main" *ngIf="!fetchError">
+    <section class="main" [ngSwitch]="currentPage">
         <div id="sidebar">
             <div class="options">
                 <ul id="top-level">
@@ -40,38 +26,31 @@ const DEFAULT_PAGE:string = "overview";
                 </ul>
             </div>
         </div>
-        <div class="content">
-            <div class="loading" *ngIf="isFetching" [@loadingPlaceholders]>
-                <p>Loading...</p>
-            </div>
-            <div *ngIf="projectData && !isFetching">
-                <div id="dynamic-container" [ngSwitch]="currentPage">
-                    <app-project-overview [projectData]="projectData" *ngSwitchCase="'overview'"></app-project-overview>
-                    <app-project-slide-editor [projectData]="projectData" *ngSwitchCase="'slides'"></app-project-slide-editor>
-                    <app-project-settings [projectData]="projectData" *ngSwitchCase="'settings'"></app-project-settings>
-                    <div class="modal-notice" id="help-missing" *ngSwitchCase="'help'">
-                        <div class="wrapper clearfix">
-                            <div id="left">
-                                <img src="{{questionMarkSrc}}" alt="Question mark image"/>
-                            </div>
-                            <div id="right">
-                                <h2>Under Construction</h2>
-                                <p>Sorry! We're still working on the editors help content.</p>
-                                <a href="#overview" class="button">Project Overview</a>
-                            </div>
-                        </div>
+        <div class="content" [ngSwitch]="currentPage" *ngIf="projectData && !isFetching">
+            <app-project-overview [projectData]="projectData" *ngSwitchCase="'overview'"></app-project-overview>
+            <app-project-slide-editor [projectData]="projectData" *ngSwitchCase="'slides'"></app-project-slide-editor>
+            <app-project-settings [projectData]="projectData" *ngSwitchCase="'settings'"></app-project-settings>
+            <div class="modal-notice" id="help-missing" *ngSwitchCase="'help'">
+                <div class="wrapper clearfix">
+                    <div id="left">
+                        <img src="{{questionMarkSrc}}" alt="Question mark image"/>
                     </div>
-                    <div class="modal-notice" id="unknown-page" *ngSwitchDefault>
-                        <div class="wrapper clearfix">
-                            <div id="left">
-                                <img src="{{questionMarkSrc}}" alt="Question mark image"/>
-                            </div>
-                            <div id="right">
-                                <h2>Unknown page</h2>
-                                <p>The page <b>{{currentPage}}</b> couldn't be found. It may be an error in the URL used to access this page.</p>
-                                <a href="#overview" class="button">Project Overview</a>
-                            </div>
-                        </div>
+                    <div id="right">
+                        <h2>Under Construction</h2>
+                        <p>Sorry! We're still working on the editors help content.</p>
+                        <a href="#overview" class="button">Project Overview</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-notice" id="unknown-page" *ngSwitchDefault>
+                <div class="wrapper clearfix">
+                    <div id="left">
+                        <img src="{{questionMarkSrc}}" alt="Question mark image"/>
+                    </div>
+                    <div id="right">
+                        <h2>Unknown page</h2>
+                        <p>The page <b>{{currentPage}}</b> couldn't be found. It may be an error in the URL used to access this page.</p>
+                        <a href="#overview" class="button">Project Overview</a>
                     </div>
                 </div>
             </div>
@@ -124,6 +103,7 @@ export class ProjectViewerComponent implements OnInit, OnDestroy {
         private el: ElementRef,
         private logger: LoggerService,
         private projectService: ProjectService,
+        private documentService: DocumentService,
         private locationService: LocationService
     ) {
         this.projectID = el.nativeElement.attributes.project.value;
@@ -155,8 +135,8 @@ export class ProjectViewerComponent implements OnInit, OnDestroy {
             .do(meta => this.projectData = meta)
             .do(() => this.logger.debug( "Project data loaded", this.projectData ))
             .catch(err => {
-                this.fetchError = err;
-                this.logger.dump("error", "Failed to fetch project information", err);
+                this.logger.dump("error", "Failed to fetch project information; reloading document", err);
+                this.documentService.reload();
                 return of( err );
             })
             .do(data => successCb())

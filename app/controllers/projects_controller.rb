@@ -15,28 +15,22 @@ class ProjectsController < ApplicationController
         end
     end
     def show
-        @project = Project.find_by_id( params[:id] )
-        auth = ( @project && @project.user_id ) == current_user.id
-        if @project then
-            respond_to do |format|
-                format.html
-                format.json do
-                    render :json => {
-                        content: render_to_string( :layout => false, :formats => [:html] ),
-                        title: 'Project Information',
-                        sub_title: auth ? ( ( @project && @project.title ) || 'Unnamed Project' ) : false,
-                        breadcrumbs: [
-                            [ "Dashboard", "/dashboard" ]
-                        ]
-                    }
-                end
+        @project = Project.find params[:id]
+        respond_to do |format|
+            format.html
+            format.json do
+                render :json => {
+                    content: render_to_string( :layout => false, :formats => [:html] ),
+                    title: 'Project Information',
+                    sub_title: ( @project.user_id == current_user.id ) ? ( @project.title || 'Unnamed Project' ) : false,
+                    breadcrumbs: [
+                        [ "Dashboard", "/dashboard" ]
+                    ]
+                }
             end
-        else
-            render :json => {content: "Project not found"}, status: :not_found
         end
     end
     def new
-        logger.info "Rending new project form"
         @project = Project.new
         respond_to do |format|
             format.html
@@ -83,7 +77,7 @@ class ProjectsController < ApplicationController
     end
     def get_project_information()
         project = Project.find params[:id]
-        if( ( project && project.user_id ) == current_user.id ) then
+        if project.user_id == current_user.id then
             render :json => project.as_json.merge({:slides => project.project_slides, :statusInfo => ""})
         else
             render :json => {
