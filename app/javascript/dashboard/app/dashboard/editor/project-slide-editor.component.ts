@@ -8,19 +8,27 @@ import 'rxjs/add/observable/interval';
 import { ProjectData } from '../../interfaces';
 import { LoggerService } from '../../services/logger.service';
 import { ProjectService } from '../../services/project.service';
+import $ from 'jquery'
 @Component({
     selector: 'app-project-slide-editor',
     template: `
-    <div class="modal-notice" id="slides-nyi">
-        <div class="wrapper clearfix">
-            <div id="left">
-                <img src="{{questionMarkSrc}}" alt="Question mark image"/>
-            </div>
-            <div id="right">
-                <h2>Under Construction</h2>
-                <p>Sorry! We're still working on the slide editor.</p>
-                <a href="#overview" class="button">Project Overview</a>
-            </div>
+    <div class="wrapper" id="slide-container">
+        <!-- TODO: Handle slides created
+        <div class="slide new-placeholder">
+            .content
+        </div>-->
+    </div>
+    <div class="slide-editor">
+        <div class="toolbar">
+            <ul class="toolbar-controls">
+                <!--<li><a href="#" class="control"></a></li>
+                <li><a href="#" class="control"></a></li>
+                <li><a href="#" class="control"></a></li>
+                <li><a href="#" class="control"></a></li>
+                <li><a href="#" class="control"></a></li>-->
+            </ul>
+        </div>
+        <div id="workspace">
         </div>
     </div>
     `,
@@ -28,13 +36,15 @@ import { ProjectService } from '../../services/project.service';
 })
 export class ProjectSlideEditorComponent implements OnInit, OnDestroy {
     protected onDestroy$ = new EventEmitter<void>();
+    protected htmlString:string = "<div class='test'><a href='#'>Foobar</a></div>";
     questionMarkSrc = require("images/question-mark.png");
     @Input() projectData:ProjectData;
     constructor(
         private logger: LoggerService,
         private projectService: ProjectService
     ) { }
-    ngOnInit() { }
+    ngOnInit() {
+    }
     ngOnDestroy() {
         this.onDestroy$.emit();
     }

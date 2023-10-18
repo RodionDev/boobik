@@ -3,10 +3,9 @@ app-document-viewer .document .wrapper#editor
     height: 100%
     overflow: auto
     main.min-container
-        width: 95%
+        width: 100%
         max-width: none
         padding: 0
-        margin-right: 0
         app-project-viewer
             @import 'partials/dashboard/editor/overview'
             height: inherit
@@ -14,7 +13,10 @@ app-document-viewer .document .wrapper#editor
                 height: 100%
                 @import 'partials/dashboard/editor/sidebar'
                 .content
-                    padding: 2rem 1rem 0 1rem
+                    padding: 2rem
                     position: relative
-                    height: 100%
+                    height: inherit
                     margin-left: $sidebar-width
+                    app-project-slide-editor
+                        height: inherit
+                        @import 'partials/dashboard/editor/workspace'
