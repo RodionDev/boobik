@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, HostBinding,
-         OnDestroy, EventEmitter } from '@angular/core'
+         OnDestroy, EventEmitter, HostListener } from '@angular/core'
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { interval } from 'rxjs/observable/interval';
@@ -15,19 +15,9 @@ import $ from 'jquery'
     <div class="wrapper" id="slide-container">
         <!-- TODO: Handle slides created
         <div class="slide new-placeholder">
-            .content
         </div>-->
     </div>
     <div class="slide-editor">
-        <div class="toolbar">
-            <ul class="toolbar-controls">
-                <!--<li><a href="#" class="control"></a></li>
-                <li><a href="#" class="control"></a></li>
-                <li><a href="#" class="control"></a></li>
-                <li><a href="#" class="control"></a></li>
-                <li><a href="#" class="control"></a></li>-->
-            </ul>
-        </div>
         <div id="workspace">
         </div>
     </div>
@@ -42,10 +32,23 @@ export class ProjectSlideEditorComponent implements OnInit, OnDestroy {
     constructor(
         private logger: LoggerService,
         private projectService: ProjectService
-    ) { }
+    ) {}
     ngOnInit() {
+        this.onResize();
     }
     ngOnDestroy() {
         this.onDestroy$.emit();
+    }
+    @HostListener('window:resize')
+    onResize() {
+        let scale = 1;
+        const containerWidth = $(".content").width();
+        const containerHeight = $(".content").height();
+        const contentWidth = $(".slide-editor").width();
+        const contentHeight = $(".slide-editor").height();
+        if( containerWidth < contentWidth || containerHeight < contentHeight ) {
+            scale = Math.min( Math.min( containerWidth / contentWidth, containerHeight / contentHeight ), 1 );
+        }
+        $(".slide-editor").css("transform", `translate( -50%, -50% ) scale(${scale})`);
     }
 }
