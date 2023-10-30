@@ -1,15 +1,24 @@
 /* On `bikboo-shell` */
 $sidebar-pop-amount: 2px
+$sidebar-large-width: 300px
+$sidebar-collapsed-width: 20px
 #sidebar
     width: $sidebar-width
     border-right: solid 1px #c7c7c7
     position: fixed
     top: 0
     bottom: 0
-    padding-top: 2rem
     background: #e4e4e4
     box-shadow: inset -4px 0px 8px -8px #1d1d1d
+    -webkit-transition: width 200ms ease
+    -o-transition: width 200ms ease
+    transition: width 200ms ease
     .options
+        -webkit-transition: width 200ms ease
+        -o-transition: width 200ms ease
+        transition: width 200ms ease
+        width: 190px
+        padding-top: 2rem
         ul
             list-style-type: none
             padding: 0
@@ -37,6 +46,11 @@ $sidebar-pop-amount: 2px
                     width: calc( 100% + #{$sidebar-pop-amount} )
                     color: #3c3c3c
                     background: #d6d4d4
+                span
+                    position: absolute
+                    width: 100%
+                    opacity: 1
+                    transition: opacity 200ms ease
                 svg
                     width: 20px
                     height: 20px
@@ -45,3 +59,21 @@ $sidebar-pop-amount: 2px
                     fill: #2d2d2d
                     stroke-width: 15px
                     stroke: #2d2d2d
+    &.collapsed
+        width: 60px
+        .options
+            width: 56px
+            ul li a
+                span
+                    opacity: 0
+                svg
+                    margin-right: 0
+        .sidebar-slides
+            width: calc( 100% - 56px )
+            position: absolute
+            right: 0
+            top: 0
+            height: 100%
+            border-left: solid 1px #cacaca
+            overflow-x: hidden
+            overflow-y: auto
