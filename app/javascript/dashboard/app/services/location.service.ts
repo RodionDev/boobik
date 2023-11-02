@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
+import { ReplaySubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { LoggerService } from './logger.service';
 @Injectable()
 export class LocationService {
     urlObservable = new ReplaySubject<string>(1);
-    currentUrl = this.urlObservable.map(url => this.location.normalize( url ));
+    currentUrl = this.urlObservable.pipe(map(url => this.location.normalize( url )));
     constructor( private location: Location, private logger: LoggerService ) {
         this.urlObservable.next( location.path( false ) );
         this.location.subscribe(state => {

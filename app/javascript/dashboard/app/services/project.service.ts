@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ProjectMetadataList, ProjectData } from '../interfaces';
 import { LoggerService } from './logger.service';

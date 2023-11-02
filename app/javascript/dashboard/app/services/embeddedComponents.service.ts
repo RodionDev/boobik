@@ -1,8 +1,7 @@
 import { Injectable, InjectionToken, Inject, Injector,
          ComponentFactory, ComponentFactoryResolver, ComponentRef, ViewContainerRef } from '@angular/core';
 import { LoggerService } from './logger.service';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 export const EMBEDDED_COMPONENTS = new InjectionToken('EMBEDDED_COMPONENTS');
 @Injectable()
 export class EmbeddedComponentsService {

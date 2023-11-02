@@ -12,10 +12,53 @@ import { LocationService } from './services/location.service';
 import { SocketService } from './services/socket.service';
 import { DocumentContents, UserInformation, SidebarStatus } from './interfaces';
 import $ from 'jquery';
-import templateString from './template.html';
 @Component({
     selector: 'bikboo-shell',
-    template: templateString,
+    template: `
+    <div class="fetch-progress" [ngStyle]="{'width': ( fetchProgress * 100 ) + '%'}" *ngIf="isFetching" [@progressFade]></div>
+    <nav *ngIf="DOMConfig.banner" [@navState]>
+        <div id="primary-banner" [class.drop-shadow]="!DOMConfig.subBanner">
+            <div class="min-container" id="navigation">
+                <a class="title" [href]="homePath">Bikboo</a>
+                <a class="link" href="/">About</a>
+                <a class="link" href="/">Pricing</a>
+                <a id="profile" class="right no-follow" *ngIf="loggedInUser" (click)="toggleProfileModal()" #profileToggle>
+                    <img src="{{loggedInUser.image_url}}?size=40">
+                </a>
+                <app-profile-modal *ngIf="loggedInUser" [user]="loggedInUser"></app-profile-modal>
+            </div>
+        </div>
+        <div id="sub-banner" *ngIf="DOMConfig.subBanner" [@navState]>
+            <div class="min-container">
+                <h1 class="page-title">
+                    <ul class="breadcrumbs">
+                        <li class="breadcrumb" *ngFor="let crumb of DOMConfig.breadcrumbs">
+                            <a href="{{crumb[1]}}" class="breadcrumb-link">{{crumb[0]}}</a>
+                            <span class="crumb-spacer">></span>
+                        </li>
+                        <span class="breadcrumb-link">{{DOMConfig.subBanner}}</span>
+                    </ul>
+                </h1>
+                <div id="banner-link" *ngIf="DOMConfig.bannerLink" [innerHTML]="DOMConfig.bannerLink" [@linkState]></div>
+            </div>
+        </div>
+    </nav>
+    <app-document-viewer
+        [doc]="currentDocument"
+        (docReceived)="onDocumentReceived()"
+        (docPrepared)="onDocumentPrepared()"
+        (docRemoved)="onDocumentRemoved()"
+        (docInserted)="onDocumentInserted()"
+        (viewSwapped)="onDocumentSwapComplete()"
+        [hidden]="isStarting"
+        [hasBanner]="DOMConfig.banner">
+    </app-document-viewer>
+    <div id="flash-notices">
+        <div class="notice">
+            <a href="#" id="notice-close">&#10006;</a>
+            <p>If you can see this, something went wrong.</p>
+        </div>
+    </div>`,
     animations: [
         trigger("navState", [
             transition(':enter', [

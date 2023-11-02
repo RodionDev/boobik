@@ -5,13 +5,8 @@ import { Title } from '@angular/platform-browser';
 import { LoggerService } from '../services/logger.service';
 import { DocumentService } from '../services/document.service';
 import { EmbeddedComponentsService } from '../services/embeddedComponents.service';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/delay';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/takeUntil';
+import { Observable, of } from 'rxjs';
+import { switchMap, takeUntil, delay, catchError, tap } from 'rxjs/operators';
 import { DocumentContents } from '../interfaces';
 const ANIMATIONS:boolean = true;
 const ANIMATION_EXCLUDE:string = 'no-animations';
@@ -50,10 +45,10 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
         this.hostElement = elementRef.nativeElement;
         this.currentView.classList.add('document');
         this.pendingView.classList.add('document');
-        this.docContents$
-            .switchMap( doc => this.loadNextView( doc ) )
-            .takeUntil( this.onDestroy$ ) 
-            .subscribe(); 
+        this.docContents$.pipe(
+            switchMap( doc => this.loadNextView( doc ) ),
+            takeUntil( this.onDestroy$ ) 
+        ).subscribe(); 
     }
     ngDoCheck() {
         this.embeddedComponents.forEach(comp => comp.changeDetectorRef.detectChanges());
@@ -68,54 +63,57 @@ export class DocumentViewerComponent implements DoCheck, OnDestroy {
     protected rotateViews() {
         const animationsEnabled = ANIMATIONS && !this.hostElement.classList.contains( ANIMATION_EXCLUDE )
         function runAnimation(target:HTMLElement, animatingIn:boolean, duration:number = 200) {
-            return of(target)
-                .do( elem => elem.classList[ animatingIn ? 'add' : 'remove' ]( 'active' ) )
-                .delay(duration);
+            return of(target).pipe(
+                tap( elem => elem.classList[ animatingIn ? 'add' : 'remove' ]( 'active' ) ),
+                delay(duration)
+            );
         }
-        return of(this.currentView)
-            .switchMap(view => {
+        return of(this.currentView).pipe(
+            switchMap(view => {
                 if( view.parentElement ) {
-                    return runAnimation( view, false )
-                        .do(() => view.parentElement.removeChild( view ))
-                        .do(() => this.docRemoved.emit())
-                        .switchMap(() => of( this.pendingView ) )
+                    return runAnimation( view, false ).pipe(
+                        tap(() => view.parentElement.removeChild( view )),
+                        tap(() => this.docRemoved.emit()),
+                        switchMap(() => of( this.pendingView ) )
+                    );
                 }
                 return of( this.pendingView );
-            })
-            .do(view => this.hostElement.appendChild( view ))
-            .do(() => this.docInserted.emit())
-            .switchMap(pending => {
+            }),
+            tap(view => this.hostElement.appendChild( view )),
+            tap(() => this.docInserted.emit()),
+            switchMap(pending => {
                 const old = this.currentView;
                 this.currentView = pending;
                 this.pendingView = old;
                 this.pendingView.innerHTML = '';
                 return of( pending )
-            })
-            .delay( animationsEnabled ? 200 : 0 )
-            .switchMap(view => {
-                return runAnimation( view, true )
-                    .do(() => this.viewSwapped.emit())
-            })
-            .catch(err => {
+            }),
+            delay( animationsEnabled ? 200 : 0 ),
+            switchMap(view => {
+                return runAnimation( view, true ).pipe(tap(() => this.viewSwapped.emit()));
+            }),
+            catchError(err => {
                 this.logger.dump( "error", "Unable to rotate views, fatal error", err );
                 return of( err )
-            });
+            })
+        );
     }
     protected loadNextView(doc: DocumentContents) : Observable<DocumentContents> {
         this.docReceived.emit();
         this.pendingView.innerHTML = doc.content || '';
-        return of(doc)
-            .switchMap(() => this.embeddedService.createEmbedded( this.pendingView, this.viewContainerRef ) )
-            .do(comps => {
+        return of(doc).pipe(
+            switchMap(() => this.embeddedService.createEmbedded( this.pendingView, this.viewContainerRef ) ),
+            tap(comps => {
                 this.disassembleView()
                 this.embeddedComponents = comps
                 this.docPrepared.emit()
-            })
-            .do(() => this.titleService.setTitle( "Bikboo \u2014 " + doc.title || 'No Title' ) )
-            .switchMap(() => this.rotateViews())
-            .catch(err => {
+            }),
+            tap(() => this.titleService.setTitle( "Bikboo \u2014 " + doc.title || 'No Title' ) ),
+            switchMap(() => this.rotateViews()),
+            catchError(err => {
                 this.logger.dump("error", `Failed to load next view for document titled "${doc.title}"`, err);
                 return of( err );
-            });
+            })
+        );
     }
 }

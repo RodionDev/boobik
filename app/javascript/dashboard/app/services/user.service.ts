@@ -1,10 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { interval } from 'rxjs/observable/interval';
-import { switchMap } from 'rxjs/operators';
-import 'rxjs/add/observable/interval';
+import { Observable, of, interval, timer } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 import { UserInformation } from '../interfaces';
 import { LoggerService } from './logger.service';
 import { LocationService } from './location.service';
@@ -21,12 +18,9 @@ export class UserService {
         private socketService: SocketService,
         private locationService: LocationService
     ) {
-        this.getAuthenticationDetails(() => {
-            Observable
-                .interval(60000)
-                .do(() => this.getAuthenticationDetails() )
-                .subscribe();
-        });
+        timer(0, 60000).pipe(
+            tap(() => this.getAuthenticationDetails())
+        ).subscribe();
     }
     signOut() {
         this.signingOut = true;

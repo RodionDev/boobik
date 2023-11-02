@@ -1,10 +1,7 @@
 import { Component, OnInit, OnDestroy,
          EventEmitter } from '@angular/core'
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { interval } from 'rxjs/observable/interval';
-import { switchMap } from 'rxjs/operators';
-import 'rxjs/add/observable/interval';
+import { Observable, of, timer } from 'rxjs';
+import { switchMap, tap, catchError, takeUntil } from 'rxjs/operators';
 import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
 import { ProjectMetadataList } from '../interfaces';
 import { LoggerService } from '../services/logger.service';
@@ -98,11 +95,10 @@ export class ProjectListComponent implements OnInit, OnDestroy {
             const fetchingTimeout = setTimeout( () => this.isFetching = true, 200 );
             this.queryProjectMetadata(() => {
                 clearTimeout( fetchingTimeout );
-                Observable
-                    .interval(60000)
-                    .do(() => this.queryProjectMetadata() )
-                    .takeUntil(this.onDestroy$)
-                    .subscribe();
+                timer(0, 60000).pipe(
+                    tap(() => this.queryProjectMetadata() ),
+                    takeUntil(this.onDestroy$)
+                ).subscribe();
             })
         }, 350 )
     }
@@ -110,9 +106,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         this.onDestroy$.emit();
     }
     protected queryProjectMetadata(successCb = () => {}) {
-        return this.void$
-            .switchMap(() => this.projectService.getProjectMetadata() )
-            .do(meta => {
+        return this.projectService.getProjectMetadata().pipe(
+            tap(meta => {
                 if( this.isFetching ) {
                     setTimeout( () => {
                         this.isFetching = false
@@ -121,13 +116,13 @@ export class ProjectListComponent implements OnInit, OnDestroy {
                 } else {
                     this.projectMetadata = meta;
                 }
-            })
-            .catch(err => {
+            }),
+            catchError(err => {
                 this.fetchError = `${err.name} - ${err.status}: ${err.message}`;
                 this.logger.dump("error", "Failed to fetch project metadata", err);
                 return of(err);
-            })
-            .do(data => successCb())
-            .subscribe();
+            }),
+            tap(data => successCb())
+        ).subscribe();
     }
 }

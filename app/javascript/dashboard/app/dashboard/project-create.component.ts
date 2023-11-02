@@ -1,10 +1,7 @@
 import { Component, OnInit, OnDestroy,
          EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core'
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { interval } from 'rxjs/observable/interval';
+import { Observable, of, interval } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import 'rxjs/add/observable/interval';
 import { LoggerService } from '../services/logger.service';
 import { LocationService } from '../services/location.service';
 import $ from 'jquery';

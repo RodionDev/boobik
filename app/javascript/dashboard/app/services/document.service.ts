@@ -1,9 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent, HttpEventType, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { of } from 'rxjs/observable/of';
-import { switchMap, mergeMap } from 'rxjs/operators';
+import { Observable, ReplaySubject, of } from 'rxjs';
+import { switchMap, mergeMap, tap, catchError } from 'rxjs/operators';
 import { DocumentContents, UserInformation } from '../interfaces';
 import { LoggerService } from './logger.service';
 import { UserService } from './user.service';
@@ -33,18 +31,17 @@ export class DocumentService {
         private userService: UserService,
         private logger: LoggerService,
         private http: HttpClient) {
-        this.currentDocument = this.onUrlUpdate$
-            .switchMap(url => this.fetchDocumentContents( url ) );
+        this.currentDocument = this.onUrlUpdate$.pipe(switchMap(url => this.fetchDocumentContents( url ) ));
         this.userService.currentUser.subscribe({
             next: (user) => { this.currentUser = user }
         });
-        this.locationService.currentUrl
-            .switchMap( url => of( this.formatUrl( url ) ) )
-            .do( url => {
+        this.locationService.currentUrl.pipe(
+            switchMap( url => of( this.formatUrl( url ) ) ),
+            tap( url => {
                 if( url != this.lastUrl )
                     this.onUrlUpdate$.next( url )
             } )
-            .subscribe();
+        ).subscribe();
     }
     reload() {
         if( !this.lastUrl )
@@ -65,14 +62,14 @@ export class DocumentService {
             reportProgress: true,
             observe: 'response'
         })
-        return this.http.request( req )
-            .do(data => {
+        return this.http.request( req ).pipe(
+            tap(data => {
                 if( !data || typeof data !== 'object' ) {
                     this.logger.dump("error", 'Invalid JSON data received from ' + url, data);
                 }
                 this.lastUrl = url
-            })
-            .catch(error => {
+            }),
+            catchError(error => {
                 this.logger.dump("error", `DocumentService received error while trying to fetch document content for url ${url}`, error)
                 let doc_response:DocumentContents = {
                     content: ERROR_CONTENT.replace(/STATUSTEXT/g, error.statusText)
@@ -91,6 +88,6 @@ export class DocumentService {
                     doc_response.content = doc_response.content.replace(/ERROR/g, ERROR_CONTENT_MAP[error.status] || "Unknown exception occurred.");
                 }
                 return of( { type: HttpEventType.Response, body: doc_response } as HttpEvent<any> );
-            });
+            })
     }
 }

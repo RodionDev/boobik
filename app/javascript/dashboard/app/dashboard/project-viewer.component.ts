@@ -1,10 +1,7 @@
 import { Component, OnInit, Input, HostBinding,
          ElementRef, OnDestroy, EventEmitter } from '@angular/core'
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { interval } from 'rxjs/observable/interval';
-import { switchMap } from 'rxjs/operators';
-import 'rxjs/add/observable/interval';
+import { Observable, of, timer } from 'rxjs';
+import { switchMap, takeUntil, tap, catchError } from 'rxjs/operators';
 import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
 import { ProjectData, SidebarStatus } from '../interfaces';
 import { LoggerService } from '../services/logger.service';
@@ -109,38 +106,38 @@ export class ProjectViewerComponent implements OnInit, OnDestroy {
     ) {
         this.projectID = el.nativeElement.attributes.project.value;
         this.baseUrl = window.location.pathname;
-        this.locationService.currentUrl
-            .do( url => {
+        this.locationService.currentUrl.pipe(
+            tap( url => {
                 if( window.location.pathname != this.baseUrl ) return;
                 this.currentPage = ( /^#?!/.test( window.location.hash ) ) ? window.location.hash.substr( 2 ) : DEFAULT_PAGE;
-            } )
-            .takeUntil( this.onDestroy$ )
-            .subscribe();
+            } ),
+            takeUntil( this.onDestroy$ )
+        ).subscribe();
     }
     ngOnInit() {
         this.isFetching = true
         this.queryProjectInfo(() => {
             this.isFetching = false;
-            Observable
-                .interval(60000)
-                .do(() => this.queryProjectInfo() )
-                .takeUntil(this.onDestroy$)
-                .subscribe();
+            timer(0, 60000).pipe(
+                tap(() => this.queryProjectInfo() ),
+                takeUntil(this.onDestroy$)
+            ).subscribe();
         })
     }
     ngOnDestroy() {
         this.onDestroy$.emit();
     }
     protected queryProjectInfo(successCb = () => {}) {
-        return this.projectService.getProjectInformation( this.projectID )
-            .do(meta => this.projectData = meta)
-            .do(() => this.logger.debug( "Project data loaded", this.projectData ))
-            .catch(err => {
+        return this.projectService.getProjectInformation( this.projectID ).pipe(
+            tap(meta => this.projectData = meta),
+            tap(meta => this.logger.dump("warn", "ProjectDATA from project viewer fetch is as follows", meta)),
+            tap(() => this.logger.debug( "Project data loaded", this.projectData )),
+            catchError(err => {
                 this.logger.dump("error", "Failed to fetch project information; reloading document", err);
                 this.documentService.reload();
                 return of( err );
-            })
-            .do(data => successCb())
-            .subscribe();
+            }),
+            tap(data => successCb())
+        ).subscribe();
     }
 }
