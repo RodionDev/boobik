@@ -4,9 +4,9 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 auth: &auth
   <<: *default
-  host: <%= ENV['DATABASE_HOST'] or throw "No DATABASE_HOST found in environment, please seed environment variables before launching rails server" %>
-  username: <%= ENV['DATABASE_USERNAME'] or throw "No DATABASE_USERNAME found in environment, please seed environment variables before launching rails server" %>
-  password: <%= ENV['DATABASE_PASSWORD'] or throw "No DATABASE_PASSWORD found in environment, please seed environment variables before launching rails server" %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
 development:
   <<: *auth
   database: Bikboo_development
